@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>OBSAbout</class>
- <widget class="QWidget" name="OBSAbout">
+ <class>SkimoAbout</class>
+ <widget class="QWidget" name="SkimoAbout">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -61,7 +61,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="obs.qrc">:/res/images/obs.png</pixmap>
+        <pixmap resource="obs.qrc">:/res/images/skimologo.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -76,7 +76,7 @@
        <item>
         <widget class="QLabel" name="name">
          <property name="text">
-          <string notr="true">OBS Studio</string>
+          <string notr="true">Skimo Studio</string>
          </property>
         </widget>
        </item>
@@ -118,6 +118,13 @@
         <widget class="QLabel" name="getInvolved">
          <property name="text">
           <string notr="true">Get Involved</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="aboutOBS">
+         <property name="text">
+          <string>About OBS Studio</string>
          </property>
         </widget>
        </item>

@@ -1121,7 +1121,7 @@ OBSApp::OBSApp(int &argc, char **argv, profiler_name_store_t *store)
 {
 	sleepInhibitor = os_inhibit_sleep_create("OBS Video/audio");
 
-	setWindowIcon(QIcon::fromTheme("obs", QIcon(":/res/images/obs.png")));
+	setWindowIcon(QIcon::fromTheme("skimologo", QIcon(":/res/images/skimologo.png")));
 }
 
 OBSApp::~OBSApp()

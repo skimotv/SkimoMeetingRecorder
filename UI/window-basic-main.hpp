@@ -32,7 +32,7 @@
 #include "window-basic-adv-audio.hpp"
 #include "window-basic-filters.hpp"
 #include "window-projector.hpp"
-#include "window-basic-about.hpp"
+#include "window-basic-about-skimo.hpp"
 #include "auth-base.hpp"
 #include "log-viewer.hpp"
 
@@ -151,7 +151,7 @@ class OBSBasic : public OBSMainWindow {
 	Q_PROPERTY(QIcon defaultIcon READ GetDefaultIcon WRITE SetDefaultIcon
 			   DESIGNABLE true)
 
-	friend class OBSAbout;
+	friend class SkimoAbout; //used to be OBSAbout
 	friend class OBSBasicPreview;
 	friend class OBSBasicStatusBar;
 	friend class OBSBasicSourceSelect;
@@ -209,7 +209,7 @@ private:
 	QPointer<OBSBasicAdvAudio> advAudioWindow;
 	QPointer<OBSBasicFilters> filters;
 	QPointer<QDockWidget> statsDock;
-	QPointer<OBSAbout> about;
+	QPointer<SkimoAbout> about;
 
 	OBSLogViewer *logView;
 

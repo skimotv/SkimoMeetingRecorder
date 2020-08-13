@@ -5403,7 +5403,7 @@ inline void OBSBasic::OnDeactivate()
 
 		if (trayIcon)
 			trayIcon->setIcon(QIcon::fromTheme(
-				"obs-tray", QIcon(":/res/images/obs.png")));
+				"obs-tray", QIcon(":/res/images/skimologo.png")));
 	} else if (trayIcon) {
 		if (os_atomic_load_bool(&recording_paused))
 			trayIcon->setIcon(QIcon(":/res/images/obs_paused.png"));
@@ -6178,7 +6178,7 @@ void OBSBasic::on_actionHelpPortal_triggered()
 
 void OBSBasic::on_actionWebsite_triggered()
 {
-	QUrl url = QUrl("https://obsproject.com", QUrl::TolerantMode);
+	QUrl url = QUrl("https://skimo.tv/", QUrl::TolerantMode);
 	QDesktopServices::openUrl(url);
 }
 
@@ -7297,7 +7297,7 @@ void OBSBasic::ToggleShowHide()
 void OBSBasic::SystemTrayInit()
 {
 	trayIcon.reset(new QSystemTrayIcon(
-		QIcon::fromTheme("obs-tray", QIcon(":/res/images/obs.png")),
+		QIcon::fromTheme("obs-tray", QIcon(":/res/images/skimologo.png")),
 		this));
 	trayIcon->setToolTip("OBS Studio");
 
@@ -7738,7 +7738,7 @@ void OBSBasic::on_actionShowAbout_triggered()
 	if (about)
 		about->close();
 
-	about = new OBSAbout(this);
+	about = new SkimoAbout(this);
 	about->show();
 
 	about->setAttribute(Qt::WA_DeleteOnClose, true);

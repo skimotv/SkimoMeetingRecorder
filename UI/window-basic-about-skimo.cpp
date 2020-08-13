@@ -1,4 +1,4 @@
-#include "window-basic-about.hpp"
+#include "window-basic-about-skimo.hpp"
 #include "window-basic-main.hpp"
 #include "qt-wrappers.hpp"
 #include "remote-text.hpp"
@@ -9,9 +9,10 @@
 
 using namespace json11;
 
-OBSAbout::OBSAbout(QWidget *parent) : QDialog(parent), ui(new Ui::OBSAbout)
+SkimoAbout::SkimoAbout(QWidget *parent)
+	: QDialog(parent), ui(new Ui::SkimoAbout)
 {
-	/*setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 	ui->setupUi(this);
 
@@ -60,7 +61,7 @@ OBSAbout::OBSAbout(QWidget *parent) : QDialog(parent), ui(new Ui::OBSAbout)
 	connect(ui->authors, SIGNAL(clicked()), this, SLOT(ShowAuthors()));
 	connect(ui->license, SIGNAL(clicked()), this, SLOT(ShowLicense()));
 
-	QPointer<OBSAbout> about(this);
+	QPointer<SkimoAbout> about(this);
 
 	OBSBasic *main = OBSBasic::Get();
 	if (main->patronJson.empty() && !main->patronJsonThread) {
@@ -77,12 +78,12 @@ OBSAbout::OBSAbout(QWidget *parent) : QDialog(parent), ui(new Ui::OBSAbout)
 		thread->start();
 	} else {
 		ShowAbout();
-	}*/
+	}
 }
 
-void OBSAbout::ShowAbout()
+void SkimoAbout::ShowAbout()
 {
-	/*OBSBasic *main = OBSBasic::Get();
+	OBSBasic *main = OBSBasic::Get();
 
 	if (main->patronJson.empty())
 		return;
@@ -122,12 +123,12 @@ void OBSAbout::ShowAbout()
 			first = false;
 	}
 
-	ui->textBrowser->setHtml(text);*/
+	ui->textBrowser->setHtml(text);
 }
 
-void OBSAbout::ShowAuthors()
+void SkimoAbout::ShowAuthors()
 {
-	/*std::string path;
+	std::string path;
 	QString error = "Error! File could not be read.\n\n \
 		Go to: https://github.com/obsproject/obs-studio/blob/master/AUTHORS";
 
@@ -145,12 +146,12 @@ void OBSAbout::ShowAuthors()
 		return;
 	}
 
-	ui->textBrowser->setPlainText(QT_UTF8(text));*/
+	ui->textBrowser->setPlainText(QT_UTF8(text));
 }
 
-void OBSAbout::ShowLicense()
+void SkimoAbout::ShowLicense()
 {
-	/*std::string path;
+	std::string path;
 	QString error = "Error! File could not be read.\n\n \
 		Go to: https://github.com/obsproject/obs-studio/blob/master/COPYING";
 
@@ -166,5 +167,5 @@ void OBSAbout::ShowLicense()
 		return;
 	}
 
-	ui->textBrowser->setPlainText(QT_UTF8(text));*/
+	ui->textBrowser->setPlainText(QT_UTF8(text));
 }

@@ -26,10 +26,6 @@
   <property name="windowTitle">
    <string>.MainWindow</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="obs.qrc">
-    <normaloff>:/res/images/obs.png</normaloff>:/res/images/obs.png</iconset>
-  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
@@ -425,7 +421,7 @@
   <widget class="OBSBasicStatusBar" name="statusbar"/>
   <widget class="OBSDock" name="scenesDock">
    <property name="features">
-    <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable</set>
+    <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string>Basic.Main.Scenes</string>
@@ -560,7 +556,7 @@
   </widget>
   <widget class="OBSDock" name="sourcesDock">
    <property name="features">
-    <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable</set>
+    <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string>Basic.Main.Sources</string>
@@ -696,7 +692,7 @@
   </widget>
   <widget class="OBSDock" name="mixerDock">
    <property name="features">
-    <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable</set>
+    <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string>Mixer</string>
@@ -747,7 +743,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>82</width>
+           <width>94</width>
            <height>16</height>
           </rect>
          </property>
@@ -835,8 +831,12 @@
    </widget>
   </widget>
   <widget class="OBSDock" name="transitionsDock">
+   <property name="windowIcon">
+    <iconset theme="SkimoLogo.png">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
    <property name="features">
-    <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable</set>
+    <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string>Basic.SceneTransitions</string>
@@ -997,7 +997,7 @@
   </widget>
   <widget class="OBSDock" name="controlsDock">
    <property name="features">
-    <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable</set>
+    <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
     <string>Basic.Main.Controls</string>
@@ -1110,6 +1110,36 @@
        </property>
        <property name="checkable">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="bookmarkButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>New Bookmark</string>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="commentButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>New Comment</string>
        </property>
       </widget>
      </item>
@@ -1809,9 +1839,7 @@
    <header>record-button.hpp</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="obs.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>actionE_xit</sender>

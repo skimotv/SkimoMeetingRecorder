@@ -213,6 +213,7 @@ set(obs_SOURCES
 	window-basic-transform.cpp
 	window-basic-preview.cpp
 	window-basic-about.cpp
+	window-basic-about-skimo.cpp
 	window-importer.cpp
 	window-namedialog.cpp
 	window-log-reply.cpp
@@ -265,6 +266,7 @@ set(obs_HEADERS
 	window-basic-main-outputs.hpp
 	window-basic-source-select.hpp
 	window-basic-about.hpp
+	window-basic-about-skimo.hpp
 	window-basic-status-bar.hpp
 	window-basic-adv-audio.hpp
 	window-basic-transform.hpp
@@ -343,7 +345,8 @@ set(obs_UI
 	forms/OBSUpdate.ui
 	forms/OBSRemux.ui
 	forms/OBSImporter.ui
-	forms/OBSAbout.ui)
+        forms/OBSAbout.ui
+        forms/SkimoAbout.ui)
 
 set(obs_QRC
 	forms/obs.qrc)
