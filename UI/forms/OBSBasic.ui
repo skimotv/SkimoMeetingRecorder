@@ -1128,18 +1128,28 @@
        <property name="text">
         <string>New Bookmark</string>
        </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
        <property name="flat">
         <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="commentButton">
+      <widget class="QPushButton" name="noteButton">
        <property name="enabled">
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>New Comment</string>
+        <string>New Note</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>

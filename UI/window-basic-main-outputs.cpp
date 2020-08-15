@@ -5,6 +5,7 @@
 #include "audio-encoders.hpp"
 #include "window-basic-main.hpp"
 #include "window-basic-main-outputs.hpp"
+#include <Skimo/SkimoFiles.hpp>
 
 using namespace std;
 
@@ -274,10 +275,10 @@ struct SimpleOutput : BasicOutputHandler {
 	void LoadStreamingPreset_h264(const char *encoder);
 
 	void UpdateRecording();
-	bool ConfigureRecording(bool useReplayBuffer);
+	bool ConfigureRecording(bool useReplayBuffer, std::string dir);
 
 	virtual bool StartStreaming(obs_service_t *service) override;
-	virtual bool StartRecording() override;
+	virtual bool StartRecording(std::string storageDirectory) override;
 	virtual bool StartReplayBuffer() override;
 	virtual void StopStreaming(bool force) override;
 	virtual void StopRecording(bool force) override;
@@ -375,8 +376,10 @@ void SimpleOutput::LoadRecordingPreset()
 	}
 }
 
-SimpleOutput::SimpleOutput(OBSBasic *main_) : BasicOutputHandler(main_)
+SimpleOutput::SimpleOutput(OBSBasic *main_)
+	: BasicOutputHandler(main_)
 {
+
 	const char *encoder = config_get_string(main->Config(), "SimpleOutput",
 						"StreamEncoder");
 
@@ -900,7 +903,7 @@ void SimpleOutput::UpdateRecording()
 	recordingConfigured = true;
 }
 
-bool SimpleOutput::ConfigureRecording(bool updateReplayBuffer)
+bool SimpleOutput::ConfigureRecording(bool updateReplayBuffer, std::string dir)
 {
 	const char *path =
 		config_get_string(main->Config(), "SimpleOutput", "FilePath");
@@ -926,13 +929,22 @@ bool SimpleOutput::ConfigureRecording(bool updateReplayBuffer)
 	string f;
 	string strPath;
 
+	//Create the overall directory to save files in
+	std::string foldPath = path;
+	foldPath +=  "/"+dir;
+	if (os_mkdir(foldPath.c_str()) != 0)
+		return false;
+
+	//Pass the directory to the skimo files class, allowing it to open the relevant files and write to them later
+	skimoDataFiles.openDoc(foldPath);
+
 	obs_data_t *settings = obs_data_create();
 	if (updateReplayBuffer) {
-		f = GetFormatString(filenameFormat, rbPrefix, rbSuffix);
-		strPath = GetOutputFilename(path, ffmpegOutput ? "avi" : format,
+		f = GetFormatString(dir.c_str(), rbPrefix, rbSuffix);
+		strPath = GetOutputFilename(foldPath.c_str(), ffmpegOutput ? "avi" : format,
 					    noSpace, overwriteIfExists,
 					    f.c_str());
-		obs_data_set_string(settings, "directory", path);
+		obs_data_set_string(settings, "directory", foldPath.c_str());
 		obs_data_set_string(settings, "format", f.c_str());
 		obs_data_set_string(settings, "extension", format);
 		obs_data_set_bool(settings, "allow_spaces", !noSpace);
@@ -940,8 +952,8 @@ bool SimpleOutput::ConfigureRecording(bool updateReplayBuffer)
 		obs_data_set_int(settings, "max_size_mb",
 				 usingRecordingPreset ? rbSize : 0);
 	} else {
-		f = GetFormatString(filenameFormat, nullptr, nullptr);
-		strPath = GetOutputFilename(path, ffmpegOutput ? "avi" : format,
+		f = GetFormatString(dir.c_str(), nullptr, nullptr);
+		strPath = GetOutputFilename(foldPath.c_str(), ffmpegOutput ? "avi" : format,
 					    noSpace, overwriteIfExists,
 					    f.c_str());
 		obs_data_set_string(settings, ffmpegOutput ? "url" : "path",
@@ -959,10 +971,10 @@ bool SimpleOutput::ConfigureRecording(bool updateReplayBuffer)
 	return true;
 }
 
-bool SimpleOutput::StartRecording()
+bool SimpleOutput::StartRecording(std::string directoryName)
 {
 	UpdateRecording();
-	if (!ConfigureRecording(false))
+	if (!ConfigureRecording(false, directoryName))
 		return false;
 	if (!obs_output_start(fileOutput)) {
 		QString error_reason;
@@ -983,7 +995,7 @@ bool SimpleOutput::StartRecording()
 bool SimpleOutput::StartReplayBuffer()
 {
 	UpdateRecording();
-	if (!ConfigureRecording(true))
+	if (!ConfigureRecording(true, ""))//Unsure if this needs to be fixed later
 		return false;
 	if (!obs_output_start(replayBuffer)) {
 		QMessageBox::critical(main, QTStr("Output.StartReplayFailed"),
@@ -1062,7 +1074,7 @@ struct AdvancedOutput : BasicOutputHandler {
 	int GetAudioBitrate(size_t i) const;
 
 	virtual bool StartStreaming(obs_service_t *service) override;
-	virtual bool StartRecording() override;
+	virtual bool StartRecording(std::string storageDirectory) override;
 	virtual bool StartReplayBuffer() override;
 	virtual void StopStreaming(bool force) override;
 	virtual void StopRecording(bool force) override;
@@ -1653,7 +1665,7 @@ bool AdvancedOutput::StartStreaming(obs_service_t *service)
 	return false;
 }
 
-bool AdvancedOutput::StartRecording()
+bool AdvancedOutput::StartRecording(std::string storageDirectory)
 {
 	const char *path;
 	const char *recFormat;

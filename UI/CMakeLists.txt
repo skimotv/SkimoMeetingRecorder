@@ -246,7 +246,8 @@ set(obs_SOURCES
 	remote-text.cpp
 	audio-encoders.cpp
 	qt-wrappers.cpp
-	log-viewer.cpp)
+	log-viewer.cpp
+	Skimo/SkimoFiles.cpp)
 
 set(obs_HEADERS
 	${obs_PLATFORM_HEADERS}
@@ -312,7 +313,8 @@ set(obs_HEADERS
 	audio-encoders.hpp
 	qt-wrappers.hpp
 	clickable-label.hpp
-	log-viewer.hpp)
+	log-viewer.hpp
+	Skimo/SkimoFiles.hpp)
 
 set(obs_importers_HEADERS
 	importers/importers.hpp)
@@ -361,7 +363,7 @@ add_executable(obs WIN32
 	${obs_importers_SOURCES}
 	${obs_importers_HEADERS}
 	${obs_UI_HEADERS}
-	${obs_QRC_SOURCES})
+	${obs_QRC_SOURCES} "Skimo/SkimoFiles.hpp")
 
 if(WIN32)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)

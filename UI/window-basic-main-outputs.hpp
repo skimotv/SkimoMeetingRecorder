@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <Skimo/SkimoFiles.hpp>
 
 class OBSBasic;
 
@@ -32,12 +33,14 @@ struct BasicOutputHandler {
 	OBSSignal recordStopping;
 	OBSSignal replayBufferStopping;
 
+	SkimoFiles skimoDataFiles;
+
 	inline BasicOutputHandler(OBSBasic *main_);
 
 	virtual ~BasicOutputHandler(){};
 
 	virtual bool StartStreaming(obs_service_t *service) = 0;
-	virtual bool StartRecording() = 0;
+	virtual bool StartRecording(std::string storageDirectory) = 0;
 	virtual bool StartReplayBuffer() { return false; }
 	virtual bool StartVirtualCam();
 	virtual void StopStreaming(bool force = false) = 0;

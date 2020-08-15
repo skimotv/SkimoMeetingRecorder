@@ -35,6 +35,7 @@
 #include "window-basic-about-skimo.hpp"
 #include "auth-base.hpp"
 #include "log-viewer.hpp"
+#include <Skimo/SkimoFiles.hpp>
 
 #include <obs-frontend-internal.hpp>
 
@@ -893,6 +894,8 @@ private slots:
 
 	void on_streamButton_clicked();
 	void on_recordButton_clicked();
+	void on_bookmarkButton_clicked();
+	void on_noteButton_clicked();
 	void VCamButtonClicked();
 	void on_settingsButton_clicked();
 	void Screenshot(OBSSource source_ = nullptr);

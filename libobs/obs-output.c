@@ -274,6 +274,8 @@ bool obs_output_start(obs_output_t *output)
 {
 	bool encoded;
 	bool has_service;
+	//printf(output);
+
 	if (!obs_output_valid(output, "obs_output_start"))
 		return false;
 	if (!output->context.data)

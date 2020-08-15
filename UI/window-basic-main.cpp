@@ -30,6 +30,7 @@
 #include <QSizePolicy>
 #include <QScrollBar>
 #include <QTextStream>
+#include <QInputDialog>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -5696,14 +5697,34 @@ void OBSBasic::StartRecording()
 		ui->recordButton->setChecked(false);
 		return;
 	}
+	//Get name of folder and video file from user, check if invalid name entered
+	//TODO - clean up, add error checking maybe
+	bool ok;
+	QString text = QInputDialog::getText(
+		this, tr("Enter name"), tr("What should this Skimo be named?"),
+		QLineEdit::Normal, tr("My-Skimo"), &ok);
+	if (!ok) {
+		QMessageBox::critical(this, tr("Recording canceled"),
+				      tr("Recording canceled"));
+		return;
+	}
 
 	if (api)
 		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STARTING);
 
 	SaveProject();
 
-	if (!outputHandler->StartRecording())
+	if (!outputHandler->StartRecording(text.toStdString()))
+	{
 		ui->recordButton->setChecked(false);
+		QMessageBox::critical(this, tr("Recording canceled"),
+				      tr("Unable to store files in the given location, make sure you input a unique filename"));
+		return;
+	}
+
+	//Enable bookmark and note buttons
+	ui->bookmarkButton->setEnabled(true);
+	ui->noteButton->setEnabled(true);
 }
 
 void OBSBasic::RecordStopping()
@@ -5716,6 +5737,10 @@ void OBSBasic::RecordStopping()
 	recordingStopping = true;
 	if (api)
 		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STOPPING);
+
+	//Disable bookmark and note buttons
+	ui->bookmarkButton->setEnabled(false);
+	ui->noteButton->setEnabled(false);
 }
 
 void OBSBasic::StopRecording()
@@ -6150,6 +6175,21 @@ void OBSBasic::on_recordButton_clicked()
 		StartRecording();
 	}
 }
+
+void OBSBasic::on_bookmarkButton_clicked()
+{
+	outputHandler->skimoDataFiles.addBookmark("I added a bookmark");
+}
+void OBSBasic::on_noteButton_clicked()
+{
+	bool ok;
+	QString text = QInputDialog::getText(
+		this, tr("Enter note"), tr("Note text:"),
+		QLineEdit::Normal, tr(""), &ok);
+	if (ok)
+		outputHandler->skimoDataFiles.addNote(text.toStdString());
+}
+
 
 void OBSBasic::VCamButtonClicked()
 {
