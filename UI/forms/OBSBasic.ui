@@ -239,7 +239,6 @@
     </widget>
     <addaction name="actionHelpPortal"/>
     <addaction name="actionWebsite"/>
-    <addaction name="actionDiscord"/>
     <addaction name="separator"/>
     <addaction name="menuLogFiles"/>
     <addaction name="menuCrashLogs"/>
@@ -797,7 +796,7 @@
            <x>0</x>
            <y>0</y>
            <width>16</width>
-           <height>16</height>
+           <height>28</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -1022,31 +1021,6 @@
      <property name="bottomMargin">
       <number>4</number>
      </property>
-     <item>
-      <widget class="QPushButton" name="streamButton">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Basic.Main.StartStreaming</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item>
       <layout class="QHBoxLayout" name="recordingLayout">
        <property name="spacing">

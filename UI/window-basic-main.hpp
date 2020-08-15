@@ -536,16 +536,8 @@ public slots:
 	void DeferSaveBegin();
 	void DeferSaveEnd();
 
-	void StartStreaming();
 	void StopStreaming();
 	void ForceStopStreaming();
-
-	void StreamDelayStarting(int sec);
-	void StreamDelayStopping(int sec);
-
-	void StreamingStart();
-	void StreamStopping();
-	void StreamingStop(int errorcode, QString last_error);
 
 	void StartRecording();
 	void StopRecording();
@@ -892,7 +884,6 @@ private slots:
 	void on_actionScaleCanvas_triggered();
 	void on_actionScaleOutput_triggered();
 
-	void on_streamButton_clicked();
 	void on_recordButton_clicked();
 	void on_bookmarkButton_clicked();
 	void on_noteButton_clicked();
