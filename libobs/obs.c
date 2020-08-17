@@ -1353,6 +1353,7 @@ video_t *obs_get_video(void)
 	return obs->video.video;
 }
 
+
 /* TODO: optimize this later so it's not just O(N) string lookups */
 static inline struct obs_modal_ui *
 get_modal_ui_callback(const char *id, const char *task, const char *target)

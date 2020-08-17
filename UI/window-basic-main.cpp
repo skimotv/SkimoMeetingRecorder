@@ -2225,16 +2225,6 @@ void OBSBasic::CreateHotkeys()
 		return false;                                              \
 	}
 
-	/*streamingHotkeys = obs_hotkey_pair_register_frontend(
-		"OBSBasic.StartStreaming", Str("Basic.Main.StartStreaming"),
-		"OBSBasic.StopStreaming", Str("Basic.Main.StopStreaming"),
-		MAKE_CALLBACK(!basic.outputHandler->StreamingActive() &&
-				      basic.ui->streamButton->isEnabled(),
-			      basic.StartStreaming, "Starting stream"),
-		MAKE_CALLBACK(basic.outputHandler->StreamingActive() &&
-				      basic.ui->streamButton->isEnabled(),
-			      basic.StopStreaming, "Stopping stream"),
-		this, this);*/
 	LoadHotkeyPair(streamingHotkeys, "OBSBasic.StartStreaming",
 		       "OBSBasic.StopStreaming");
 
@@ -5476,7 +5466,7 @@ void OBSBasic::StartRecording()
 		ui->recordButton->setChecked(false);
 		return;
 	}
-	//Get name of folder and video file from user, check if invalid name entered
+	//Get name for folder/video file from user, check if invalid name entered
 	//TODO - clean up, add error checking maybe
 	bool ok;
 	QString text = QInputDialog::getText(
@@ -5490,6 +5480,7 @@ void OBSBasic::StartRecording()
 
 	if (api)
 		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STARTING);
+	startTime = time(0);
 
 	SaveProject();
 
@@ -5881,7 +5872,7 @@ void OBSBasic::on_recordButton_clicked()
 
 void OBSBasic::on_bookmarkButton_clicked()
 {
-	outputHandler->skimoDataFiles.addBookmark("I added a bookmark");
+	outputHandler->skimoDataFiles.addBookmark(getTimestamp());
 }
 void OBSBasic::on_noteButton_clicked()
 {
@@ -5890,7 +5881,24 @@ void OBSBasic::on_noteButton_clicked()
 		this, tr("Enter note"), tr("Note text:"),
 		QLineEdit::Normal, tr(""), &ok);
 	if (ok)
-		outputHandler->skimoDataFiles.addNote(text.toStdString());
+		outputHandler->skimoDataFiles.addNote("["+getTimestamp()+"] "+text.toStdString());
+}
+
+std::string OBSBasic::getTimestamp()
+{
+	//Note: this is being tracked internally somewhere, should not need to duplicate the functionality here if that is located
+	time_t endTime = time(0);
+	int sec = difftime(endTime, startTime);
+
+	int hours = sec / 3600;
+	sec = sec % 3600;
+	int min = sec / 60;
+	sec = sec % 60;
+
+	std::string timeString = "";
+	timeString += std::to_string(hours) + ':' + std::to_string(min) + ':' +
+		      std::to_string(sec);
+	return timeString;
 }
 
 
@@ -7040,9 +7048,9 @@ void OBSBasic::ToggleShowHide()
 void OBSBasic::SystemTrayInit()
 {
 	trayIcon.reset(new QSystemTrayIcon(
-		QIcon::fromTheme("obs-tray", QIcon(":/res/images/skimologo.png")),
+		QIcon::fromTheme("skimo-tray", QIcon(":/res/images/skimologo.png")),
 		this));
-	trayIcon->setToolTip("OBS Studio");
+	trayIcon->setToolTip("Skimo Studio");
 
 	showHide = new QAction(QTStr("Basic.SystemTray.Show"), trayIcon.data());
 	sysTrayStream = new QAction(QTStr("Basic.Main.StartStreaming"),
@@ -7077,8 +7085,6 @@ void OBSBasic::SystemTrayInit()
 		SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this,
 		SLOT(IconActivated(QSystemTrayIcon::ActivationReason)));
 	connect(showHide, SIGNAL(triggered()), this, SLOT(ToggleShowHide()));
-	/*connect(sysTrayStream, SIGNAL(triggered()), this,
-		SLOT(on_streamButton_clicked()));*/
 	connect(sysTrayRecord, SIGNAL(triggered()), this,
 		SLOT(on_recordButton_clicked()));
 	connect(sysTrayReplayBuffer.data(), &QAction::triggered, this,

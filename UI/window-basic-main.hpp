@@ -36,6 +36,7 @@
 #include "auth-base.hpp"
 #include "log-viewer.hpp"
 #include <Skimo/SkimoFiles.hpp>
+#include <string.h>
 
 #include <obs-frontend-internal.hpp>
 
@@ -193,6 +194,10 @@ private:
 	long disableSaving = 1;
 	bool projectChanged = false;
 	bool previewEnabled = true;
+
+	time_t startTime;//Time when recording is started
+
+	std::string getTimestamp(); //Helper method to get timestamp for bookmark or note
 
 	std::list<const char *> copyStrings;
 	const char *copyFiltersString = nullptr;
@@ -887,6 +892,7 @@ private slots:
 	void on_recordButton_clicked();
 	void on_bookmarkButton_clicked();
 	void on_noteButton_clicked();
+
 	void VCamButtonClicked();
 	void on_settingsButton_clicked();
 	void Screenshot(OBSSource source_ = nullptr);

@@ -6,6 +6,7 @@
 #include "window-basic-main.hpp"
 #include "window-basic-main-outputs.hpp"
 #include <Skimo/SkimoFiles.hpp>
+#include <obs.h>
 
 using namespace std;
 
@@ -988,7 +989,6 @@ bool SimpleOutput::StartRecording(std::string directoryName)
 				      error_reason);
 		return false;
 	}
-
 	return true;
 }
 
