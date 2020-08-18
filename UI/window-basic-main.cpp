@@ -5881,14 +5881,14 @@ void OBSBasic::on_noteButton_clicked()
 		this, tr("Enter note"), tr("Note text:"),
 		QLineEdit::Normal, tr(""), &ok);
 	if (ok)
-		outputHandler->skimoDataFiles.addNote("["+getTimestamp()+"] "+text.toStdString());
+		outputHandler->skimoDataFiles.addNote(getTimestamp(),text.toStdString());
 }
 
 std::string OBSBasic::getTimestamp()
 {
 	//Note: this is being tracked internally somewhere, should not need to duplicate the functionality here if that is located
 	time_t endTime = time(0);
-	int sec = difftime(endTime, startTime);
+	int sec = difftime(endTime, startTime) - 1;//Subtract one because the timer isnt started in quite the right place, try to fix later
 
 	int hours = sec / 3600;
 	sec = sec % 3600;

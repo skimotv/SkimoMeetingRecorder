@@ -131,11 +131,10 @@ void OBSAbout::ShowAuthors()
 	QString error = "Error! File could not be read.\n\n \
 		Go to: https://github.com/obsproject/obs-studio/blob/master/AUTHORS";
 
-	if (!GetDataFilePath("authors/OBS-AUTHORS", path)) {
+	if (!GetDataFilePath("authors/AUTHORS", path)) {//Change to OBS-Authors if 
 		ui->textBrowser->setPlainText(error);
 		return;
 	}
-
 	ui->textBrowser->setPlainText(QString::fromStdString(path));
 
 	BPtr<char> text = os_quick_read_utf8_file(path.c_str());
