@@ -11,8 +11,8 @@ OBSBasicStatusBar::OBSBasicStatusBar(QWidget *parent)
 	: QStatusBar(parent),
 	  delayInfo(new QLabel),
 	  droppedFrames(new QLabel),
-	  streamIcon(new QLabel),
-	  streamTime(new QLabel),
+	  /*streamIcon(new QLabel),
+	  streamTime(new QLabel),*/
 	  recordTime(new QLabel),
 	  recordIcon(new QLabel),
 	  cpuUsage(new QLabel),
@@ -34,11 +34,11 @@ OBSBasicStatusBar::OBSBasicStatusBar(QWidget *parent)
 	  streamingInactivePixmap(QIcon(":/res/images/streaming-inactive.svg")
 					  .pixmap(QSize(20, 20)))
 {
-	streamTime->setText(QString("LIVE: 00:00:00"));
+	//streamTime->setText(QString("LIVE: 00:00:00"));
 	recordTime->setText(QString("REC: 00:00:00"));
 	cpuUsage->setText(QString("CPU: 0.0%, 0.00 fps"));
 
-	streamIcon->setPixmap(streamingInactivePixmap);
+	//streamIcon->setPixmap(streamingInactivePixmap);
 	recordIcon->setPixmap(recordingInactivePixmap);
 
 	QWidget *brWidget = new QWidget(this);
@@ -57,10 +57,10 @@ OBSBasicStatusBar::OBSBasicStatusBar(QWidget *parent)
 	delayInfo->setAlignment(Qt::AlignVCenter);
 	droppedFrames->setAlignment(Qt::AlignRight);
 	droppedFrames->setAlignment(Qt::AlignVCenter);
-	streamIcon->setAlignment(Qt::AlignRight);
+	/*streamIcon->setAlignment(Qt::AlignRight);
 	streamIcon->setAlignment(Qt::AlignVCenter);
 	streamTime->setAlignment(Qt::AlignRight);
-	streamTime->setAlignment(Qt::AlignVCenter);
+	streamTime->setAlignment(Qt::AlignVCenter);*/
 	recordIcon->setAlignment(Qt::AlignRight);
 	recordIcon->setAlignment(Qt::AlignVCenter);
 	recordTime->setAlignment(Qt::AlignRight);
@@ -72,14 +72,14 @@ OBSBasicStatusBar::OBSBasicStatusBar(QWidget *parent)
 
 	delayInfo->setIndent(20);
 	droppedFrames->setIndent(20);
-	streamIcon->setIndent(20);
+	//streamIcon->setIndent(20);
 	recordIcon->setIndent(20);
 	cpuUsage->setIndent(20);
 	kbps->setIndent(10);
 
 	addPermanentWidget(droppedFrames);
-	addPermanentWidget(streamIcon);
-	addPermanentWidget(streamTime);
+	/*addPermanentWidget(streamIcon);
+	addPermanentWidget(streamTime);*/
 	addPermanentWidget(recordIcon);
 	addPermanentWidget(recordTime);
 	addPermanentWidget(cpuUsage);
@@ -118,9 +118,9 @@ void OBSBasicStatusBar::Activate()
 		}
 	}
 
-	if (streamOutput) {
+	/*if (streamOutput) {
 		streamIcon->setPixmap(streamingActivePixmap);
-	}
+	}*/
 
 	if (recordOutput) {
 		recordIcon->setPixmap(recordingActivePixmap);
@@ -133,11 +133,11 @@ void OBSBasicStatusBar::Deactivate()
 	if (!main)
 		return;
 
-	if (!streamOutput) {
+	/*if (!streamOutput) {
 		streamTime->setText(QString("LIVE: 00:00:00"));
 		streamIcon->setPixmap(streamingInactivePixmap);
 		totalStreamSeconds = 0;
-	}
+	}&=*/
 
 	if (!recordOutput) {
 		recordTime->setText(QString("REC: 00:00:00"));
@@ -242,7 +242,7 @@ void OBSBasicStatusBar::UpdateCPUUsage()
 
 void OBSBasicStatusBar::UpdateStreamTime()
 {
-	totalStreamSeconds++;
+	/*totalStreamSeconds++;
 
 	int seconds = totalStreamSeconds % 60;
 	int totalMinutes = totalStreamSeconds / 60;
@@ -272,7 +272,7 @@ void OBSBasicStatusBar::UpdateStreamTime()
 		if (delaySecStarting > 0)
 			--delaySecStarting;
 		UpdateDelayMsg();
-	}
+	}*/
 }
 
 extern volatile bool recording_paused;
@@ -301,6 +301,10 @@ void OBSBasicStatusBar::UpdateRecordTime()
 
 		streamPauseIconToggle = !streamPauseIconToggle;
 	}
+}
+
+int OBSBasicStatusBar::GetRecordTime() {
+	return totalRecordSeconds;
 }
 
 void OBSBasicStatusBar::UpdateDroppedFrames()

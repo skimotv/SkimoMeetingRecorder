@@ -492,7 +492,7 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 
 	void obs_frontend_set_preview_program_mode(bool enable) override
 	{
-		main->SetPreviewProgramMode(enable);
+		//This function is leftover from OBS
 	}
 
 	void obs_frontend_preview_program_trigger_transition(void) override

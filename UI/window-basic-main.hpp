@@ -196,8 +196,6 @@ private:
 	bool projectChanged = false;
 	bool previewEnabled = true;
 
-	time_t startTime;//Time when recording is started
-
 	std::string getTimestamp(); //Helper method to get timestamp for bookmark or note
 
 	std::list<const char *> copyStrings;
@@ -423,7 +421,6 @@ private:
 	void QuickTransitionChangeDuration(int value);
 	void QuickTransitionRemoveClicked();
 
-	void SetPreviewProgramMode(bool enabled);
 	void ResizeProgram(uint32_t cx, uint32_t cy);
 	void SetCurrentScene(obs_scene_t *scene, bool force = false);
 	static void RenderProgram(void *data, uint32_t cx, uint32_t cy);
@@ -936,8 +933,6 @@ private slots:
 	void on_transitionRemove_clicked();
 	void on_transitionProps_clicked();
 	void on_transitionDuration_valueChanged(int value);
-
-	void on_modeSwitch_clicked();
 
 	void on_autoConfigure_triggered();
 	void on_stats_triggered();

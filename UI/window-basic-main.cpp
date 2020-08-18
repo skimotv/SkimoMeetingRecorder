@@ -1877,15 +1877,6 @@ void OBSBasic::OBSInit()
 
 	ui->sources->UpdateIcons();
 
-	if (!opt_studio_mode) {
-		SetPreviewProgramMode(config_get_bool(App()->GlobalConfig(),
-						      "BasicWindow",
-						      "PreviewProgramMode"));
-	} else {
-		SetPreviewProgramMode(true);
-		opt_studio_mode = false;
-	}
-
 #if !defined(_WIN32) && !defined(__APPLE__)
 	delete ui->actionShowCrashLogs;
 	delete ui->actionUploadLastCrashLog;
@@ -2306,19 +2297,6 @@ void OBSBasic::CreateHotkeys()
 	LoadHotkeyPair(togglePreviewHotkeys, "OBSBasic.EnablePreview",
 		       "OBSBasic.DisablePreview");
 #undef MAKE_CALLBACK
-
-	auto togglePreviewProgram = [](void *data, obs_hotkey_id,
-				       obs_hotkey_t *, bool pressed) {
-		if (pressed)
-			QMetaObject::invokeMethod(static_cast<OBSBasic *>(data),
-						  "on_modeSwitch_clicked",
-						  Qt::QueuedConnection);
-	};
-
-	togglePreviewProgramHotkey = obs_hotkey_register_frontend(
-		"OBSBasic.TogglePreviewProgram",
-		Str("Basic.TogglePreviewProgramMode"), togglePreviewProgram,
-		this);
 	LoadHotkey(togglePreviewProgramHotkey, "OBSBasic.TogglePreviewProgram");
 
 	auto transition = [](void *data, obs_hotkey_id, obs_hotkey_t *,
@@ -5480,7 +5458,6 @@ void OBSBasic::StartRecording()
 
 	if (api)
 		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STARTING);
-	startTime = time(0);
 
 	SaveProject();
 
@@ -5884,11 +5861,10 @@ void OBSBasic::on_noteButton_clicked()
 		outputHandler->skimoDataFiles.addNote(getTimestamp(),text.toStdString());
 }
 
+//Get timestamp from status bar and format as a string in hours:minutes:seconds format
 std::string OBSBasic::getTimestamp()
 {
-	//Note: this is being tracked internally somewhere, should not need to duplicate the functionality here if that is located
-	time_t endTime = time(0);
-	int sec = difftime(endTime, startTime) - 1;//Subtract one because the timer isnt started in quite the right place, try to fix later
+	int sec = ui->statusbar->GetRecordTime();
 
 	int hours = sec / 3600;
 	sec = sec % 3600;

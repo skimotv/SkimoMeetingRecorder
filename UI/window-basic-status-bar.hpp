@@ -94,5 +94,8 @@ public:
 	void RecordingPaused();
 	void RecordingUnpaused();
 
+	//Provide duration of recording
+	int GetRecordTime();
+
 	void ReconnectClear();
 };

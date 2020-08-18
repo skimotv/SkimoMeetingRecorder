@@ -4802,32 +4802,32 @@ void OBSBasicSettings::SetGeneralIcon(const QIcon &icon)
 
 void OBSBasicSettings::SetStreamIcon(const QIcon &icon)
 {
-	ui->listWidget->item(1)->setIcon(icon);
+	//Leftover from OBS ui->listWidget->item(1)->setIcon(icon);
 }
 
 void OBSBasicSettings::SetOutputIcon(const QIcon &icon)
 {
-	ui->listWidget->item(2)->setIcon(icon);
+	ui->listWidget->item(1)->setIcon(icon);
 }
 
 void OBSBasicSettings::SetAudioIcon(const QIcon &icon)
 {
-	ui->listWidget->item(3)->setIcon(icon);
+	ui->listWidget->item(2)->setIcon(icon);
 }
 
 void OBSBasicSettings::SetVideoIcon(const QIcon &icon)
 {
-	ui->listWidget->item(4)->setIcon(icon);
+	ui->listWidget->item(3)->setIcon(icon);
 }
 
 void OBSBasicSettings::SetHotkeysIcon(const QIcon &icon)
 {
-	ui->listWidget->item(5)->setIcon(icon);
+	ui->listWidget->item(4)->setIcon(icon);
 }
 
 void OBSBasicSettings::SetAdvancedIcon(const QIcon &icon)
 {
-	ui->listWidget->item(6)->setIcon(icon);
+	ui->listWidget->item(5)->setIcon(icon);
 }
 
 int OBSBasicSettings::CurrentFLVTrack()

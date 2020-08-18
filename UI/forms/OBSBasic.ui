@@ -796,7 +796,7 @@
            <x>0</x>
            <y>0</y>
            <width>16</width>
-           <height>28</height>
+           <height>16</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -1064,28 +1064,6 @@
         </widget>
        </item>
       </layout>
-     </item>
-     <item>
-      <widget class="QPushButton" name="modeSwitch">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Basic.TogglePreviewProgramMode</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
      </item>
      <item>
       <widget class="Line" name="line">
