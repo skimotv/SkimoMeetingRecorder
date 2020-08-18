@@ -5894,11 +5894,12 @@ std::string OBSBasic::getTimestamp()
 	sec = sec % 3600;
 	int min = sec / 60;
 	sec = sec % 60;
+	//Format the data
+	char timeString[9];
+	sprintf(timeString, "%02d:%02d:%02d", hours,min,sec);
 
-	std::string timeString = "";
-	timeString += std::to_string(hours) + ':' + std::to_string(min) + ':' +
-		      std::to_string(sec);
-	return timeString;
+	//Return the string
+	return std::string(timeString);
 }
 
 
@@ -6759,7 +6760,7 @@ void OBSBasic::UpdateTitleBar()
 	const char *sceneCollection = config_get_string(
 		App()->GlobalConfig(), "Basic", "SceneCollection");
 
-	name << "OBS ";
+	name << "Skimo ";
 	if (previewProgramMode)
 		name << "Studio ";
 

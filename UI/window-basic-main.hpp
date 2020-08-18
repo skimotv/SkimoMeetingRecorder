@@ -153,7 +153,8 @@ class OBSBasic : public OBSMainWindow {
 	Q_PROPERTY(QIcon defaultIcon READ GetDefaultIcon WRITE SetDefaultIcon
 			   DESIGNABLE true)
 
-	friend class SkimoAbout; //used to be OBSAbout
+	friend class SkimoAbout;
+	friend class OBSAbout;
 	friend class OBSBasicPreview;
 	friend class OBSBasicStatusBar;
 	friend class OBSBasicSourceSelect;

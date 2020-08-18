@@ -90,7 +90,7 @@
        <item>
         <widget class="QLabel" name="info">
          <property name="text">
-          <string>About.Info</string>
+          <string>Skimo Studio is a meeting recording software forked from OBS Studio</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -122,9 +122,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="aboutOBS">
-         <property name="text">
-          <string>About OBS Studio</string>
+        <widget class="QTextBrowser" name="textBrowser">
+         <property name="openExternalLinks">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -145,9 +145,9 @@
         </spacer>
        </item>
        <item>
-        <widget class="QTextBrowser" name="textBrowser">
-         <property name="openExternalLinks">
-          <bool>true</bool>
+        <widget class="QPushButton" name="aboutOBS">
+         <property name="text">
+          <string>About OBS</string>
          </property>
         </widget>
        </item>

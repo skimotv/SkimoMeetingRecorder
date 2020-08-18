@@ -81,6 +81,17 @@ SkimoAbout::SkimoAbout(QWidget *parent)
 	}
 }
 
+void SkimoAbout::on_aboutOBS_clicked()
+{
+	if (about)
+		about->close();
+
+	about = new OBSAbout(this);
+	about->show();
+
+	about->setAttribute(Qt::WA_DeleteOnClose, true);
+}
+
 void SkimoAbout::ShowAbout()
 {
 	OBSBasic *main = OBSBasic::Get();
@@ -93,35 +104,14 @@ void SkimoAbout::ShowAbout()
 	const Json::array &patrons = json.array_items();
 	QString text;
 
-	text += "<h1>Top Patreon contributors:</h1>";
+	//The following text is taken from skimo.tv
+	text += "<h1>Skimo Meeting Recorder:</h1>";
 	text += "<p style=\"font-size:16px;\">";
-	bool first = true;
-	bool top = true;
 
-	for (const Json &patron : patrons) {
-		std::string name = patron["name"].string_value();
-		std::string link = patron["link"].string_value();
-		int amount = patron["amount"].int_value();
 
-		if (top && amount < 10000) {
-			text += "</p>";
-			top = false;
-		} else if (!first) {
-			text += "<br/>";
-		}
-
-		if (!link.empty()) {
-			text += "<a href=\"";
-			text += QT_UTF8(link.c_str()).toHtmlEscaped();
-			text += "\">";
-		}
-		text += QT_UTF8(name.c_str()).toHtmlEscaped();
-		if (!link.empty())
-			text += "</a>";
-
-		if (first)
-			first = false;
-	}
+	text += "Skimo Meeting Recorder is an open source screen recording software which is installable in Mac, Windows and Linux and is forked from OBS Studio.<br>";
+	text += "It enables users to record any meeting regardless of provider, bookmark for remarkable events and annotate any part of the video while recording.<br>";
+	text +=	"Skimo Recorder can be used along with Skimo Newton to watch the recordings, and be able to access your bookmarks and annotations in the recordings.";
 
 	ui->textBrowser->setHtml(text);
 }
