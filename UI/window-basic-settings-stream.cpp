@@ -494,7 +494,7 @@ void OBSBasicSettings::OnAuthConnected()
 
 void OBSBasicSettings::on_connectAccount_clicked()
 {
-#ifdef BROWSER_AVAILABLE
+/*#ifdef BROWSER_AVAILABLE
 	std::string service = QT_TO_UTF8(ui->service->currentText());
 
 	OAuth::DeleteCookies(service);
@@ -502,7 +502,7 @@ void OBSBasicSettings::on_connectAccount_clicked()
 	auth = OAuthStreamKey::Login(this, service);
 	if (!!auth)
 		OnAuthConnected();
-#endif
+#endif*/
 }
 
 #define DISCONNECT_COMFIRM_TITLE \
