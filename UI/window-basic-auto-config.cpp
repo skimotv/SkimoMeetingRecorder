@@ -68,19 +68,9 @@ AutoConfigStartPage::AutoConfigStartPage(QWidget *parent)
 {
 	ui->setupUi(this);
 	setTitle(QTStr("Basic.AutoConfig.StartPage"));
-	setSubTitle(QTStr("Basic.AutoConfig.StartPage.SubTitle"));
 
-	OBSBasic *main = OBSBasic::Get();
-	if (main->VCamEnabled()) {
-		QRadioButton *prioritizeVCam = new QRadioButton(
-			QTStr("Basic.AutoConfig.StartPage.PrioritizeVirtualCam"),
-			this);
-		QBoxLayout *box = reinterpret_cast<QBoxLayout *>(layout());
-		box->insertWidget(2, prioritizeVCam);
-
-		connect(prioritizeVCam, &QPushButton::clicked, this,
-			&AutoConfigStartPage::PrioritizeVCam);
-	}
+	//Set to prioritize recording by default, do not allow streaming option, move on to next window - Can maybe give an option to set stuff automatically 
+	new AutoConfigVideoPage(parent);
 }
 
 AutoConfigStartPage::~AutoConfigStartPage()
@@ -923,8 +913,6 @@ void AutoConfig::done(int result)
 	QWizard::done(result);
 
 	if (result == QDialog::Accepted) {
-		if (type == Type::Streaming)
-			SaveStreamSettings();
 		SaveSettings();
 	}
 }

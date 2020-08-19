@@ -110,7 +110,7 @@
      <item>
       <widget class="QStackedWidget" name="settingsPages">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="generalPage">
         <layout class="QVBoxLayout" name="verticalLayout_18">
@@ -775,7 +775,6 @@
          </item>
         </layout>
        </widget>
-       
        <widget class="QWidget" name="outputPage">
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="leftMargin">
@@ -806,8 +805,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>603</width>
-              <height>612</height>
+              <width>820</width>
+              <height>677</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -4157,7 +4156,7 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>599</width>
+              <width>803</width>
               <height>781</height>
              </rect>
             </property>
@@ -4967,13 +4966,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>UrlPushButton</class>
-   <extends>QPushButton</extends>
-   <header>url-push-button.hpp</header>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>listWidget</tabstop>
   <tabstop>scrollArea_2</tabstop>
@@ -5008,19 +5000,6 @@
   <tabstop>multiviewDrawNames</tabstop>
   <tabstop>multiviewDrawAreas</tabstop>
   <tabstop>multiviewLayout</tabstop>
-  <tabstop>service</tabstop>
-  <tabstop>connectAccount</tabstop>
-  <tabstop>useStreamKey</tabstop>
-  <tabstop>server</tabstop>
-  <tabstop>customServer</tabstop>
-  <tabstop>key</tabstop>
-  <tabstop>show</tabstop>
-  <tabstop>connectAccount2</tabstop>
-  <tabstop>disconnectAccount</tabstop>
-  <tabstop>useAuth</tabstop>
-  <tabstop>authUsername</tabstop>
-  <tabstop>authPw</tabstop>
-  <tabstop>authPwShow</tabstop>
   <tabstop>scrollArea_3</tabstop>
   <tabstop>outputMode</tabstop>
   <tabstop>simpleOutputVBitrate</tabstop>
@@ -5580,22 +5559,6 @@
     <hint type="destinationlabel">
      <x>250</x>
      <y>39</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>connectAccount2</sender>
-   <signal>clicked()</signal>
-   <receiver>connectAccount</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>484</x>
-     <y>142</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>454</x>
-     <y>87</y>
     </hint>
    </hints>
   </connection>

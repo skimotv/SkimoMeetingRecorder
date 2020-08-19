@@ -317,14 +317,14 @@ void OBSBasic::DeleteProfile(const char *profileName, const char *profileDir)
 
 void OBSBasic::RefreshProfiles()
 {
-	QList<QAction *> menuActions = ui->profileMenu->actions();
+	/*QList<QAction *> menuActions = ui->profileMenu->actions();
 	int count = 0;
 
 	for (int i = 0; i < menuActions.count(); i++) {
 		QVariant v = menuActions[i]->property("file_name");
 		if (v.typeName() != nullptr)
 			delete menuActions[i];
-	}
+	}*/
 
 	const char *curName =
 		config_get_string(App()->GlobalConfig(), "Basic", "Profile");
@@ -340,14 +340,14 @@ void OBSBasic::RefreshProfiles()
 
 		action->setChecked(strcmp(name, curName) == 0);
 
-		ui->profileMenu->addAction(action);
-		count++;
+		//ui->profileMenu->addAction(action);
+		//count++;
 		return true;
 	};
 
 	EnumProfiles(addProfile);
 
-	ui->actionRemoveProfile->setEnabled(count > 1);
+	//ui->actionRemoveProfile->setEnabled(count > 1);
 }
 
 void OBSBasic::ResetProfileData()

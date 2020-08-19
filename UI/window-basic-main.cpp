@@ -301,10 +301,10 @@ OBSBasic::OBSBasic(QWidget *parent)
 	connect(diskFullTimer, SIGNAL(timeout()), this,
 		SLOT(CheckDiskSpaceRemaining()));
 
-	QAction *renameScene = new QAction(ui->scenesDock);
+	/*QAction *renameScene = new QAction(ui->scenesDock);
 	renameScene->setShortcutContext(Qt::WidgetWithChildrenShortcut);
 	connect(renameScene, SIGNAL(triggered()), this, SLOT(EditSceneName()));
-	ui->scenesDock->addAction(renameScene);
+	ui->scenesDock->addAction(renameScene);*/
 
 	QAction *renameSource = new QAction(ui->sourcesDock);
 	renameSource->setShortcutContext(Qt::WidgetWithChildrenShortcut);
@@ -313,7 +313,7 @@ OBSBasic::OBSBasic(QWidget *parent)
 	ui->sourcesDock->addAction(renameSource);
 
 #ifdef __APPLE__
-	renameScene->setShortcut({Qt::Key_Return});
+	//renameScene->setShortcut({Qt::Key_Return});
 	renameSource->setShortcut({Qt::Key_Return});
 
 	ui->actionRemoveSource->setShortcuts({Qt::Key_Backspace});
@@ -322,7 +322,7 @@ OBSBasic::OBSBasic(QWidget *parent)
 	ui->action_Settings->setMenuRole(QAction::PreferencesRole);
 	ui->actionE_xit->setMenuRole(QAction::QuitRole);
 #else
-	renameScene->setShortcut({Qt::Key_F2});
+	//renameScene->setShortcut({Qt::Key_F2});
 	renameSource->setShortcut({Qt::Key_F2});
 #endif
 
@@ -341,16 +341,12 @@ OBSBasic::OBSBasic(QWidget *parent)
 
 	assignDockToggle(ui->scenesDock, ui->toggleScenes);
 	assignDockToggle(ui->sourcesDock, ui->toggleSources);
-	assignDockToggle(ui->mixerDock, ui->toggleMixer);
-	assignDockToggle(ui->transitionsDock, ui->toggleTransitions);
 	assignDockToggle(ui->controlsDock, ui->toggleControls);
 	assignDockToggle(statsDock, ui->toggleStats);
 
 	//hide all docking panes
 	ui->toggleScenes->setChecked(false);
 	ui->toggleSources->setChecked(false);
-	ui->toggleMixer->setChecked(false);
-	ui->toggleTransitions->setChecked(false);
 	ui->toggleControls->setChecked(false);
 	ui->toggleStats->setChecked(false);
 
@@ -744,6 +740,7 @@ void OBSBasic::CreateFirstRunSources()
 	if (hasInputAudio)
 		ResetAudioDevice(App()->InputAudioSource(), "default",
 				 Str("Basic.AuxDevice1"), 3);
+	//Add default screencap source
 }
 
 void OBSBasic::CreateDefaultScene(bool firstStart)
@@ -756,7 +753,7 @@ void OBSBasic::CreateDefaultScene(bool firstStart)
 	ui->transitionDuration->setValue(300);
 	SetTransition(fadeTransition);
 
-	obs_scene_t *scene = obs_scene_create(Str("Basic.Scene"));
+	obs_scene_t *scene = obs_scene_create(Str("DEFAULT"));
 
 	if (firstStart)
 		CreateFirstRunSources();
@@ -1268,7 +1265,7 @@ bool OBSBasic::InitBasicConfigDefaults()
 	config_set_default_string(basicConfig, "SimpleOutput", "FilePath",
 				  GetDefaultVideoSavePath().c_str());
 	config_set_default_string(basicConfig, "SimpleOutput", "RecFormat",
-				  "mkv");
+				  "mp4");
 	config_set_default_uint(basicConfig, "SimpleOutput", "VBitrate", 2500);
 	config_set_default_uint(basicConfig, "SimpleOutput", "ABitrate", 160);
 	config_set_default_bool(basicConfig, "SimpleOutput", "UseAdvanced",
@@ -1297,7 +1294,7 @@ bool OBSBasic::InitBasicConfigDefaults()
 
 	config_set_default_string(basicConfig, "AdvOut", "RecFilePath",
 				  GetDefaultVideoSavePath().c_str());
-	config_set_default_string(basicConfig, "AdvOut", "RecFormat", "mkv");
+	config_set_default_string(basicConfig, "AdvOut", "RecFormat", "mp4");
 	config_set_default_bool(basicConfig, "AdvOut", "RecUseRescale", false);
 	config_set_default_uint(basicConfig, "AdvOut", "RecTracks", (1 << 0));
 	config_set_default_string(basicConfig, "AdvOut", "RecEncoder", "none");
@@ -1899,6 +1896,12 @@ void OBSBasic::OBSInit()
 	QMetaObject::invokeMethod(this, "DeferredSysTrayLoad",
 				  Qt::QueuedConnection, Q_ARG(int, 10));
 #endif
+
+
+	//Hide docks of unused features - OBS requires that they exist to function
+	ui->transitionsDock->setVisible(false);
+	ui->mixerDock->setVisible(false);
+	ui->scenesDock->setVisible(false);
 }
 
 void OBSBasic::OnFirstLoad()
@@ -2688,7 +2691,7 @@ void OBSBasic::AddScene(OBSSource source)
 
 void OBSBasic::RemoveScene(OBSSource source)
 {
-	obs_scene_t *scene = obs_scene_from_source(source);
+	/*obs_scene_t *scene = obs_scene_from_source(source);
 
 	QListWidgetItem *sel = nullptr;
 	int count = ui->scenes->count();
@@ -2719,7 +2722,7 @@ void OBSBasic::RemoveScene(OBSSource source)
 	}
 
 	if (api)
-		api->on_event(OBS_FRONTEND_EVENT_SCENE_LIST_CHANGED);
+		api->on_event(OBS_FRONTEND_EVENT_SCENE_LIST_CHANGED);*/
 }
 
 static bool select_one(obs_scene_t *scene, obs_sceneitem_t *item, void *param)
@@ -2759,7 +2762,7 @@ void OBSBasic::AddSceneItem(OBSSceneItem item)
 
 void OBSBasic::UpdateSceneSelection(OBSSource source)
 {
-	if (source) {
+	/*if (source) {
 		obs_scene_t *scene = obs_scene_from_source(source);
 		const char *name = obs_source_get_name(source);
 
@@ -2780,7 +2783,7 @@ void OBSBasic::UpdateSceneSelection(OBSSource source)
 				api->on_event(
 					OBS_FRONTEND_EVENT_PREVIEW_SCENE_CHANGED);
 		}
-	}
+	}*/
 }
 
 static void RenameListValues(QListWidget *listWidget, const QString &newName,
@@ -5295,8 +5298,7 @@ static inline void ClearProcessPriority()
 
 inline void OBSBasic::OnActivate()
 {
-	if (ui->profileMenu->isEnabled()) {
-		ui->profileMenu->setEnabled(false);
+	/*if (ui->profileMenu->isEnabled()) {
 		ui->autoConfigure->setEnabled(false);
 		App()->IncrementSleepInhibition();
 		UpdateProcessPriority();
@@ -5305,7 +5307,7 @@ inline void OBSBasic::OnActivate()
 			trayIcon->setIcon(QIcon::fromTheme(
 				"obs-tray-active",
 				QIcon(":/res/images/tray_active.png")));
-	}
+	}*/
 }
 
 extern volatile bool recording_paused;
@@ -5313,8 +5315,7 @@ extern volatile bool replaybuf_active;
 
 inline void OBSBasic::OnDeactivate()
 {
-	if (!outputHandler->Active() && !ui->profileMenu->isEnabled()) {
-		ui->profileMenu->setEnabled(true);
+	if (!outputHandler->Active()) {
 		ui->autoConfigure->setEnabled(true);
 		App()->DecrementSleepInhibition();
 		ClearProcessPriority();
@@ -6818,7 +6819,7 @@ void OBSBasic::on_resetUI_triggered()
 	int mixerSize = cx - (cx22_5 * 2 + cx5 * 2);
 
 	QList<QDockWidget *> docks{ui->scenesDock, ui->sourcesDock,
-				   ui->mixerDock, ui->transitionsDock,
+				   ui->mixerDock, /*ui->transitionsDock,*/
 				   ui->controlsDock};
 
 	QList<int> sizes{cx22_5, cx22_5, mixerSize, cx5, cx5};
@@ -6826,7 +6827,7 @@ void OBSBasic::on_resetUI_triggered()
 	ui->scenesDock->setVisible(true);
 	ui->sourcesDock->setVisible(true);
 	ui->mixerDock->setVisible(true);
-	ui->transitionsDock->setVisible(true);
+	//ui->transitionsDock->setVisible(true);
 	ui->controlsDock->setVisible(true);
 	statsDock->setVisible(false);
 	statsDock->setFloating(true);
@@ -7441,8 +7442,12 @@ void OBSBasic::on_autoConfigure_triggered()
 {
 	AutoConfig test(this);
 	test.setModal(true);
+	/*OBSMessageBox::question(this, QTStr("AHHH"),
+				QTStr("AHHH"));*/
 	test.show();
 	test.exec();
+
+	//obs_scene_t *scene = obs_scene_create("DEFAULT");
 }
 
 void OBSBasic::on_stats_triggered()

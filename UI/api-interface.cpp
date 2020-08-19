@@ -183,11 +183,11 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 	void obs_frontend_set_current_scene_collection(
 		const char *collection) override
 	{
-		QList<QAction *> menuActions =
-			main->ui->sceneCollectionMenu->actions();
+		/*QList<QAction *> menuActions =
+			main->ui->sceneCollectionMenu->actions();*/
 		QString qstrCollection = QT_UTF8(collection);
 
-		for (int i = 0; i < menuActions.count(); i++) {
+		/*for (int i = 0; i < menuActions.count(); i++) {
 			QAction *action = menuActions[i];
 			QVariant v = action->property("file_name");
 
@@ -197,7 +197,7 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 					break;
 				}
 			}
-		}
+		}*/
 	}
 
 	bool obs_frontend_add_scene_collection(const char *name) override
@@ -231,20 +231,8 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 
 	void obs_frontend_set_current_profile(const char *profile) override
 	{
-		QList<QAction *> menuActions = main->ui->profileMenu->actions();
+		//I dont think this method ever runs, gutted it to remove profile feature
 		QString qstrProfile = QT_UTF8(profile);
-
-		for (int i = 0; i < menuActions.count(); i++) {
-			QAction *action = menuActions[i];
-			QVariant v = action->property("file_name");
-
-			if (v.typeName() != nullptr) {
-				if (action->text() == qstrProfile) {
-					action->trigger();
-					break;
-				}
-			}
-		}
 	}
 
 	void obs_frontend_streaming_start(void) override

@@ -209,14 +209,7 @@ bool OBSBasic::AddSceneCollection(bool create_new, const QString &qname)
 
 void OBSBasic::RefreshSceneCollections()
 {
-	QList<QAction *> menuActions = ui->sceneCollectionMenu->actions();
 	int count = 0;
-
-	for (int i = 0; i < menuActions.count(); i++) {
-		QVariant v = menuActions[i]->property("file_name");
-		if (v.typeName() != nullptr)
-			delete menuActions[i];
-	}
 
 	const char *cur_name = config_get_string(App()->GlobalConfig(), "Basic",
 						 "SceneCollection");
@@ -233,7 +226,7 @@ void OBSBasic::RefreshSceneCollections()
 
 		action->setChecked(strcmp(name, cur_name) == 0);
 
-		ui->sceneCollectionMenu->addAction(action);
+		//ui->sceneCollectionMenu->addAction(action);
 		count++;
 		return true;
 	};
