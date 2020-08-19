@@ -452,7 +452,7 @@ OBSService OBSBasicSettings::SpawnTempService()
 
 void OBSBasicSettings::OnOAuthStreamKeyConnected()
 {
-#ifdef BROWSER_AVAILABLE
+/*#ifdef BROWSER_AVAILABLE
 	OAuthStreamKey *a = reinterpret_cast<OAuthStreamKey *>(auth.get());
 
 	if (a) {
@@ -474,7 +474,7 @@ void OBSBasicSettings::OnOAuthStreamKeyConnected()
 	}
 
 	ui->streamStackWidget->setCurrentIndex((int)Section::StreamKey);
-#endif
+#endif*/
 }
 
 void OBSBasicSettings::OnAuthConnected()
