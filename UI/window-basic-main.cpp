@@ -7028,7 +7028,7 @@ void OBSBasic::SystemTrayInit()
 	trayIcon.reset(new QSystemTrayIcon(
 		QIcon::fromTheme("skimo-tray", QIcon(":/res/images/skimologo.png")),
 		this));
-	trayIcon->setToolTip("Skimo Studio");
+	trayIcon->setToolTip("Skimo Meeting Recorder");
 
 	showHide = new QAction(QTStr("Basic.SystemTray.Show"), trayIcon.data());
 	sysTrayStream = new QAction(QTStr("Basic.Main.StartStreaming"),
