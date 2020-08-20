@@ -147,7 +147,7 @@
        <item>
         <widget class="QPushButton" name="aboutOBS">
          <property name="text">
-          <string>About OBS</string>
+          <string>About Skimo Meeting Recording</string>
          </property>
         </widget>
        </item>
