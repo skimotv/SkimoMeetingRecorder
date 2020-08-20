@@ -386,15 +386,9 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	HookWidget(ui->language,             COMBO_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->enableAutoUpdates,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->openStatsOnStartup,   CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->warnBeforeStreamStart,CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->warnBeforeStreamStop, CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->warnBeforeRecordStop, CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->hideProjectorCursor,  CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->projectorAlwaysOnTop, CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->recordWhenStreaming,  CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->keepRecordStreamStops,CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->replayWhileStreaming, CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->keepReplayStreamStops,CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->systemTrayEnabled,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->systemTrayWhenStarted,CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->systemTrayAlways,     CHECK_CHANGED,  GENERAL_CHANGED);
@@ -1114,24 +1108,6 @@ void OBSBasicSettings::LoadGeneralSettings()
 						  "OpenStatsOnStartup");
 	ui->openStatsOnStartup->setChecked(openStatsOnStartup);
 
-	bool recordWhenStreaming = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "RecordWhenStreaming");
-	ui->recordWhenStreaming->setChecked(recordWhenStreaming);
-
-	bool keepRecordStreamStops =
-		config_get_bool(GetGlobalConfig(), "BasicWindow",
-				"KeepRecordingWhenStreamStops");
-	ui->keepRecordStreamStops->setChecked(keepRecordStreamStops);
-
-	bool replayWhileStreaming = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "ReplayBufferWhileStreaming");
-	ui->replayWhileStreaming->setChecked(replayWhileStreaming);
-
-	bool keepReplayStreamStops =
-		config_get_bool(GetGlobalConfig(), "BasicWindow",
-				"KeepReplayBufferStreamStops");
-	ui->keepReplayStreamStops->setChecked(keepReplayStreamStops);
-
 	bool systemTrayEnabled = config_get_bool(
 		GetGlobalConfig(), "BasicWindow", "SysTrayEnabled");
 	ui->systemTrayEnabled->setChecked(systemTrayEnabled);
@@ -1167,14 +1143,6 @@ void OBSBasicSettings::LoadGeneralSettings()
 	double snapDistance = config_get_double(GetGlobalConfig(),
 						"BasicWindow", "SnapDistance");
 	ui->snapDistance->setValue(snapDistance);
-
-	bool warnBeforeStreamStart = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "WarnBeforeStartingStream");
-	ui->warnBeforeStreamStart->setChecked(warnBeforeStreamStart);
-
-	bool warnBeforeStreamStop = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "WarnBeforeStoppingStream");
-	ui->warnBeforeStreamStop->setChecked(warnBeforeStreamStop);
 
 	bool warnBeforeRecordStop = config_get_bool(
 		GetGlobalConfig(), "BasicWindow", "WarnBeforeStoppingRecord");
@@ -2883,12 +2851,6 @@ void OBSBasicSettings::SaveGeneralSettings()
 				ui->automaticSearch->isChecked());
 
 	config_set_bool(GetGlobalConfig(), "BasicWindow",
-			"WarnBeforeStartingStream",
-			ui->warnBeforeStreamStart->isChecked());
-	config_set_bool(GetGlobalConfig(), "BasicWindow",
-			"WarnBeforeStoppingStream",
-			ui->warnBeforeStreamStop->isChecked());
-	config_set_bool(GetGlobalConfig(), "BasicWindow",
 			"WarnBeforeStoppingRecord",
 			ui->warnBeforeRecordStop->isChecked());
 
@@ -2907,23 +2869,7 @@ void OBSBasicSettings::SaveGeneralSettings()
 			ui->projectorAlwaysOnTop->isChecked());
 	}
 
-	if (WidgetChanged(ui->recordWhenStreaming))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"RecordWhenStreaming",
-				ui->recordWhenStreaming->isChecked());
-	if (WidgetChanged(ui->keepRecordStreamStops))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"KeepRecordingWhenStreamStops",
-				ui->keepRecordStreamStops->isChecked());
 
-	if (WidgetChanged(ui->replayWhileStreaming))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"ReplayBufferWhileStreaming",
-				ui->replayWhileStreaming->isChecked());
-	if (WidgetChanged(ui->keepReplayStreamStops))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"KeepReplayBufferStreamStops",
-				ui->keepReplayStreamStops->isChecked());
 
 	if (WidgetChanged(ui->systemTrayEnabled))
 		config_set_bool(GetGlobalConfig(), "BasicWindow",
@@ -4390,9 +4336,6 @@ void OBSBasicSettings::UpdateAutomaticReplayBufferCheckboxes()
 		state = ui->advReplayBuf->isChecked();
 		break;
 	}
-	ui->replayWhileStreaming->setEnabled(state);
-	ui->keepReplayStreamStops->setEnabled(
-		state && ui->replayWhileStreaming->isChecked());
 }
 
 void OBSBasicSettings::SimpleReplayBufferChanged()
