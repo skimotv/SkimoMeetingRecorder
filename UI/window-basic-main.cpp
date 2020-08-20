@@ -4664,8 +4664,6 @@ void OBSBasic::CreateSourcePopupMenu(int idx, bool preview)
 	if (addSourceMenu)
 		popup.addMenu(addSourceMenu);
 
-	ui->actionCopyFilters->setEnabled(false);
-	ui->actionCopySource->setEnabled(false);
 
 	if (ui->sources->MultipleBaseSelected()) {
 		popup.addSeparator();
@@ -4679,15 +4677,7 @@ void OBSBasic::CreateSourcePopupMenu(int idx, bool preview)
 	}
 
 	popup.addSeparator();
-	popup.addAction(ui->actionCopySource);
-	popup.addAction(ui->actionPasteRef);
-	popup.addAction(ui->actionPasteDup);
-	popup.addSeparator();
 
-	popup.addSeparator();
-	popup.addAction(ui->actionCopyFilters);
-	popup.addAction(ui->actionPasteFilters);
-	popup.addSeparator();
 
 	if (idx != -1) {
 		if (addSourceMenu)
@@ -4786,11 +4776,7 @@ void OBSBasic::CreateSourcePopupMenu(int idx, bool preview)
 		popup.addAction(QTStr("Properties"), this,
 				SLOT(on_actionSourceProperties_triggered()));
 
-		ui->actionCopyFilters->setEnabled(true);
-		ui->actionCopySource->setEnabled(true);
-	} else {
-		ui->actionPasteFilters->setEnabled(false);
-	}
+	} 
 
 	popup.exec(QCursor::pos());
 }
@@ -7168,7 +7154,6 @@ void OBSBasic::on_actionCopySource_triggered()
 			allowPastingDuplicate = false;
 	}
 
-	ui->actionPasteRef->setEnabled(true);
 	ui->actionPasteDup->setEnabled(allowPastingDuplicate);
 }
 
@@ -7248,7 +7233,6 @@ void OBSBasic::on_actionCopyFilters_triggered()
 
 	copyFiltersString = obs_source_get_name(source);
 
-	ui->actionPasteFilters->setEnabled(true);
 }
 
 void OBSBasic::on_actionPasteFilters_triggered()
