@@ -211,7 +211,6 @@
     <addaction name="separator"/>
     <addaction name="action_Settings"/>
     <addaction name="actionShowSettingsFolder"/>
-    <addaction name="actionShowProfileFolder"/>
     <addaction name="separator"/>
     <addaction name="actionAlwaysOnTop"/>
     <addaction name="separator"/>
@@ -1512,11 +1511,6 @@
   <action name="actionShowSettingsFolder">
    <property name="text">
     <string>Basic.MainMenu.File.ShowSettingsFolder</string>
-   </property>
-  </action>
-  <action name="actionShowProfileFolder">
-   <property name="text">
-    <string>Basic.MainMenu.File.ShowProfileFolder</string>
    </property>
   </action>
   <action name="actionAlwaysOnTop">
