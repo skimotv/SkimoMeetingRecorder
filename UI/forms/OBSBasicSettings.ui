@@ -190,10 +190,7 @@
                    <item row="0" column="1">
                     <widget class="QComboBox" name="language"/>
                    </item>
-                   <item row="1" column="1">
-                    <widget class="QComboBox" name="theme"/>
-                   </item>
-                   <item row="2" column="0">
+                   <item row="1" column="0">
                     <spacer name="horizontalSpacer_3">
                      <property name="orientation">
                       <enum>Qt::Horizontal</enum>
@@ -209,7 +206,7 @@
                      </property>
                     </spacer>
                    </item>
-                   <item row="2" column="1">
+                   <item row="1" column="1">
                     <widget class="QCheckBox" name="enableAutoUpdates">
                      <property name="text">
                       <string>Basic.Settings.General.EnableAutoUpdates</string>
@@ -219,7 +216,7 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="3" column="1">
+                   <item row="2" column="1">
                     <widget class="QCheckBox" name="openStatsOnStartup">
                      <property name="text">
                       <string>Basic.Settings.General.OpenStatsOnStartup</string>
