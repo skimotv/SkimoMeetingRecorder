@@ -341,7 +341,6 @@
     <addaction name="scalingMenu"/>
     <addaction name="actionLockPreview"/>
     <addaction name="separator"/>
-    <addaction name="actionAdvAudioProperties"/>
    </widget>
    <widget class="QMenu" name="viewMenu">
     <property name="title">
@@ -1443,11 +1442,6 @@
   <action name="actionInteract">
    <property name="text">
     <string>Interact</string>
-   </property>
-  </action>
-  <action name="actionAdvAudioProperties">
-   <property name="text">
-    <string>Basic.MainMenu.Edit.AdvAudio</string>
    </property>
   </action>
   <action name="actionWebsite">
