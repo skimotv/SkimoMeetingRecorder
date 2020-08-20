@@ -747,6 +747,7 @@ public:
 	void ResetUI();
 	int ResetVideo();
 	bool ResetAudio();
+	void setMimimumUI(bool set);
 
 	void AddVCamButton();
 	void ResetOutputs();

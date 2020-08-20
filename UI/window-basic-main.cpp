@@ -5438,8 +5438,7 @@ void OBSBasic::StartRecording()
 		this, tr("Enter name"), tr("What should this Skimo be named?"),
 		QLineEdit::Normal, tr("My-Skimo"), &ok);
 	if (!ok) {
-		QMessageBox::critical(this, tr("Recording canceled"),
-				      tr("Recording canceled"));
+		//Recording cancelled by user
 		return;
 	}
 
@@ -5455,6 +5454,7 @@ void OBSBasic::StartRecording()
 				      tr("Unable to store files in the given location, make sure you input a unique filename"));
 		return;
 	}
+	setMimimumUI(true);
 
 	//Enable bookmark and note buttons
 	ui->bookmarkButton->setEnabled(true);
@@ -5472,6 +5472,7 @@ void OBSBasic::RecordStopping()
 	if (api)
 		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STOPPING);
 
+	setMimimumUI(false);//return to normal size
 	//Disable bookmark and note buttons
 	ui->bookmarkButton->setEnabled(false);
 	ui->noteButton->setEnabled(false);
@@ -5831,6 +5832,23 @@ void OBSBasic::on_recordButton_clicked()
 		}
 
 		StartRecording();
+	}
+}
+//Reduce size of main window when streaming
+void OBSBasic::setMimimumUI(bool set)
+{
+	ui->preview->setVisible(!set);
+	ui->sourcesDock->setVisible(!set);
+	if (set) {
+		this->setMinimumWidth(ui->controlsDock->width());
+		this->setMinimumHeight(ui->controlsDock->height()+50);
+		this->setMaximumWidth(ui->controlsDock->width());
+		this->setMaximumHeight(ui->controlsDock->height()+50);
+	} else {
+		this->setMinimumWidth(1100);
+		this->setMinimumHeight(750);
+		this->setMaximumWidth(0);
+		this->setMaximumHeight(0);
 	}
 }
 
@@ -6810,13 +6828,13 @@ void OBSBasic::on_resetUI_triggered()
 
 	QList<int> sizes{cx22_5, cx22_5, mixerSize, cx5, cx5};
 
-	ui->scenesDock->setVisible(true);
+	ui->scenesDock->setVisible(false);
 	ui->sourcesDock->setVisible(true);
-	ui->mixerDock->setVisible(true);
-	//ui->transitionsDock->setVisible(true);
+	ui->mixerDock->setVisible(false);
+	ui->transitionsDock->setVisible(false);
 	ui->controlsDock->setVisible(true);
 	statsDock->setVisible(false);
-	statsDock->setFloating(true);
+	//statsDock->setFloating(true);
 
 	resizeDocks(docks, {cy, cy, cy, cy, cy}, Qt::Vertical);
 	resizeDocks(docks, sizes, Qt::Horizontal);
@@ -6828,18 +6846,15 @@ void OBSBasic::on_resetUI_triggered()
 void OBSBasic::on_lockUI_toggled(bool lock)
 {
 	QDockWidget::DockWidgetFeatures features =
-		lock ? QDockWidget::NoDockWidgetFeatures
-		     : (QDockWidget::DockWidgetClosable |
-			QDockWidget::DockWidgetMovable |
-			QDockWidget::DockWidgetFloatable);
+		QDockWidget::NoDockWidgetFeatures;//Prevent user from manipulating the docks
 
 	QDockWidget::DockWidgetFeatures mainFeatures = features;
 	mainFeatures &= ~QDockWidget::QDockWidget::DockWidgetClosable;
 
-	ui->scenesDock->setFeatures(mainFeatures);
 	ui->sourcesDock->setFeatures(mainFeatures);
-	ui->mixerDock->setFeatures(mainFeatures);
+	/*ui->mixerDock->setFeatures(mainFeatures);
 	ui->transitionsDock->setFeatures(mainFeatures);
+	ui->scenesDock->setFeatures(mainFeatures);*/
 	ui->controlsDock->setFeatures(mainFeatures);
 	statsDock->setFeatures(features);
 
