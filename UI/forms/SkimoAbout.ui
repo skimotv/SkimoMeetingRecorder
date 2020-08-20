@@ -76,7 +76,7 @@
        <item>
         <widget class="QLabel" name="name">
          <property name="text">
-          <string notr="true">Skimo Studio</string>
+          <string notr="true">Skimo Meeting Recorder</string>
          </property>
         </widget>
        </item>
@@ -90,7 +90,7 @@
        <item>
         <widget class="QLabel" name="info">
          <property name="text">
-          <string>Skimo Studio is a meeting recording software forked from OBS Studio</string>
+          <string>Skimo Meeting Recorder is a meeting recording software forked from OBS Studio</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
