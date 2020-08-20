@@ -310,7 +310,6 @@ private:
 	int CurrentFLVTrack();
 
 private slots:
-	void on_theme_activated(int idx);
 
 	void on_listWidget_itemSelectionChanged();
 	void on_buttonBox_clicked(QAbstractButton *button);
