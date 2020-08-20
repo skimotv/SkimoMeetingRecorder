@@ -275,11 +275,6 @@
      <property name="title">
       <string>Basic.MainMenu.Edit.Order</string>
      </property>
-     <addaction name="actionMoveUp"/>
-     <addaction name="actionMoveDown"/>
-     <addaction name="separator"/>
-     <addaction name="actionMoveToTop"/>
-     <addaction name="actionMoveToBottom"/>
     </widget>
     <widget class="QMenu" name="scalingMenu">
      <property name="title">
@@ -314,25 +309,6 @@
       <string>Ctrl+V</string>
      </property>
     </action>
-    <action name="actionCopyFilters">
-     <property name="text">
-      <string>Copy.Filters</string>
-     </property>
-    </action>
-    <action name="actionPasteFilters">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>Paste.Filters</string>
-     </property>
-    </action>
-    <addaction name="actionCopySource"/>
-    <addaction name="actionPasteRef"/>
-    <addaction name="actionPasteDup"/>
-    <addaction name="separator"/>
-    <addaction name="actionCopyFilters"/>
-    <addaction name="actionPasteFilters"/>
     <addaction name="separator"/>
     <addaction name="transformMenu"/>
     <addaction name="orderMenu"/>
