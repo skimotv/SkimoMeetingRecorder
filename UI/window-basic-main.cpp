@@ -59,6 +59,7 @@
 #include "ui-validation.hpp"
 #include <fstream>
 #include <sstream>
+#include "auth-oauth.hpp"
 
 #ifdef _WIN32
 #include "win-update/win-update.hpp"
@@ -215,7 +216,7 @@ OBSBasic::OBSBasic(QWidget *parent)
 	api = InitializeAPIInterface(this);
 
 	ui->setupUi(this);
-	ui->previewDisabledWidget->setVisible(false);
+	//ui->previewDisabledWidget->setVisible(false);
 
 	startingDockLayout = saveState();
 
@@ -394,12 +395,12 @@ OBSBasic::OBSBasic(QWidget *parent)
 	else
 		ui->previewLabel->setHidden(!labels);
 
-	ui->previewDisabledWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(ui->previewDisabledWidget,
+	//ui->previewDisabledWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+	/*connect(ui->previewDisabledWidget,
 		SIGNAL(customContextMenuRequested(const QPoint &)), this,
-		SLOT(PreviewDisabledMenu(const QPoint &)));
-	connect(ui->enablePreviewButton, SIGNAL(clicked()), this,
-		SLOT(TogglePreview()));
+		SLOT(PreviewDisabledMenu(const QPoint &)));*/
+	/*connect(ui->enablePreviewButton, SIGNAL(clicked()), this,
+		SLOT(TogglePreview()));*/
 
 	connect(ui->scenes->model(),
 		SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)),
@@ -1902,6 +1903,16 @@ void OBSBasic::OBSInit()
 	ui->transitionsDock->setVisible(false);
 	ui->mixerDock->setVisible(false);
 	ui->scenesDock->setVisible(false);
+
+	//If the first source is null, no inputs are set so the user should be provided with default screen recorder
+	if (!(ui->sources->Get(0))) {
+		//Set up default source
+		OBSBasicSourceSelect src(
+			this, std::string("monitor_capture").c_str());
+		src.AddNew(this, std::string("monitor_capture").c_str(),
+			   std::string("Default Display Capture").c_str(), true,
+			   src.newSource);
+	}
 }
 
 void OBSBasic::OnFirstLoad()
@@ -5847,8 +5858,9 @@ void OBSBasic::setMimimumUI(bool set)
 	} else {
 		this->setMinimumWidth(1100);
 		this->setMinimumHeight(750);
-		this->setMaximumWidth(0);
-		this->setMaximumHeight(0);
+		//Allows user to resize window
+		this->setMaximumWidth(99999);
+		this->setMaximumHeight(99999);
 	}
 }
 
@@ -5881,6 +5893,19 @@ std::string OBSBasic::getTimestamp()
 
 	//Return the string
 	return std::string(timeString);
+}
+
+void OBSBasic::on_authButton_clicked()
+{
+	//src.exec();
+	/*AddNew(this, id, QT_TO_UTF8(ui->sourceName->text()),
+				   visible, newSource)*/
+	/*Nothing has come of this so far
+	QWidget *wid = this;
+	//OAuthLogin o = OAuthLogin(wid, "https://skimo.tv/myskimo#", true);
+	OAuth2RequestOptions options;
+	options.user_id = id;
+	return flow_->RefreshCredentialWithOptions(options, credential);*/
 }
 
 
@@ -6455,7 +6480,7 @@ void OBSBasic::EnablePreviewDisplay(bool enable)
 {
 	obs_display_set_enabled(ui->preview->GetDisplay(), enable);
 	ui->preview->setVisible(enable);
-	ui->previewDisabledWidget->setVisible(!enable);
+	//ui->previewDisabledWidget->setVisible(!enable);
 }
 
 void OBSBasic::TogglePreview()
@@ -6748,9 +6773,6 @@ void OBSBasic::UpdateTitleBar()
 	name << App()->GetVersionString();
 	if (App()->IsPortableMode())
 		name << " - Portable Mode";
-
-	name << " - " << Str("TitleBar.Profile") << ": " << profile;
-	name << " - " << Str("TitleBar.Scenes") << ": " << sceneCollection;
 
 	setWindowTitle(QT_UTF8(name.str().c_str()));
 }

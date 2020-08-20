@@ -891,6 +891,7 @@ private slots:
 	void on_recordButton_clicked();
 	void on_bookmarkButton_clicked();
 	void on_noteButton_clicked();
+	void on_authButton_clicked();
 
 	void VCamButtonClicked();
 	void on_settingsButton_clicked();

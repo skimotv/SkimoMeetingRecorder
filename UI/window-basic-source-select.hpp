@@ -50,4 +50,7 @@ public:
 	OBSSource newSource;
 
 	static void SourcePaste(const char *name, bool visible, bool duplicate);
+
+	bool AddNew(QWidget *parent, const char *id, const char *name,
+		    const bool visible, OBSSource &newSource);
 };

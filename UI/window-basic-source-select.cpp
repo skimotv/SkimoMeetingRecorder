@@ -169,7 +169,7 @@ static void AddExisting(const char *name, bool visible, bool duplicate)
 	}
 }
 
-bool AddNew(QWidget *parent, const char *id, const char *name,
+bool OBSBasicSourceSelect::AddNew(QWidget *parent, const char *id, const char *name,
 	    const bool visible, OBSSource &newSource)
 {
 	OBSBasic *main = reinterpret_cast<OBSBasic *>(App()->GetMainWindow());
