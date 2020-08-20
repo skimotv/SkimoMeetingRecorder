@@ -4713,8 +4713,6 @@ void OBSBasic::CreateSourcePopupMenu(int idx, bool preview)
 		popup.addAction(QTStr("Remove"), this,
 				SLOT(on_actionRemoveSource_triggered()));
 		popup.addSeparator();
-		popup.addMenu(ui->orderMenu);
-		popup.addMenu(ui->transformMenu);
 
 		ui->actionResetTransform->setEnabled(!lock);
 		ui->actionRotate90CW->setEnabled(!lock);
