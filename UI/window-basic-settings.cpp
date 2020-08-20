@@ -384,7 +384,6 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 
 	/* clang-format off */
 	HookWidget(ui->language,             COMBO_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->theme, 		     COMBO_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->enableAutoUpdates,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->openStatsOnStartup,   CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->warnBeforeStreamStart,CHECK_CHANGED,  GENERAL_CHANGED);
@@ -1099,66 +1098,12 @@ void OBSBasicSettings::LoadLanguageList()
 	ui->language->model()->sort(0);
 }
 
-void OBSBasicSettings::LoadThemeList()
-{
-	/* Save theme if user presses Cancel */
-	savedTheme = string(App()->GetTheme());
-
-	ui->theme->clear();
-	QSet<QString> uniqueSet;
-	string themeDir;
-	char userThemeDir[512];
-	int ret = GetConfigPath(userThemeDir, sizeof(userThemeDir),
-				"obs-studio/themes/");
-	GetDataFilePath("themes/", themeDir);
-
-	/* Check user dir first. */
-	if (ret > 0) {
-		QDirIterator it(QString(userThemeDir), QStringList() << "*.qss",
-				QDir::Files);
-		while (it.hasNext()) {
-			it.next();
-			QString name = it.fileName().section(".", 0, 0);
-			ui->theme->addItem(name);
-			uniqueSet.insert(name);
-		}
-	}
-
-	QString defaultTheme;
-	defaultTheme += DEFAULT_THEME;
-	defaultTheme += " ";
-	defaultTheme += QTStr("Default");
-
-	/* Check shipped themes. */
-	QDirIterator uIt(QString(themeDir.c_str()), QStringList() << "*.qss",
-			 QDir::Files);
-	while (uIt.hasNext()) {
-		uIt.next();
-		QString name = uIt.fileName().section(".", 0, 0);
-
-		if (name == DEFAULT_THEME)
-			name = defaultTheme;
-
-		if (!uniqueSet.contains(name) && name != "Default")
-			ui->theme->addItem(name);
-	}
-
-	std::string themeName = App()->GetTheme();
-
-	if (themeName == DEFAULT_THEME)
-		themeName = QT_TO_UTF8(defaultTheme);
-
-	int idx = ui->theme->findText(themeName.c_str());
-	if (idx != -1)
-		ui->theme->setCurrentIndex(idx);
-}
 
 void OBSBasicSettings::LoadGeneralSettings()
 {
 	loading = true;
 
 	LoadLanguageList();
-	LoadThemeList();
 
 #if defined(_WIN32) || defined(__APPLE__)
 	bool enableAutoUpdates = config_get_bool(GetGlobalConfig(), "General",
@@ -2871,22 +2816,22 @@ void OBSBasicSettings::SaveGeneralSettings()
 		config_set_string(GetGlobalConfig(), "General", "Language",
 				  language.c_str());
 
-	int themeIndex = ui->theme->currentIndex();
-	QString themeData = ui->theme->itemText(themeIndex);
-	QString defaultTheme;
-	defaultTheme += DEFAULT_THEME;
-	defaultTheme += " ";
-	defaultTheme += QTStr("Default");
+	//int themeIndex = ui->theme->currentIndex();
+	//QString themeData = ui->theme->itemText(themeIndex);
+	//QString defaultTheme;
+	//defaultTheme += DEFAULT_THEME;
+	//defaultTheme += " ";
+	//defaultTheme += QTStr("Default");
 
-	if (themeData == defaultTheme)
-		themeData = DEFAULT_THEME;
+	//if (themeData == defaultTheme)
+	//	themeData = DEFAULT_THEME;
 
-	if (WidgetChanged(ui->theme)) {
+/*	if (WidgetChanged(ui->theme)) {
 		config_set_string(GetGlobalConfig(), "General", "CurrentTheme2",
 				  QT_TO_UTF8(themeData));
 
 		App()->SetTheme(themeData.toUtf8().constData());
-	}
+	}*/
 
 #if defined(_WIN32) || defined(__APPLE__)
 	if (WidgetChanged(ui->enableAutoUpdates))
@@ -3648,20 +3593,6 @@ void OBSBasicSettings::reject()
 		close();
 }
 
-void OBSBasicSettings::on_theme_activated(int idx)
-{
-	QString currT = ui->theme->itemText(idx);
-
-	QString defaultTheme;
-	defaultTheme += DEFAULT_THEME;
-	defaultTheme += " ";
-	defaultTheme += QTStr("Default");
-
-	if (currT == defaultTheme)
-		currT = DEFAULT_THEME;
-
-	App()->SetTheme(currT.toUtf8().constData());
-}
 
 void OBSBasicSettings::on_listWidget_itemSelectionChanged()
 {
