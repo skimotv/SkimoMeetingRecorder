@@ -180,33 +180,6 @@
     <property name="title">
      <string>Basic.MainMenu.Edit</string>
     </property>
-    <widget class="QMenu" name="transformMenu">
-     <property name="title">
-      <string>Basic.MainMenu.Edit.Transform</string>
-     </property>
-     <addaction name="actionEditTransform"/>
-     <addaction name="actionCopyTransform"/>
-     <addaction name="actionPasteTransform"/>
-     <addaction name="actionResetTransform"/>
-     <addaction name="separator"/>
-     <addaction name="actionRotate90CW"/>
-     <addaction name="actionRotate90CCW"/>
-     <addaction name="actionRotate180"/>
-     <addaction name="separator"/>
-     <addaction name="actionFlipHorizontal"/>
-     <addaction name="actionFlipVertical"/>
-     <addaction name="separator"/>
-     <addaction name="actionFitToScreen"/>
-     <addaction name="actionStretchToScreen"/>
-     <addaction name="actionCenterToScreen"/>
-     <addaction name="actionVerticalCenter"/>
-     <addaction name="actionHorizontalCenter"/>
-    </widget>
-    <widget class="QMenu" name="orderMenu">
-     <property name="title">
-      <string>Basic.MainMenu.Edit.Order</string>
-     </property>
-    </widget>
     <widget class="QMenu" name="scalingMenu">
      <property name="title">
       <string>Basic.MainMenu.Edit.Scale</string>
