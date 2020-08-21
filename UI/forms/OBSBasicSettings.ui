@@ -374,58 +374,6 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QGroupBox" name="groupBox_14">
-                  <property name="title">
-                   <string>Basic.Settings.General.Projectors</string>
-                  </property>
-                  <layout class="QFormLayout" name="formLayout_28">
-                   <property name="fieldGrowthPolicy">
-                    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-                   </property>
-                   <property name="topMargin">
-                    <number>2</number>
-                   </property>
-                   <item row="0" column="1">
-                    <widget class="QCheckBox" name="hideProjectorCursor">
-                     <property name="text">
-                      <string>Basic.Settings.General.HideProjectorCursor</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="1">
-                    <widget class="QCheckBox" name="projectorAlwaysOnTop">
-                     <property name="text">
-                      <string>Basic.Settings.General.ProjectorAlwaysOnTop</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="1">
-                    <widget class="QCheckBox" name="saveProjectors">
-                     <property name="text">
-                      <string>Basic.Settings.General.SaveProjectors</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0">
-                    <spacer name="horizontalSpacer">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeType">
-                      <enum>QSizePolicy::Fixed</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>170</width>
-                       <height>5</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
                  <widget class="QGroupBox" name="groupBox_13">
                   <property name="title">
                    <string>Basic.Settings.General.SysTray</string>
@@ -4924,9 +4872,6 @@
   <tabstop>screenSnapping</tabstop>
   <tabstop>sourceSnapping</tabstop>
   <tabstop>centerSnapping</tabstop>
-  <tabstop>hideProjectorCursor</tabstop>
-  <tabstop>projectorAlwaysOnTop</tabstop>
-  <tabstop>saveProjectors</tabstop>
   <tabstop>systemTrayEnabled</tabstop>
   <tabstop>systemTrayWhenStarted</tabstop>
   <tabstop>systemTrayAlways</tabstop>
