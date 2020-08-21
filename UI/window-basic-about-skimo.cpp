@@ -101,7 +101,6 @@ void SkimoAbout::ShowAbout()
 
 	std::string error;
 	Json json = Json::parse(main->patronJson, error);
-	const Json::array &patrons = json.array_items();
 	QString text;
 
 	//The following text is taken from skimo.tv
