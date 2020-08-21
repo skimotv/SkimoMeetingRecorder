@@ -44,7 +44,6 @@
 #include "window-basic-main.hpp"
 #include "window-basic-settings.hpp"
 #include "window-basic-main-outputs.hpp"
-#include "window-projector.hpp"
 
 #include <util/platform.h>
 #include "ui-config.h"
@@ -387,12 +386,9 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	HookWidget(ui->enableAutoUpdates,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->openStatsOnStartup,   CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->warnBeforeRecordStop, CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->hideProjectorCursor,  CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->projectorAlwaysOnTop, CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->systemTrayEnabled,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->systemTrayWhenStarted,CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->systemTrayAlways,     CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->saveProjectors,       CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->snappingEnabled,      CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->screenSnapping,       CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->centerSnapping,       CHECK_CHANGED,  GENERAL_CHANGED);
@@ -1120,9 +1116,6 @@ void OBSBasicSettings::LoadGeneralSettings()
 		GetGlobalConfig(), "BasicWindow", "SysTrayMinimizeToTray");
 	ui->systemTrayAlways->setChecked(systemTrayAlways);
 
-	bool saveProjectors = config_get_bool(GetGlobalConfig(), "BasicWindow",
-					      "SaveProjectors");
-	ui->saveProjectors->setChecked(saveProjectors);
 
 	bool snappingEnabled = config_get_bool(GetGlobalConfig(), "BasicWindow",
 					       "SnappingEnabled");
@@ -1148,13 +1141,7 @@ void OBSBasicSettings::LoadGeneralSettings()
 		GetGlobalConfig(), "BasicWindow", "WarnBeforeStoppingRecord");
 	ui->warnBeforeRecordStop->setChecked(warnBeforeRecordStop);
 
-	bool hideProjectorCursor = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "HideProjectorCursor");
-	ui->hideProjectorCursor->setChecked(hideProjectorCursor);
 
-	bool projectorAlwaysOnTop = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "ProjectorAlwaysOnTop");
-	ui->projectorAlwaysOnTop->setChecked(projectorAlwaysOnTop);
 
 	bool overflowHide = config_get_bool(GetGlobalConfig(), "BasicWindow",
 					    "OverflowHidden");
@@ -2854,22 +2841,6 @@ void OBSBasicSettings::SaveGeneralSettings()
 			"WarnBeforeStoppingRecord",
 			ui->warnBeforeRecordStop->isChecked());
 
-	if (WidgetChanged(ui->hideProjectorCursor)) {
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"HideProjectorCursor",
-				ui->hideProjectorCursor->isChecked());
-		main->UpdateProjectorHideCursor();
-	}
-
-	if (WidgetChanged(ui->projectorAlwaysOnTop)) {
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"ProjectorAlwaysOnTop",
-				ui->projectorAlwaysOnTop->isChecked());
-		main->UpdateProjectorAlwaysOnTop(
-			ui->projectorAlwaysOnTop->isChecked());
-	}
-
-
 
 	if (WidgetChanged(ui->systemTrayEnabled))
 		config_set_bool(GetGlobalConfig(), "BasicWindow",
@@ -2885,11 +2856,6 @@ void OBSBasicSettings::SaveGeneralSettings()
 		config_set_bool(GetGlobalConfig(), "BasicWindow",
 				"SysTrayMinimizeToTray",
 				ui->systemTrayAlways->isChecked());
-
-	if (WidgetChanged(ui->saveProjectors))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"SaveProjectors",
-				ui->saveProjectors->isChecked());
 
 	if (WidgetChanged(ui->studioPortraitLayout)) {
 		config_set_bool(GetGlobalConfig(), "BasicWindow",
@@ -2936,8 +2902,6 @@ void OBSBasicSettings::SaveGeneralSettings()
 		multiviewChanged = true;
 	}
 
-	if (multiviewChanged)
-		OBSProjector::UpdateMultiviewProjectors();
 }
 
 void OBSBasicSettings::SaveVideoSettings()
