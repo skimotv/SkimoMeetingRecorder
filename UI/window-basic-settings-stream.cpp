@@ -76,16 +76,10 @@ void OBSBasicSettings::InitStreamPage()
 
 void OBSBasicSettings::LoadStream1Settings()
 {
-	obs_service_t *service_obj = main->GetService();
-	const char *type = obs_service_get_type(service_obj);
 
 	loading = true;
 
-	obs_data_t *settings = obs_service_get_settings(service_obj);
 
-	const char *service = obs_data_get_string(settings, "service");
-	const char *server = obs_data_get_string(settings, "server");
-	const char *key = obs_data_get_string(settings, "key");
 
 	/*if (strcmp(type, "rtmp_custom") == 0) {
 		ui->service->setCurrentIndex(0);
@@ -178,10 +172,6 @@ void OBSBasicSettings::SaveStream1Settings()
 			  ui->bandwidthTestEnable->isChecked());*/
 
 	if (!!auth && strcmp(auth->service(), "Twitch") == 0) {
-		bool choiceExists = config_has_user_value(
-			main->Config(), "Twitch", "AddonChoice");
-		int currentChoice =
-			config_get_int(main->Config(), "Twitch", "AddonChoice");
 		/*int newChoice = ui->twitchAddonDropdown->currentIndex();
 
 		config_set_int(main->Config(), "Twitch", "AddonChoice",
