@@ -100,19 +100,6 @@
             <property name="contextMenuPolicy">
              <enum>Qt::CustomContextMenu</enum>
             </property>
-            <widget class="QPushButton" name="authButton">
-             <property name="geometry">
-              <rect>
-               <x>910</x>
-               <y>0</y>
-               <width>175</width>
-               <height>23</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Auth(currently has no function)</string>
-             </property>
-            </widget>
             <addaction name="actionRemoveSource"/>
            </widget>
           </item>
