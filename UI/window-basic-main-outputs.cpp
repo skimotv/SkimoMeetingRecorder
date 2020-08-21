@@ -914,8 +914,6 @@ bool SimpleOutput::ConfigureRecording(bool updateReplayBuffer, std::string dir)
 					    "MuxerCustom");
 	bool noSpace = config_get_bool(main->Config(), "SimpleOutput",
 				       "FileNameWithoutSpace");
-	const char *filenameFormat = config_get_string(main->Config(), "Output",
-						       "FilenameFormatting");
 	bool overwriteIfExists =
 		config_get_bool(main->Config(), "Output", "OverwriteIfExists");
 	const char *rbPrefix = config_get_string(main->Config(), "SimpleOutput",
