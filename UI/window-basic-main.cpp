@@ -1904,15 +1904,17 @@ void OBSBasic::OBSInit()
 	ui->mixerDock->setVisible(false);
 	ui->scenesDock->setVisible(false);
 
+	#ifdef _WIN32 || _WIN64
 	//If the first source is null, no inputs are set so the user should be provided with default screen recorder
-	/*if (!(ui->sources->Get(0))) {
+	if (!(ui->sources->Get(0))) {
 		//Set up default source
 		OBSBasicSourceSelect src(
 			this, std::string("monitor_capture").c_str());
 		src.AddNew(this, std::string("monitor_capture").c_str(),
 			   std::string("Default Display Capture").c_str(), true,
 			   src.newSource);
-	}*/
+	}
+	#endif
 }
 
 void OBSBasic::OnFirstLoad()
