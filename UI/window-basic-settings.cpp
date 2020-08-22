@@ -389,11 +389,6 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	HookWidget(ui->systemTrayEnabled,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->systemTrayWhenStarted,CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->systemTrayAlways,     CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->snappingEnabled,      CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->screenSnapping,       CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->centerSnapping,       CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->sourceSnapping,       CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->snapDistance,         DSCROLL_CHANGED,GENERAL_CHANGED);
 	HookWidget(ui->automaticSearch,      CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->doubleClickSwitch,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->studioPortraitLayout, CHECK_CHANGED,  GENERAL_CHANGED);
@@ -1110,25 +1105,6 @@ void OBSBasicSettings::LoadGeneralSettings()
 	ui->systemTrayAlways->setChecked(systemTrayAlways);
 
 
-	bool snappingEnabled = config_get_bool(GetGlobalConfig(), "BasicWindow",
-					       "SnappingEnabled");
-	ui->snappingEnabled->setChecked(snappingEnabled);
-
-	bool screenSnapping = config_get_bool(GetGlobalConfig(), "BasicWindow",
-					      "ScreenSnapping");
-	ui->screenSnapping->setChecked(screenSnapping);
-
-	bool centerSnapping = config_get_bool(GetGlobalConfig(), "BasicWindow",
-					      "CenterSnapping");
-	ui->centerSnapping->setChecked(centerSnapping);
-
-	bool sourceSnapping = config_get_bool(GetGlobalConfig(), "BasicWindow",
-					      "SourceSnapping");
-	ui->sourceSnapping->setChecked(sourceSnapping);
-
-	double snapDistance = config_get_double(GetGlobalConfig(),
-						"BasicWindow", "SnapDistance");
-	ui->snapDistance->setValue(snapDistance);
 
 	bool warnBeforeRecordStop = config_get_bool(
 		GetGlobalConfig(), "BasicWindow", "WarnBeforeStoppingRecord");
@@ -2748,25 +2724,6 @@ void OBSBasicSettings::SaveGeneralSettings()
 	if (WidgetChanged(ui->openStatsOnStartup))
 		config_set_bool(main->Config(), "General", "OpenStatsOnStartup",
 				ui->openStatsOnStartup->isChecked());
-	if (WidgetChanged(ui->snappingEnabled))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"SnappingEnabled",
-				ui->snappingEnabled->isChecked());
-	if (WidgetChanged(ui->screenSnapping))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"ScreenSnapping",
-				ui->screenSnapping->isChecked());
-	if (WidgetChanged(ui->centerSnapping))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"CenterSnapping",
-				ui->centerSnapping->isChecked());
-	if (WidgetChanged(ui->sourceSnapping))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"SourceSnapping",
-				ui->sourceSnapping->isChecked());
-	if (WidgetChanged(ui->snapDistance))
-		config_set_double(GetGlobalConfig(), "BasicWindow",
-				  "SnapDistance", ui->snapDistance->value());
 	if (WidgetChanged(ui->doubleClickSwitch))
 		config_set_bool(GetGlobalConfig(), "BasicWindow",
 				"TransitionOnDoubleClick",
