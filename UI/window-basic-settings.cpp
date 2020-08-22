@@ -401,10 +401,6 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	HookWidget(ui->doubleClickSwitch,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->studioPortraitLayout, CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->prevProgLabelToggle,  CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->multiviewMouseSwitch, CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->multiviewDrawNames,   CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->multiviewDrawAreas,   CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->multiviewLayout,      COMBO_CHANGED,  GENERAL_CHANGED);
 	/*HookWidget(ui->service,              COMBO_CHANGED,  STREAM1_CHANGED);
 	HookWidget(ui->server,               COMBO_CHANGED,  STREAM1_CHANGED);
 	HookWidget(ui->customServer,         EDIT_CHANGED,   STREAM1_CHANGED);
@@ -1170,37 +1166,6 @@ void OBSBasicSettings::LoadGeneralSettings()
 	bool prevProgLabels = config_get_bool(GetGlobalConfig(), "BasicWindow",
 					      "StudioModeLabels");
 	ui->prevProgLabelToggle->setChecked(prevProgLabels);
-
-	bool multiviewMouseSwitch = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "MultiviewMouseSwitch");
-	ui->multiviewMouseSwitch->setChecked(multiviewMouseSwitch);
-
-	bool multiviewDrawNames = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "MultiviewDrawNames");
-	ui->multiviewDrawNames->setChecked(multiviewDrawNames);
-
-	bool multiviewDrawAreas = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "MultiviewDrawAreas");
-	ui->multiviewDrawAreas->setChecked(multiviewDrawAreas);
-
-	ui->multiviewLayout->addItem(
-		QTStr("Basic.Settings.General.MultiviewLayout.Horizontal.Top"),
-		static_cast<int>(MultiviewLayout::HORIZONTAL_TOP_8_SCENES));
-	ui->multiviewLayout->addItem(
-		QTStr("Basic.Settings.General.MultiviewLayout.Horizontal.Bottom"),
-		static_cast<int>(MultiviewLayout::HORIZONTAL_BOTTOM_8_SCENES));
-	ui->multiviewLayout->addItem(
-		QTStr("Basic.Settings.General.MultiviewLayout.Vertical.Left"),
-		static_cast<int>(MultiviewLayout::VERTICAL_LEFT_8_SCENES));
-	ui->multiviewLayout->addItem(
-		QTStr("Basic.Settings.General.MultiviewLayout.Vertical.Right"),
-		static_cast<int>(MultiviewLayout::VERTICAL_RIGHT_8_SCENES));
-	ui->multiviewLayout->addItem(
-		QTStr("Basic.Settings.General.MultiviewLayout.Horizontal.Extended.Top"),
-		static_cast<int>(MultiviewLayout::HORIZONTAL_TOP_24_SCENES));
-
-	ui->multiviewLayout->setCurrentIndex(config_get_int(
-		GetGlobalConfig(), "BasicWindow", "MultiviewLayout"));
 
 	prevLangIndex = ui->language->currentIndex();
 
@@ -2871,35 +2836,6 @@ void OBSBasicSettings::SaveGeneralSettings()
 				ui->prevProgLabelToggle->isChecked());
 
 		main->ResetUI();
-	}
-
-	bool multiviewChanged = false;
-	if (WidgetChanged(ui->multiviewMouseSwitch)) {
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"MultiviewMouseSwitch",
-				ui->multiviewMouseSwitch->isChecked());
-		multiviewChanged = true;
-	}
-
-	if (WidgetChanged(ui->multiviewDrawNames)) {
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"MultiviewDrawNames",
-				ui->multiviewDrawNames->isChecked());
-		multiviewChanged = true;
-	}
-
-	if (WidgetChanged(ui->multiviewDrawAreas)) {
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"MultiviewDrawAreas",
-				ui->multiviewDrawAreas->isChecked());
-		multiviewChanged = true;
-	}
-
-	if (WidgetChanged(ui->multiviewLayout)) {
-		config_set_int(GetGlobalConfig(), "BasicWindow",
-			       "MultiviewLayout",
-			       ui->multiviewLayout->currentData().toInt());
-		multiviewChanged = true;
 	}
 
 }
