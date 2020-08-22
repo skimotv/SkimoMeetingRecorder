@@ -394,9 +394,6 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	HookWidget(ui->centerSnapping,       CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->sourceSnapping,       CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->snapDistance,         DSCROLL_CHANGED,GENERAL_CHANGED);
-	HookWidget(ui->overflowHide,         CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->overflowAlwaysVisible,CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->overflowSelectionHide,CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->automaticSearch,      CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->doubleClickSwitch,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->studioPortraitLayout, CHECK_CHANGED,  GENERAL_CHANGED);
@@ -1139,17 +1136,6 @@ void OBSBasicSettings::LoadGeneralSettings()
 
 
 
-	bool overflowHide = config_get_bool(GetGlobalConfig(), "BasicWindow",
-					    "OverflowHidden");
-	ui->overflowHide->setChecked(overflowHide);
-
-	bool overflowAlwaysVisible = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "OverflowAlwaysVisible");
-	ui->overflowAlwaysVisible->setChecked(overflowAlwaysVisible);
-
-	bool overflowSelectionHide = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "OverflowSelectionHidden");
-	ui->overflowSelectionHide->setChecked(overflowSelectionHide);
 
 	bool automaticSearch = config_get_bool(GetGlobalConfig(), "General",
 					       "AutomaticCollectionSearch");
@@ -2781,18 +2767,6 @@ void OBSBasicSettings::SaveGeneralSettings()
 	if (WidgetChanged(ui->snapDistance))
 		config_set_double(GetGlobalConfig(), "BasicWindow",
 				  "SnapDistance", ui->snapDistance->value());
-	if (WidgetChanged(ui->overflowAlwaysVisible))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"OverflowAlwaysVisible",
-				ui->overflowAlwaysVisible->isChecked());
-	if (WidgetChanged(ui->overflowHide))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"OverflowHidden",
-				ui->overflowHide->isChecked());
-	if (WidgetChanged(ui->overflowSelectionHide))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"OverflowSelectionHidden",
-				ui->overflowSelectionHide->isChecked());
 	if (WidgetChanged(ui->doubleClickSwitch))
 		config_set_bool(GetGlobalConfig(), "BasicWindow",
 				"TransitionOnDoubleClick",
