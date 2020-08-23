@@ -2563,10 +2563,8 @@ int main(int argc, char *argv[])
 		} else if (arg_is(argv[i], "--minimize-to-tray", nullptr)) {
 			opt_minimize_tray = true;
 
-		} else if (arg_is(argv[i], "--studio-mode", nullptr)) {
-			opt_studio_mode = true;
-
-		} else if (arg_is(argv[i], "--allow-opengl", nullptr)) {
+		}
+		 else if (arg_is(argv[i], "--allow-opengl", nullptr)) {
 			opt_allow_opengl = true;
 
 		} else if (arg_is(argv[i], "--disable-updater", nullptr)) {
@@ -2583,7 +2581,6 @@ int main(int argc, char *argv[])
 				"\n"
 				"--profile <string>: Use specific profile.\n"
 				"--scene <string>: Start with specific scene.\n\n"
-				"--studio-mode: Enable studio mode.\n"
 				"--minimize-to-tray: Minimize to system tray.\n"
 				"--portable, -p: Use portable mode.\n"
 				"--multi, -m: Don't warn when launching multiple instances.\n\n"
