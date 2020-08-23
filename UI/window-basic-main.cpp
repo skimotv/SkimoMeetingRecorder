@@ -1860,20 +1860,6 @@ void OBSBasic::OBSInit()
 
 	OBSBasicStats::InitializeValues();
 
-	/* ----------------------- */
-	/* Add multiview menu      */
-
-	ui->viewMenu->addSeparator();
-
-	multiviewProjectorMenu = new QMenu(QTStr("MultiviewProjector"));
-	ui->viewMenu->addMenu(multiviewProjectorMenu);
-	AddProjectorMenuMonitors(multiviewProjectorMenu, this,
-				 SLOT(OpenMultiviewProjector()));
-	connect(ui->viewMenu->menuAction(), &QAction::hovered, this,
-		&OBSBasic::UpdateMultiviewProjectorMenu);
-	ui->viewMenu->addAction(QTStr("MultiviewWindowed"), this,
-				SLOT(OpenMultiviewWindow()));
-
 	ui->sources->UpdateIcons();
 
 #if !defined(_WIN32) && !defined(__APPLE__)
