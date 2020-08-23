@@ -36,6 +36,7 @@ static struct preview_output context = {0};
 
 OBSData load_settings()
 {
+	return nullptr;
 }
 
 void output_stop()
