@@ -389,10 +389,6 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	HookWidget(ui->systemTrayEnabled,    CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->systemTrayWhenStarted,CHECK_CHANGED,  GENERAL_CHANGED);
 	HookWidget(ui->systemTrayAlways,     CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->automaticSearch,      CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->doubleClickSwitch,    CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->studioPortraitLayout, CHECK_CHANGED,  GENERAL_CHANGED);
-	HookWidget(ui->prevProgLabelToggle,  CHECK_CHANGED,  GENERAL_CHANGED);
 	/*HookWidget(ui->service,              COMBO_CHANGED,  STREAM1_CHANGED);
 	HookWidget(ui->server,               COMBO_CHANGED,  STREAM1_CHANGED);
 	HookWidget(ui->customServer,         EDIT_CHANGED,   STREAM1_CHANGED);
@@ -1113,21 +1109,6 @@ void OBSBasicSettings::LoadGeneralSettings()
 
 
 
-	bool automaticSearch = config_get_bool(GetGlobalConfig(), "General",
-					       "AutomaticCollectionSearch");
-	ui->automaticSearch->setChecked(automaticSearch);
-
-	bool doubleClickSwitch = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "TransitionOnDoubleClick");
-	ui->doubleClickSwitch->setChecked(doubleClickSwitch);
-
-	bool studioPortraitLayout = config_get_bool(
-		GetGlobalConfig(), "BasicWindow", "StudioPortraitLayout");
-	ui->studioPortraitLayout->setChecked(studioPortraitLayout);
-
-	bool prevProgLabels = config_get_bool(GetGlobalConfig(), "BasicWindow",
-					      "StudioModeLabels");
-	ui->prevProgLabelToggle->setChecked(prevProgLabels);
 
 	prevLangIndex = ui->language->currentIndex();
 
@@ -2724,14 +2705,6 @@ void OBSBasicSettings::SaveGeneralSettings()
 	if (WidgetChanged(ui->openStatsOnStartup))
 		config_set_bool(main->Config(), "General", "OpenStatsOnStartup",
 				ui->openStatsOnStartup->isChecked());
-	if (WidgetChanged(ui->doubleClickSwitch))
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"TransitionOnDoubleClick",
-				ui->doubleClickSwitch->isChecked());
-	if (WidgetChanged(ui->automaticSearch))
-		config_set_bool(GetGlobalConfig(), "General",
-				"AutomaticCollectionSearch",
-				ui->automaticSearch->isChecked());
 
 	config_set_bool(GetGlobalConfig(), "BasicWindow",
 			"WarnBeforeStoppingRecord",
@@ -2753,21 +2726,6 @@ void OBSBasicSettings::SaveGeneralSettings()
 				"SysTrayMinimizeToTray",
 				ui->systemTrayAlways->isChecked());
 
-	if (WidgetChanged(ui->studioPortraitLayout)) {
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"StudioPortraitLayout",
-				ui->studioPortraitLayout->isChecked());
-
-		main->ResetUI();
-	}
-
-	if (WidgetChanged(ui->prevProgLabelToggle)) {
-		config_set_bool(GetGlobalConfig(), "BasicWindow",
-				"StudioModeLabels",
-				ui->prevProgLabelToggle->isChecked());
-
-		main->ResetUI();
-	}
 
 }
 
