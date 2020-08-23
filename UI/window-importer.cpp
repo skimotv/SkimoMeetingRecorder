@@ -443,31 +443,12 @@ OBSImporter::OBSImporter(QWidget *parent)
 			parent, QTStr("Importer.AutomaticCollectionPrompt"),
 			QTStr("Importer.AutomaticCollectionText"));
 
-		if (button == QMessageBox::Yes) {
-			config_set_bool(App()->GlobalConfig(), "General",
-					"AutomaticCollectionSearch", true);
-		} else {
-			config_set_bool(App()->GlobalConfig(), "General",
-					"AutomaticCollectionSearch", false);
-		}
-
 		config_set_bool(App()->GlobalConfig(), "General",
 				"AutoSearchPrompt", true);
 	}
 
-	bool autoSearch = config_get_bool(App()->GlobalConfig(), "General",
-					  "AutomaticCollectionSearch");
 
 	OBSImporterFiles f;
-	if (autoSearch)
-		f = ImportersFindFiles();
-
-	for (size_t i = 0; i < f.size(); i++) {
-		QString path = f[i].c_str();
-		path.replace("\\", "/");
-		addImportOption(path, true);
-	}
-
 	f.clear();
 
 	ui->tableView->resizeColumnsToContents();
