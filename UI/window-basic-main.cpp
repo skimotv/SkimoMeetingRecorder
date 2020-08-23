@@ -31,6 +31,7 @@
 #include <QScrollBar>
 #include <QTextStream>
 #include <QInputDialog>
+#include <QTime>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -5445,13 +5446,13 @@ void OBSBasic::StartRecording()
 	//Get name for folder/video file from user, check if invalid name entered
 	//TODO - clean up, add error checking maybe
 	bool ok;
-	QString text = QInputDialog::getText(
-		this, tr("Enter name"), tr("What should this Skimo be named?"),
-		QLineEdit::Normal, tr("My-Skimo"), &ok);
-	if (!ok) {
-		//Recording cancelled by user
-		return;
-	}
+
+        // vasu added this
+        // ===============
+        QDateTime date = QDateTime::currentDateTime();
+        QString formattedTime = date.toString("MM_dd_yyyy_hh_mm_ss");
+        QByteArray formattedTimeMsg = formattedTime.toLocal8Bit();
+        QString text  = QString(formattedTimeMsg);
 
 	if (api)
 		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STARTING);
