@@ -3324,9 +3324,6 @@
            <property name="wordWrap">
             <bool>true</bool>
            </property>
-           <property name="themeID" stdset="0">
-            <string>error</string>
-           </property>
           </widget>
          </item>
          <item>
@@ -3336,9 +3333,6 @@
            </property>
            <property name="wordWrap">
             <bool>true</bool>
-           </property>
-           <property name="themeID" stdset="0">
-            <string notr="true">warning</string>
            </property>
           </widget>
          </item>
@@ -3649,9 +3643,6 @@
            </property>
            <property name="wordWrap">
             <bool>true</bool>
-           </property>
-           <property name="themeID" stdset="0">
-            <string>error</string>
            </property>
           </widget>
          </item>
@@ -4518,9 +4509,6 @@
              <property name="wordWrap">
               <bool>true</bool>
              </property>
-             <property name="themeID" stdset="0">
-              <string>error</string>
-             </property>
             </widget>
            </item>
            <item>
@@ -4530,9 +4518,6 @@
              </property>
              <property name="wordWrap">
               <bool>true</bool>
-             </property>
-             <property name="themeID" stdset="0">
-              <string>error</string>
              </property>
             </widget>
            </item>
@@ -4557,7 +4542,6 @@
   <tabstop>listWidget</tabstop>
   <tabstop>scrollArea_2</tabstop>
   <tabstop>language</tabstop>
-  <tabstop>theme</tabstop>
   <tabstop>enableAutoUpdates</tabstop>
   <tabstop>openStatsOnStartup</tabstop>
   <tabstop>warnBeforeStreamStart</tabstop>
