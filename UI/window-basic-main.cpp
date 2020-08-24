@@ -4640,7 +4640,6 @@ void OBSBasic::CreateSourcePopupMenu(int idx, bool preview)
 			action->setEnabled(false);
 
 		popup.addAction(ui->actionLockPreview);
-		popup.addMenu(ui->scalingMenu);
 
 		previewProjectorSource = new QMenu(QTStr("PreviewProjector"));
 		AddProjectorMenuMonitors(previewProjectorSource, this,
