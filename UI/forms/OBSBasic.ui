@@ -163,50 +163,6 @@
     <addaction name="actionShowAbout"/>
     <addaction name="separator"/>
    </widget>
-   <widget class="QMenu" name="menuBasic_MainMenu_Edit">
-    <property name="title">
-     <string>Basic.MainMenu.Edit</string>
-    </property>
-    <widget class="QMenu" name="scalingMenu">
-     <property name="title">
-      <string>Basic.MainMenu.Edit.Scale</string>
-     </property>
-     <addaction name="actionScaleWindow"/>
-     <addaction name="actionScaleCanvas"/>
-     <addaction name="actionScaleOutput"/>
-    </widget>
-    <action name="actionCopySource">
-     <property name="text">
-      <string>Copy</string>
-     </property>
-     <property name="shortcut">
-      <string>Ctrl+C</string>
-     </property>
-    </action>
-    <action name="actionPasteRef">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>PasteReference</string>
-     </property>
-     <property name="iconText">
-      <string>PasteReference</string>
-     </property>
-     <property name="toolTip">
-      <string>PasteReference</string>
-     </property>
-     <property name="shortcut">
-      <string>Ctrl+V</string>
-     </property>
-    </action>
-    <addaction name="separator"/>
-    <addaction name="transformMenu"/>
-    <addaction name="orderMenu"/>
-    <addaction name="scalingMenu"/>
-    <addaction name="actionLockPreview"/>
-    <addaction name="separator"/>
-   </widget>
    <widget class="QMenu" name="viewMenu">
     <property name="title">
      <string>Basic.MainMenu.View</string>
