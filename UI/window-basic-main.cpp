@@ -5909,6 +5909,8 @@ void OBSBasic::on_viewSkimo_clicked()
 		view->show();
 
 		ui->viewSkimo->setText("Close Skimo view");
+		ui->generateSkimo->setText("Generate Skimo");
+		gen = false;
 	} else {
 		ui->preview->setVisible(true);
 		view->hide();
@@ -5931,6 +5933,8 @@ void OBSBasic::on_generateSkimo_clicked()
 		view->show();
 
 		ui->generateSkimo->setText("Cancel uploading Skimo");
+		ui->viewSkimo->setText("View Skimo");
+		viewing = false;
 	} else {
 		ui->preview->setVisible(true);
 		view->hide();
