@@ -32,6 +32,7 @@
 #include <QTextStream>
 #include <QInputDialog>
 #include <QTime>
+#include <QWebEngineView>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -1891,8 +1892,8 @@ void OBSBasic::OBSInit()
 	ui->mixerDock->setVisible(false);
 	ui->scenesDock->setVisible(false);
 
-	#ifdef _WIN32 || _WIN64
 	//If the first source is null, no inputs are set so the user should be provided with default screen recorder
+	#ifdef _WIN32 || _WIN64
 	if (!(ui->sources->Get(0))) {
 		//Set up default source
 		OBSBasicSourceSelect src(
@@ -1912,6 +1913,10 @@ void OBSBasic::OBSInit()
 			   src.newSource);
 	}
         #endif
+
+	//Create the view widget, used to show javascript & HTML files
+	view = new QWebEngineView(ui->centralwidget);
+	view->setVisible(false);
 }
 
 void OBSBasic::OnFirstLoad()
@@ -5891,17 +5896,47 @@ std::string OBSBasic::getTimestamp()
 	return std::string(timeString);
 }
 
-void OBSBasic::on_authButton_clicked()
+void OBSBasic::on_viewSkimo_clicked()
 {
-	//src.exec();
-	/*AddNew(this, id, QT_TO_UTF8(ui->sourceName->text()),
-				   visible, newSource)*/
-	/*Nothing has come of this so far
-	QWidget *wid = this;
-	//OAuthLogin o = OAuthLogin(wid, "https://skimo.tv/myskimo#", true);
-	OAuth2RequestOptions options;
-	options.user_id = id;
-	return flow_->RefreshCredentialWithOptions(options, credential);*/
+	viewing = !viewing;
+	//If opening browser, load page and disable other buttons
+	if (viewing) {
+		ui->preview->setVisible(false);
+		view->load(QUrl("https://skimo.tv"));
+		view->setFixedWidth(this->width());
+		view->setFixedHeight(this->height() -
+					ui->controlsDock->height());
+		view->show();
+
+		ui->viewSkimo->setText("Close Skimo view");
+	} else {
+		ui->preview->setVisible(true);
+		view->hide();
+		ui->viewSkimo->setText("View Skimo");
+	}
+	ui->recordButton->setEnabled(!viewing);
+}
+
+void OBSBasic::on_generateSkimo_clicked()
+{
+	gen = !gen;
+	//If opening browser, load page and disable other buttons
+	if (gen) {
+		ui->preview->setVisible(false);
+		view->load(QUrl(QUrl::fromLocalFile(
+			"C:/Users/William Engdahl/Downloads/test.html")));
+		view->setFixedWidth(this->width());
+		view->setFixedHeight(this->height() -
+				     ui->controlsDock->height());
+		view->show();
+
+		ui->generateSkimo->setText("Cancel uploading Skimo");
+	} else {
+		ui->preview->setVisible(true);
+		view->hide();
+		ui->generateSkimo->setText("Generate Skimo");
+	}
+	ui->recordButton->setEnabled(!gen);
 }
 
 

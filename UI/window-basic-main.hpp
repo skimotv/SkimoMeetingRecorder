@@ -53,6 +53,7 @@ class OBSBasicStats;
 
 #include "ui_OBSBasic.h"
 #include "ui_ColorSelect.h"
+#include <QWebEngineView>
 
 #define DESKTOP_AUDIO_1 Str("DesktopAudioDevice1")
 #define DESKTOP_AUDIO_2 Str("DesktopAudioDevice2")
@@ -291,6 +292,11 @@ private:
 
 	QScopedPointer<QThread> patronJsonThread;
 	std::string patronJson;
+
+	//This is the web emgine view used to display files
+	QWebEngineView *view;
+	bool viewing = false;//True when view skimo is being displayed
+	bool gen = false; //True when skimo is generating
 
 	void UpdateMultiviewProjectorMenu();
 
@@ -891,7 +897,8 @@ private slots:
 	void on_recordButton_clicked();
 	void on_bookmarkButton_clicked();
 	void on_noteButton_clicked();
-	void on_authButton_clicked();
+	void on_viewSkimo_clicked();
+	void on_generateSkimo_clicked();
 
 	void VCamButtonClicked();
 	void on_settingsButton_clicked();

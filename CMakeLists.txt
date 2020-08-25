@@ -7,6 +7,10 @@ endif()
 
 project(obs-studio)
 
+#Output libraries
+set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
+set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
+
 option(BUILD_CAPTIONS "Build captions" FALSE)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
