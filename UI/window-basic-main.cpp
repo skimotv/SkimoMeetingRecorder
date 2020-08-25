@@ -1902,6 +1902,16 @@ void OBSBasic::OBSInit()
 			   src.newSource);
 	}
 	#endif
+        #ifdef __APPLE__
+	if (!(ui->sources->Get(0))) {
+		//Set up default source
+		OBSBasicSourceSelect src(
+			this, std::string("display_capture").c_str());
+		src.AddNew(this, std::string("display_capture").c_str(),
+			   std::string("Default Display Capture").c_str(), true,
+			   src.newSource);
+	}
+        #endif
 }
 
 void OBSBasic::OnFirstLoad()
