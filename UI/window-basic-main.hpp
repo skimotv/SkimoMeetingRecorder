@@ -53,7 +53,7 @@ class OBSBasicStats;
 
 #include "ui_OBSBasic.h"
 #include "ui_ColorSelect.h"
-//#include <QWebEngineView>
+#include <QWebEngineView>
 
 #define DESKTOP_AUDIO_1 Str("DesktopAudioDevice1")
 #define DESKTOP_AUDIO_2 Str("DesktopAudioDevice2")
@@ -294,7 +294,7 @@ private:
 	std::string patronJson;
 
 	//This is the web emgine view used to display files
-	//QWebEngineView *view;
+	QWebEngineView *view;
 	bool viewing = false;//True when view skimo is being displayed
 	bool gen = false; //True when skimo is generating
 

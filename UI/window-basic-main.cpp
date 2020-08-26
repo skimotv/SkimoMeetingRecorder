@@ -32,7 +32,9 @@
 #include <QTextStream>
 #include <QInputDialog>
 #include <QTime>
-//#include <QWebEngineView>
+#include <QWebEngineView>
+
+#include <QOAuth2AuthorizationCodeFlow>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -1915,8 +1917,8 @@ void OBSBasic::OBSInit()
         #endif
 
 	//Create the view widget, used to show javascript & HTML files
-	/*view = new QWebEngineView(ui->centralwidget);
-	view->setVisible(false);*/
+	view = new QWebEngineView(ui->centralwidget);
+	view->setVisible(false);
 }
 
 void OBSBasic::OnFirstLoad()
@@ -5902,18 +5904,18 @@ void OBSBasic::on_viewSkimo_clicked()
 	//If opening browser, load page and disable other buttons
 	if (viewing) {
 		ui->preview->setVisible(false);
-		/*view->load(QUrl("https://skimo.tv"));
+		view->load(QUrl("https://skimo.tv"));
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
 					ui->controlsDock->height());
-		view->show();*/
+		view->show();
 
 		ui->viewSkimo->setText("Close Skimo view");
 		ui->generateSkimo->setText("Generate Skimo");
 		gen = false;
 	} else {
 		ui->preview->setVisible(true);
-		//view->hide();
+		view->hide();
 		ui->viewSkimo->setText("View Skimo");
 	}
 	ui->recordButton->setEnabled(!viewing);
@@ -5925,19 +5927,19 @@ void OBSBasic::on_generateSkimo_clicked()
 	//If opening browser, load page and disable other buttons
 	if (gen) {
 		ui->preview->setVisible(false);
-		/*view->load(QUrl(QUrl::fromLocalFile(
-			"C:/Users/William Engdahl/Downloads/test.html")));
+		view->load(QUrl(QUrl::fromLocalFile(
+			"C:/Users/William Engdahl/Downloads/test.html")));//@Vasu this is test data, doesnt matter that it points to my local filesystem because it will be removed later when I actually implement stuff
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
 				     ui->controlsDock->height());
-		view->show();*/
+		view->show();
 
 		ui->generateSkimo->setText("Cancel uploading Skimo");
 		ui->viewSkimo->setText("View Skimo");
 		viewing = false;
 	} else {
 		ui->preview->setVisible(true);
-		//view->hide();
+		view->hide();
 		ui->generateSkimo->setText("Generate Skimo");
 	}
 	ui->recordButton->setEnabled(!gen);
