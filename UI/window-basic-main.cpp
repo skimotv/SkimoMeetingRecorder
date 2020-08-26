@@ -5932,21 +5932,12 @@ void OBSBasic::on_generateSkimo_clicked()
 	connect(google, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
 		&QDesktopServices::openUrl);
 
-	QJsonDocument document("C:\\Users\\William Engdahl\\Downloads\\googlestuff.json");
-	const auto object = document.object();
-	const auto settingsObject = object["web"].toObject();
-	const QUrl authUri(settingsObject["auth_uri"].toString());
-	const auto clientId = settingsObject["client_id"].toString();
-	const QUrl tokenUri(settingsObject["token_uri"].toString());
-	const auto clientSecret(settingsObject["client_secret"].toString());
-	const auto redirectUris = settingsObject["redirect_uris"].toArray();
-	const QUrl redirectUri(redirectUris[0].toString()); // Get the first URI
-	const auto port =
-		static_cast<quint16>(redirectUri.port()); // Get the port
+	const auto port = static_cast<quint16>(QUrl("http://localhost:8080/cb").port());
 
 	google->setAuthorizationUrl(
 		QUrl("https://accounts.google.com/o/oauth2/auth"));
-	google->setClientIdentifier("740594278246-4cmfp1ntedqetddm5d1osngmshdacp13.apps.googleusercontent.com");
+	google->setClientIdentifier(
+		"740594278246-4cmfp1ntedqetddm5d1osngmshdacp13.apps.googleusercontent.com");
 	google->setAccessTokenUrl(QUrl("https://oauth2.googleapis.com/token"));
 	google->setClientIdentifierSharedKey("K1p5KjcYSuu1XkvUdLQMZJox");
 
@@ -5957,12 +5948,14 @@ void OBSBasic::on_generateSkimo_clicked()
 
 	//auto reply = google - &gt;get(QUrl("https://www.googleapis.com/plus/v1/people/me"));
 
+	//QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
+
 	/*gen = !gen;
 	//If opening browser, load page and disable other buttons
 	if (gen) {
 		ui->preview->setVisible(false);
 		view->load(QUrl(QUrl::fromLocalFile(
-			"C:/Users/William Engdahl/Downloads/test.html")));//@Vasu this is test data, doesnt matter that it points to my local filesystem because it will be removed later when I actually implement stuff
+			"C:/Users/William Engdahl/Downloads/test.html")));
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
 				     ui->controlsDock->height());
@@ -5978,7 +5971,10 @@ void OBSBasic::on_generateSkimo_clicked()
 	}
 	ui->recordButton->setEnabled(!gen);*/
 }
-
+void OBSBasic::networkReplyFinished(QNetworkReply* reply)
+{
+	QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
+}
 
 void OBSBasic::VCamButtonClicked()
 {

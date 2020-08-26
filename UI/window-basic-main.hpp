@@ -899,6 +899,7 @@ private slots:
 	void on_noteButton_clicked();
 	void on_viewSkimo_clicked();
 	void on_generateSkimo_clicked();
+	void networkReplyFinished(QNetworkReply *reply);
 
 	void VCamButtonClicked();
 	void on_settingsButton_clicked();
