@@ -36,9 +36,7 @@
 
 #include <QOAuth2AuthorizationCodeFlow>
 #include <QOAuthHttpServerReplyHandler.h>
-#include <QJsonDocument.h>
-#include <QJsonObject.h>
-#include <QJsonArray.h>
+#include <qnetworkreply.h>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -5904,7 +5902,7 @@ std::string OBSBasic::getTimestamp()
 
 void OBSBasic::on_viewSkimo_clicked()
 {
-	/*viewing = !viewing;
+	viewing = !viewing;
 	//If opening browser, load page and disable other buttons
 	if (viewing) {
 		ui->preview->setVisible(false);
@@ -5922,31 +5920,48 @@ void OBSBasic::on_viewSkimo_clicked()
 		view->hide();
 		ui->viewSkimo->setText("View Skimo");
 	}
-	ui->recordButton->setEnabled(!viewing);*/
+	ui->recordButton->setEnabled(!viewing);
 }
 
 void OBSBasic::on_generateSkimo_clicked()
 {
-	auto google = new QOAuth2AuthorizationCodeFlow;
-	google->setScope("email");
-	connect(google, &QOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
-		&QDesktopServices::openUrl);
+	if (google) {
+		google = new QOAuth2AuthorizationCodeFlow;
+		google->setScope("email");
+		connect(google,
+			&QOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
+			&QDesktopServices::openUrl);
 
-	const auto port = static_cast<quint16>(QUrl("http://localhost:8080/cb").port());
+		const auto port = static_cast<quint16>(
+			QUrl("http://localhost:8080/cb").port());
 
-	google->setAuthorizationUrl(
-		QUrl("https://accounts.google.com/o/oauth2/auth"));
-	google->setClientIdentifier(
-		"740594278246-4cmfp1ntedqetddm5d1osngmshdacp13.apps.googleusercontent.com");
-	google->setAccessTokenUrl(QUrl("https://oauth2.googleapis.com/token"));
-	google->setClientIdentifierSharedKey("K1p5KjcYSuu1XkvUdLQMZJox");
+		google->setAuthorizationUrl(
+			QUrl("https://accounts.google.com/o/oauth2/auth"));
+		google->setClientIdentifier(
+			"740594278246-4cmfp1ntedqetddm5d1osngmshdacp13.apps.googleusercontent.com");
+		google->setAccessTokenUrl(
+			QUrl("https://oauth2.googleapis.com/token"));
+		google->setClientIdentifierSharedKey(
+			"K1p5KjcYSuu1XkvUdLQMZJox");
 
-	auto replyHandler = new QOAuthHttpServerReplyHandler(port, this);
-	google->setReplyHandler(replyHandler);
+		auto replyHandler =
+			new QOAuthHttpServerReplyHandler(8080, this);
+		google->setReplyHandler(replyHandler);
+		google->grant();
 
-	google->grant();
+		/*auto reply = google->get(
+			QUrl("https://www.googleapis.com/plus/v1/people/me"));*/
+		QObject::connect(google, &QOAuth2AuthorizationCodeFlow::granted,
+				 this, &OBSBasic::networkReplyFinished);
+	}
 
-	//auto reply = google - &gt;get(QUrl("https://www.googleapis.com/plus/v1/people/me"));
+	//connect(reply, &QNetworkReply::finished,&OBSBasic::networkReplyFinished);
+	/*connect(google, &QOAuth2AuthorizationCodeFlow::granted, [=]() {
+		QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
+
+		auto reply = google->get(QUrl("https://www.googleapis.com/plus/v1/people/me"));
+		google->close
+	});*/
 
 	//QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
 
@@ -5971,7 +5986,8 @@ void OBSBasic::on_generateSkimo_clicked()
 	}
 	ui->recordButton->setEnabled(!gen);*/
 }
-void OBSBasic::networkReplyFinished(QNetworkReply* reply)
+
+void OBSBasic::networkReplyFinished()
 {
 	QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
 }

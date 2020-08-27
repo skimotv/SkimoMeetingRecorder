@@ -45,6 +45,7 @@
 #include <util/util.hpp>
 
 #include <QPointer>
+#include <qoauth2authorizationcodeflow.h>
 
 class QMessageBox;
 class QListWidgetItem;
@@ -724,6 +725,8 @@ private:
 	OBSSource prevFTBSource = nullptr;
 
 public:
+	QOAuth2AuthorizationCodeFlow* google;
+
 	OBSSource GetProgramSource();
 	OBSScene GetCurrentScene();
 
@@ -899,7 +902,7 @@ private slots:
 	void on_noteButton_clicked();
 	void on_viewSkimo_clicked();
 	void on_generateSkimo_clicked();
-	void networkReplyFinished(QNetworkReply *reply);
+	void networkReplyFinished();
 
 	void VCamButtonClicked();
 	void on_settingsButton_clicked();
