@@ -45,6 +45,7 @@
 #include <util/util.hpp>
 
 #include <QPointer>
+#include <qoauth2authorizationcodeflow.h>
 
 class QMessageBox;
 class QListWidgetItem;
@@ -53,7 +54,7 @@ class OBSBasicStats;
 
 #include "ui_OBSBasic.h"
 #include "ui_ColorSelect.h"
-//#include <QWebEngineView>
+#include <QWebEngineView>
 
 #define DESKTOP_AUDIO_1 Str("DesktopAudioDevice1")
 #define DESKTOP_AUDIO_2 Str("DesktopAudioDevice2")
@@ -294,7 +295,7 @@ private:
 	std::string patronJson;
 
 	//This is the web emgine view used to display files
-	//QWebEngineView *view;
+	QWebEngineView *view;
 	bool viewing = false;//True when view skimo is being displayed
 	bool gen = false; //True when skimo is generating
 
@@ -724,6 +725,8 @@ private:
 	OBSSource prevFTBSource = nullptr;
 
 public:
+	QOAuth2AuthorizationCodeFlow* google;
+
 	OBSSource GetProgramSource();
 	OBSScene GetCurrentScene();
 
@@ -899,6 +902,7 @@ private slots:
 	void on_noteButton_clicked();
 	void on_viewSkimo_clicked();
 	void on_generateSkimo_clicked();
+	void networkReplyFinished();
 
 	void VCamButtonClicked();
 	void on_settingsButton_clicked();

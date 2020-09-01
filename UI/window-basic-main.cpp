@@ -32,7 +32,11 @@
 #include <QTextStream>
 #include <QInputDialog>
 #include <QTime>
-//#include <QWebEngineView>
+#include <QWebEngineView>
+
+#include <QOAuth2AuthorizationCodeFlow>
+#include <QOAuthHttpServerReplyHandler.h>
+#include <qnetworkreply.h>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -1915,8 +1919,8 @@ void OBSBasic::OBSInit()
         #endif
 
 	//Create the view widget, used to show javascript & HTML files
-	/*view = new QWebEngineView(ui->centralwidget);
-	view->setVisible(false);*/
+	view = new QWebEngineView(ui->centralwidget);
+	view->setVisible(false);
 }
 
 void OBSBasic::OnFirstLoad()
@@ -5883,14 +5887,9 @@ void OBSBasic::on_noteButton_clicked()
 std::string OBSBasic::getTimestamp()
 {
 	int sec = ui->statusbar->GetRecordTime();
-
-	int hours = sec / 3600;
-	sec = sec % 3600;
-	int min = sec / 60;
-	sec = sec % 60;
 	//Format the data
 	char timeString[9];
-	sprintf(timeString, "%02d:%02d:%02d", hours,min,sec);
+	sprintf(timeString, "%d",sec);
 
 	//Return the string
 	return std::string(timeString);
@@ -5902,18 +5901,21 @@ void OBSBasic::on_viewSkimo_clicked()
 	//If opening browser, load page and disable other buttons
 	if (viewing) {
 		ui->preview->setVisible(false);
-		/*view->load(QUrl("https://skimo.tv"));
+		//system("unzip C:\\Users\\wengd\\Downloads\\76e79303.zip -d C:\\Users\\wengd\\source\\repos\\SkimoMeetingRecorder\\build\\rundir\\Debug\\bin\\64bit\\76e79303");
+
+		view->load(QUrl(QUrl::fromLocalFile(
+			QFileInfo("76e79303\\76e79303\\skimo.html").absoluteFilePath()  )));
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
 					ui->controlsDock->height());
-		view->show();*/
+		view->show();
 
 		ui->viewSkimo->setText("Close Skimo view");
 		ui->generateSkimo->setText("Generate Skimo");
 		gen = false;
 	} else {
 		ui->preview->setVisible(true);
-		//view->hide();
+		view->hide();
 		ui->viewSkimo->setText("View Skimo");
 	}
 	ui->recordButton->setEnabled(!viewing);
@@ -5921,28 +5923,80 @@ void OBSBasic::on_viewSkimo_clicked()
 
 void OBSBasic::on_generateSkimo_clicked()
 {
-	gen = !gen;
+		google = new QOAuth2AuthorizationCodeFlow;
+		google->setScope("email");
+		connect(google,
+			&QOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
+			&QDesktopServices::openUrl);
+		const auto port = static_cast<quint16>(
+			QUrl("http://localhost:8080/cb").port());
+
+		google->setAuthorizationUrl(
+			QUrl("https://accounts.google.com/o/oauth2/auth"));
+		google->setClientIdentifier(
+			"740594278246-4cmfp1ntedqetddm5d1osngmshdacp13.apps.googleusercontent.com");
+		google->setAccessTokenUrl(
+			QUrl("https://oauth2.googleapis.com/token"));
+		google->setClientIdentifierSharedKey("K1p5KjcYSuu1XkvUdLQMZJox");
+
+		auto replyHandler =
+			new QOAuthHttpServerReplyHandler(8080, this);
+		google->setReplyHandler(replyHandler);
+		ui->generateSkimo->setEnabled(false);
+		connect(this->google, &QOAuth2AuthorizationCodeFlow::granted, [=]() {
+				qDebug() << __FUNCTION__ << __LINE__
+						<< "Access Granted!";
+				ui->generateSkimo->setEnabled(true);
+				QMessageBox::question(this, QTStr("stuff"),
+						      QTStr("things"));
+				auto reply = this->google->get(QUrl(
+					"https://www.googleapis.com/plus/v1/people/me"));
+				connect(reply, &QNetworkReply::finished, [reply]() {
+					qDebug() << "REQUEST FINISHED. Error? "
+							<< (reply->error() !=
+							QNetworkReply::NoError);
+					qDebug() << reply->readAll();
+				});
+			});
+		google->grant();
+
+	//connect(reply, &QNetworkReply::finished,&OBSBasic::networkReplyFinished);
+	/*connect(google, &QOAuth2AuthorizationCodeFlow::granted, [=]() {
+		QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
+
+		auto reply = google->get(QUrl("https://www.googleapis.com/plus/v1/people/me"));
+		google->close
+	});*/
+
+	//QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
+	///////////////////////////////////////////////////////////////////
+
+	/*gen = !gen;
 	//If opening browser, load page and disable other buttons
 	if (gen) {
 		ui->preview->setVisible(false);
-		/*view->load(QUrl(QUrl::fromLocalFile(
-			"C:/Users/William Engdahl/Downloads/test.html")));
+		view->load(QUrl(QUrl::fromLocalFile(
+			"C:\\Users\\wengd\\Downloads\\TestEmbedWorkaround\\Home.html")));
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
 				     ui->controlsDock->height());
-		view->show();*/
+		view->show();
 
 		ui->generateSkimo->setText("Cancel uploading Skimo");
 		ui->viewSkimo->setText("View Skimo");
 		viewing = false;
 	} else {
 		ui->preview->setVisible(true);
-		//view->hide();
+		view->hide();
 		ui->generateSkimo->setText("Generate Skimo");
 	}
-	ui->recordButton->setEnabled(!gen);
+	ui->recordButton->setEnabled(!gen);*/
 }
 
+void OBSBasic::networkReplyFinished()
+{
+	QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
+}
 
 void OBSBasic::VCamButtonClicked()
 {
