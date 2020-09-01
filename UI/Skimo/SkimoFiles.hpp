@@ -21,5 +21,5 @@ class SkimoFiles {
 		std::string directory;
 		const int SEP_LENGTH = 1;
 		const std::string  SEPERATOR = "\n";
-		const std::string BOOKMARK = "Bookmark";
+		const std::string BOOKMARK = "bookmark";
 };

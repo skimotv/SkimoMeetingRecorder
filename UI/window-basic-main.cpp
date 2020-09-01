@@ -5887,9 +5887,14 @@ void OBSBasic::on_noteButton_clicked()
 std::string OBSBasic::getTimestamp()
 {
 	int sec = ui->statusbar->GetRecordTime();
+
+	int hours = sec / 3600;
+	sec = sec % 3600;
+	int min = sec / 60;
+	sec = sec % 60;
 	//Format the data
 	char timeString[9];
-	sprintf(timeString, "%d",sec);
+	sprintf(timeString, "%02d:%02d:%02d", hours,min,sec);
 
 	//Return the string
 	return std::string(timeString);
@@ -5923,7 +5928,7 @@ void OBSBasic::on_viewSkimo_clicked()
 
 void OBSBasic::on_generateSkimo_clicked()
 {
-		google = new QOAuth2AuthorizationCodeFlow;
+		/*google = new QOAuth2AuthorizationCodeFlow;
 		google->setScope("email");
 		connect(google,
 			&QOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
@@ -5949,7 +5954,7 @@ void OBSBasic::on_generateSkimo_clicked()
 				ui->generateSkimo->setEnabled(true);
 				QMessageBox::question(this, QTStr("stuff"),
 						      QTStr("things"));
-				auto reply = this->google->get(QUrl(
+				/*auto reply = this->google->get(QUrl(
 					"https://www.googleapis.com/plus/v1/people/me"));
 				connect(reply, &QNetworkReply::finished, [reply]() {
 					qDebug() << "REQUEST FINISHED. Error? "
@@ -5958,7 +5963,7 @@ void OBSBasic::on_generateSkimo_clicked()
 					qDebug() << reply->readAll();
 				});
 			});
-		google->grant();
+		google->grant();*/
 
 	//connect(reply, &QNetworkReply::finished,&OBSBasic::networkReplyFinished);
 	/*connect(google, &QOAuth2AuthorizationCodeFlow::granted, [=]() {
@@ -5971,7 +5976,7 @@ void OBSBasic::on_generateSkimo_clicked()
 	//QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
 	///////////////////////////////////////////////////////////////////
 
-	/*gen = !gen;
+	gen = !gen;
 	//If opening browser, load page and disable other buttons
 	if (gen) {
 		ui->preview->setVisible(false);
@@ -5990,7 +5995,7 @@ void OBSBasic::on_generateSkimo_clicked()
 		view->hide();
 		ui->generateSkimo->setText("Generate Skimo");
 	}
-	ui->recordButton->setEnabled(!gen);*/
+	ui->recordButton->setEnabled(!gen);
 }
 
 void OBSBasic::networkReplyFinished()
