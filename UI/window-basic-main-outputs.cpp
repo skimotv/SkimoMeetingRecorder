@@ -1014,6 +1014,9 @@ void SimpleOutput::StopStreaming(bool force)
 
 void SimpleOutput::StopRecording(bool force)
 {
+	//Pass the directory to the skimo files class, allowing it to open the relevant files and write to them later
+	skimoDataFiles.closeDoc();
+
 	if (force)
 		obs_output_force_stop(fileOutput);
 	else
