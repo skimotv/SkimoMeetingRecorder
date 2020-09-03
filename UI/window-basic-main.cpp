@@ -37,6 +37,7 @@
 #include <QOAuth2AuthorizationCodeFlow>
 #include <QOAuthHttpServerReplyHandler.h>
 #include <qnetworkreply.h>
+#include <QHttpMultiPart>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -1895,6 +1896,12 @@ void OBSBasic::OBSInit()
 	ui->transitionsDock->setVisible(false);
 	ui->mixerDock->setVisible(false);
 	ui->scenesDock->setVisible(false);
+
+	//Connect managers for generate and view
+	connect(&genManager, &QNetworkAccessManager::finished, this,
+		&OBSBasic::generateSkimoFinished);
+	connect(&viewManager, &QNetworkAccessManager::finished, this,
+		&OBSBasic::viewSkimoFinished);
 
 	//If the first source is null, no inputs are set so the user should be provided with default screen recorder
 	#ifdef _WIN32 || _WIN64
@@ -5906,10 +5913,14 @@ void OBSBasic::on_viewSkimo_clicked()
 	//If opening browser, load page and disable other buttons
 	if (viewing) {
 		ui->preview->setVisible(false);
-		//system("unzip C:\\Users\\wengd\\Downloads\\76e79303.zip -d C:\\Users\\wengd\\source\\repos\\SkimoMeetingRecorder\\build\\rundir\\Debug\\bin\\64bit\\76e79303");
 
-		view->load(QUrl(QUrl::fromLocalFile(
-			QFileInfo("76e79303\\76e79303\\skimo.html").absoluteFilePath()  )));
+		QNetworkRequest request(
+			QUrl("https://skimo.tv/zip/76e79303")); // without ID
+		viewManager.get(request);
+
+		//system("curl \"https://skimo.tv/zip/76e79303\"");
+		//On get, load and display result
+
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
 					ui->controlsDock->height());
@@ -5928,60 +5939,72 @@ void OBSBasic::on_viewSkimo_clicked()
 
 void OBSBasic::on_generateSkimo_clicked()
 {
-		/*google = new QOAuth2AuthorizationCodeFlow;
-		google->setScope("email");
-		connect(google,
-			&QOAuth2AuthorizationCodeFlow::authorizeWithBrowser,
-			&QDesktopServices::openUrl);
-		const auto port = static_cast<quint16>(
-			QUrl("http://localhost:8080/cb").port());
-
-		google->setAuthorizationUrl(
-			QUrl("https://accounts.google.com/o/oauth2/auth"));
-		google->setClientIdentifier(
-			"740594278246-4cmfp1ntedqetddm5d1osngmshdacp13.apps.googleusercontent.com");
-		google->setAccessTokenUrl(
-			QUrl("https://oauth2.googleapis.com/token"));
-		google->setClientIdentifierSharedKey("K1p5KjcYSuu1XkvUdLQMZJox");
-
-		auto replyHandler =
-			new QOAuthHttpServerReplyHandler(8080, this);
-		google->setReplyHandler(replyHandler);
-		ui->generateSkimo->setEnabled(false);
-		connect(this->google, &QOAuth2AuthorizationCodeFlow::granted, [=]() {
-				qDebug() << __FUNCTION__ << __LINE__
-						<< "Access Granted!";
-				ui->generateSkimo->setEnabled(true);
-				QMessageBox::question(this, QTStr("stuff"),
-						      QTStr("things"));
-				/*auto reply = this->google->get(QUrl(
-					"https://www.googleapis.com/plus/v1/people/me"));
-				connect(reply, &QNetworkReply::finished, [reply]() {
-					qDebug() << "REQUEST FINISHED. Error? "
-							<< (reply->error() !=
-							QNetworkReply::NoError);
-					qDebug() << reply->readAll();
-				});
-			});
-		google->grant();*/
-
-	//connect(reply, &QNetworkReply::finished,&OBSBasic::networkReplyFinished);
-	/*connect(google, &QOAuth2AuthorizationCodeFlow::granted, [=]() {
-		QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
-
-		auto reply = google->get(QUrl("https://www.googleapis.com/plus/v1/people/me"));
-		google->close
-	});*/
-
-	//QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
+		
 	///////////////////////////////////////////////////////////////////
 
 	gen = !gen;
 	//If opening browser, load page and disable other buttons
 	if (gen) {
 		ui->preview->setVisible(false);
-		view->load(QUrl(QUrl::fromLocalFile(
-			"C:\\Users\\wengd\\Downloads\\TestEmbedWorkaround\\Home.html")));
+		//system("curl -L  -X POST -F \"file=@C:\\Users\\wengd\\Videos\\09_01_2020_13_14_02\\09_01_2020_13_14_02.mp4\" \-k \"https://skimo.tv/live/recording?assetid=AAAAAA&apikey=yKLxpeweS42A78&username=wengdahl1@gmail.com\"");
+		QHttpMultiPart *multiPart =
+			new QHttpMultiPart(QHttpMultiPart::FormDataType);
+
+		QHttpPart vidPart;
+		vidPart.setHeader(
+			QNetworkRequest::ContentDispositionHeader,
+			QVariant(
+				"form-data; name=\"file\"; filename=\"09_03_2020_13_35_27.mp4\""));
+		vidPart.setHeader(QNetworkRequest::ContentTypeHeader,QVariant("video/mp4"));
+
+		QFile *file = new QFile("C:\\Users\\wengd\\Videos\\09_03_2020_13_35_27\\09_03_2020_13_35_27.mp4");
+		file->open(QIODevice::ReadOnly);
+		ba = file->readAll();
+		vidPart.setBody(ba);
+		file->setParent(
+			multiPart); // we cannot delete the file now, so delete it with the multiPart
+		vidPart.setRawHeader("Content-Length",
+				     QByteArray::number(ba.size()));
+
+		/*QHttpPart imagePart;
+		imagePart.setHeader(QNetworkRequest::ContentTypeHeader,
+				    QVariant("image/jpeg"));
+		imagePart.setHeader(QNetworkRequest::ContentDispositionHeader,
+				    QVariant("form-data; name=\"image\""));
+		QFile *file = new QFile("image.jpg");
+		file->open(QIODevice::ReadOnly);
+		imagePart.setBodyDevice(file);
+		file->setParent(
+			multiPart); // we cannot delete the file now, so delete it with the multiPart*/
+
+		multiPart->append(vidPart);
+		//multiPart->append(imagePart);
+
+		QUrl url("https://skimo.tv/live/recording?assetid=TESTCPP&apikey=yKLxpeweS42A78&username=wengdahl@gmail.com");
+		QNetworkRequest request(url);
+		/*request.setRawHeader("Content-Length",
+				     QByteArray::number(ba.size()));*/
+
+		QNetworkReply *reply = genManager.post(request, multiPart);
+		multiPart->setParent(
+			reply); // delete the multiPart with the reply
+				// here connect signals etc.*/
+
+		/*QNetworkRequest request(QUrl("https://skimo.tv/live/recording?assetid=AAAAAA&apikey=yKLxpeweS42A78&username=wengdahl@gmail.com"));
+		request.setHeader(QNetworkRequest::ContentTypeHeader, "video/mp4");
+		request.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\""));
+
+		QFile file(
+			"C:\\Users\\wengd\\Videos\\09_03_2020_13_35_27\\09_03_2020_13_35_27.mp4");
+		if (file.open(QIODevice::ReadOnly)) {
+			ba = file.readAll();
+
+			request.setRawHeader("Content-Length", QByteArray::number(ba.size()));
+			genManager.post(request, ba);
+		}
+
+		/*view->load(QUrl(QUrl::fromLocalFile(
+			"C:\\Users\\wengd\\Downloads\\TestEmbedWorkaround\\Home.html")));*/
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
 				     ui->controlsDock->height());
@@ -5998,9 +6021,74 @@ void OBSBasic::on_generateSkimo_clicked()
 	ui->recordButton->setEnabled(!gen);
 }
 
-void OBSBasic::networkReplyFinished()
+void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 {
-	QMessageBox::question(this, QTStr("stuff"), QTStr("things"));
+	QByteArray response = reply->readAll();
+	QMessageBox::question(this, QTStr("stuff"), QTStr(response));
+	qDebug(response);
+
+	QMessageBox::question(this, QTStr("stuff"), reply->url().toString());
+
+	if (reply->error() == QNetworkReply::NoError) {
+		QByteArray response = reply->readAll();
+		QMessageBox::question(this, QTStr("Sucess"), QTStr(response));
+	} else // handle error
+	{
+		QVariant statusCode = reply->attribute(
+			QNetworkRequest::HttpStatusCodeAttribute);
+		int status = statusCode.toInt();
+
+		if (status != 200) {
+			QString reason =
+				reply->attribute(
+					     QNetworkRequest::
+						     HttpReasonPhraseAttribute)
+					.toString();
+			QMessageBox::question(
+			this, QTStr("Uh oh"),reason);
+		}
+	}
+	ui->preview->setVisible(true);
+	view->hide();
+	ui->generateSkimo->setText("Generate Skimo");
+	gen = false;
+}
+
+void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
+{
+	QByteArray response = reply->readAll();
+	QMessageBox::question(this, QTStr("VIEW"), QTStr(response));
+	qDebug("Response:   "+response);
+
+	if (reply->error() == QNetworkReply::NoError) {
+		QMessageBox::question(this, QTStr("Sucess"), QTStr(response));
+
+		QByteArray b = reply->readAll();
+		QFile file("C:\\Users\\wengd\\Downloads\\thing"); // "des" is the file path to the destination file
+		file.open(QIODevice::WriteOnly);
+		QDataStream out(&file);
+		out << b;
+		reply->deleteLater();
+
+		//This is faked for now
+		view->load(QUrl(QUrl::fromLocalFile(
+			QFileInfo("76e79303\\76e79303\\skimo.html")
+				.absoluteFilePath())));
+	} else // handle error
+	{
+		QVariant statusCode = reply->attribute(
+			QNetworkRequest::HttpStatusCodeAttribute);
+		int status = statusCode.toInt();
+
+		if (status != 200) {
+			QString reason =
+				reply->attribute(
+					     QNetworkRequest::
+						     HttpReasonPhraseAttribute)
+					.toString();
+			QMessageBox::question(this, QTStr("Uh oh"), reason);
+		}
+	}
 }
 
 void OBSBasic::VCamButtonClicked()

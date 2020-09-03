@@ -298,6 +298,9 @@ private:
 	QWebEngineView *view;
 	bool viewing = false;//True when view skimo is being displayed
 	bool gen = false; //True when skimo is generating
+	QNetworkAccessManager genManager;
+	QNetworkAccessManager viewManager;
+	QByteArray ba;
 
 	void UpdateMultiviewProjectorMenu();
 
@@ -902,7 +905,8 @@ private slots:
 	void on_noteButton_clicked();
 	void on_viewSkimo_clicked();
 	void on_generateSkimo_clicked();
-	void networkReplyFinished();
+	void generateSkimoFinished(QNetworkReply *reply);
+	void viewSkimoFinished(QNetworkReply *reply);
 
 	void VCamButtonClicked();
 	void on_settingsButton_clicked();
