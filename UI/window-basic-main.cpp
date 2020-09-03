@@ -5946,41 +5946,70 @@ void OBSBasic::on_generateSkimo_clicked()
 	//If opening browser, load page and disable other buttons
 	if (gen) {
 		ui->preview->setVisible(false);
-		//system("curl -L  -X POST -F \"file=@C:\\Users\\wengd\\Videos\\09_01_2020_13_14_02\\09_01_2020_13_14_02.mp4\" \-k \"https://skimo.tv/live/recording?assetid=AAAAAA&apikey=yKLxpeweS42A78&username=wengdahl1@gmail.com\"");
+
+		//Get file names
+		const char *mode =
+			config_get_string(basicConfig, "Output", "Mode");
+		const char *type =
+			config_get_string(basicConfig, "AdvOut", "RecType");
+		const char *adv_path =
+			strcmp(type, "Standard")
+				? config_get_string(basicConfig, "AdvOut",
+						    "FFFilePath")
+				: config_get_string(basicConfig, "AdvOut",
+						    "RecFilePath");
+		const char *path = strcmp(mode, "Advanced")
+					   ? config_get_string(basicConfig,
+							       "SimpleOutput",
+							       "FilePath")
+					   : adv_path;
+		QString vidFileName = QFileDialog::getOpenFileName(
+			this, tr("Open Video"), path,
+			tr("Video Files (*mp4)"));
+
+		QString anFileName = QFileDialog::getOpenFileName(
+			this, tr("Open Annotation"), path, tr("Text Files (*txt)"));
+
+
+		//Make Request
 		QHttpMultiPart *multiPart =
 			new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
 		QHttpPart vidPart;
-		vidPart.setHeader(
-			QNetworkRequest::ContentDispositionHeader,
-			QVariant(
-				"form-data; name=\"file\"; filename=\"09_03_2020_13_35_27.mp4\""));
 		vidPart.setHeader(QNetworkRequest::ContentTypeHeader,QVariant("video/mp4"));
 
-		QFile *file = new QFile("C:\\Users\\wengd\\Videos\\09_03_2020_13_35_27\\09_03_2020_13_35_27.mp4");
-		file->open(QIODevice::ReadOnly);
-		ba = file->readAll();
-		vidPart.setBody(ba);
-		file->setParent(
-			multiPart); // we cannot delete the file now, so delete it with the multiPart
-		vidPart.setRawHeader("Content-Length",
-				     QByteArray::number(ba.size()));
+		QFile *vidfile = new QFile(vidFileName);
+		QFileInfo fileInfo(vidfile->fileName());//Get name of file -> no path
+		vidPart.setHeader(
+			QNetworkRequest::ContentDispositionHeader,
+			QVariant("form-data; name=\"file\"; filename=\"" +
+				fileInfo.fileName() + "\""));
 
-		/*QHttpPart imagePart;
-		imagePart.setHeader(QNetworkRequest::ContentTypeHeader,
-				    QVariant("image/jpeg"));
-		imagePart.setHeader(QNetworkRequest::ContentDispositionHeader,
-				    QVariant("form-data; name=\"image\""));
-		QFile *file = new QFile("image.jpg");
-		file->open(QIODevice::ReadOnly);
-		imagePart.setBodyDevice(file);
-		file->setParent(
-			multiPart); // we cannot delete the file now, so delete it with the multiPart*/
+		vidfile->open(QIODevice::ReadOnly);
+		vidPart.setBodyDevice(vidfile);
+		vidfile->setParent(
+			multiPart); // we cannot delete the file now, so delete it with the multiPart
+
+		QHttpPart textPart;
+		textPart.setHeader(QNetworkRequest::ContentTypeHeader,
+				    QVariant("application/text"));
+		textPart.setHeader(QNetworkRequest::ContentDispositionHeader,
+				    QVariant("form-data; name=\"annotation\""));
+		QFile *txtfile = new QFile(anFileName);
+		txtfile->open(QIODevice::ReadOnly);
+		textPart.setBodyDevice(txtfile);
+		txtfile->setParent(
+			multiPart); // we cannot delete the file now, so delete it with the multiPart
 
 		multiPart->append(vidPart);
-		//multiPart->append(imagePart);
+		multiPart->append(textPart);
 
-		QUrl url("https://skimo.tv/live/recording?assetid=TESTCPP&apikey=yKLxpeweS42A78&username=wengdahl@gmail.com");
+		QString myUrl;
+		myUrl = "https://skimo.tv/live/recording?assetid=";
+		myUrl.append(fileInfo.fileName());//Unique ID for this skimo
+		myUrl.append("&apikey=yKLxpeweS42A78&username=wengdahl@gmail.com");
+
+		QUrl url(myUrl);
 		QNetworkRequest request(url);
 		/*request.setRawHeader("Content-Length",
 				     QByteArray::number(ba.size()));*/
@@ -5990,21 +6019,7 @@ void OBSBasic::on_generateSkimo_clicked()
 			reply); // delete the multiPart with the reply
 				// here connect signals etc.*/
 
-		/*QNetworkRequest request(QUrl("https://skimo.tv/live/recording?assetid=AAAAAA&apikey=yKLxpeweS42A78&username=wengdahl@gmail.com"));
-		request.setHeader(QNetworkRequest::ContentTypeHeader, "video/mp4");
-		request.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"file\""));
-
-		QFile file(
-			"C:\\Users\\wengd\\Videos\\09_03_2020_13_35_27\\09_03_2020_13_35_27.mp4");
-		if (file.open(QIODevice::ReadOnly)) {
-			ba = file.readAll();
-
-			request.setRawHeader("Content-Length", QByteArray::number(ba.size()));
-			genManager.post(request, ba);
-		}
-
-		/*view->load(QUrl(QUrl::fromLocalFile(
-			"C:\\Users\\wengd\\Downloads\\TestEmbedWorkaround\\Home.html")));*/
+		//Show the view
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
 				     ui->controlsDock->height());
@@ -6023,31 +6038,16 @@ void OBSBasic::on_generateSkimo_clicked()
 
 void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 {
-	QByteArray response = reply->readAll();
-	QMessageBox::question(this, QTStr("stuff"), QTStr(response));
-	qDebug(response);
-
-	QMessageBox::question(this, QTStr("stuff"), reply->url().toString());
-
 	if (reply->error() == QNetworkReply::NoError) {
 		QByteArray response = reply->readAll();
-		QMessageBox::question(this, QTStr("Sucess"), QTStr(response));
-	} else // handle error
-	{
-		QVariant statusCode = reply->attribute(
-			QNetworkRequest::HttpStatusCodeAttribute);
-		int status = statusCode.toInt();
-
-		if (status != 200) {
-			QString reason =
-				reply->attribute(
-					     QNetworkRequest::
-						     HttpReasonPhraseAttribute)
-					.toString();
-			QMessageBox::question(
-			this, QTStr("Uh oh"),reason);
-		}
+		QMessageBox::information(this,
+				      QTStr("Upload Complete"),
+				      QTStr("Skimo uploaded successfully"));
+	} else {
+		QMessageBox::warning(this, QTStr("Upload cancelled"),
+				      QTStr("No files uploaded"));
 	}
+	ui->recordButton->setEnabled(true);
 	ui->preview->setVisible(true);
 	view->hide();
 	ui->generateSkimo->setText("Generate Skimo");
