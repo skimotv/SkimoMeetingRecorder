@@ -298,9 +298,11 @@ private:
 	QWebEngineView *view;
 	bool viewing = false;//True when view skimo is being displayed
 	bool gen = false; //True when skimo is generating
+
+	QString email;
+	QNetworkAccessManager authManager;
 	QNetworkAccessManager genManager;
 	QNetworkAccessManager viewManager;
-	QByteArray ba;
 
 	void UpdateMultiviewProjectorMenu();
 
@@ -903,8 +905,13 @@ private slots:
 	void on_recordButton_clicked();
 	void on_bookmarkButton_clicked();
 	void on_noteButton_clicked();
+
+	void on_authButton_clicked();
 	void on_viewSkimo_clicked();
 	void on_generateSkimo_clicked();
+
+	//Network replies
+	void authFinished(QNetworkReply *reply);
 	void generateSkimoFinished(QNetworkReply *reply);
 	void viewSkimoFinished(QNetworkReply *reply);
 

@@ -34,10 +34,13 @@
 #include <QTime>
 #include <QWebEngineView>
 
+//HTTP stuff
 #include <QOAuth2AuthorizationCodeFlow>
 #include <QOAuthHttpServerReplyHandler.h>
 #include <qnetworkreply.h>
 #include <QHttpMultiPart>
+
+#include <QCryptographicHash>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -1897,7 +1900,9 @@ void OBSBasic::OBSInit()
 	ui->mixerDock->setVisible(false);
 	ui->scenesDock->setVisible(false);
 
-	//Connect managers for generate and view
+	//Connect managers for authorize, generate, and view
+	connect(&authManager, &QNetworkAccessManager::finished, this,
+		&OBSBasic::authFinished);
 	connect(&genManager, &QNetworkAccessManager::finished, this,
 		&OBSBasic::generateSkimoFinished);
 	connect(&viewManager, &QNetworkAccessManager::finished, this,
@@ -5906,6 +5911,29 @@ std::string OBSBasic::getTimestamp()
 	//Return the string
 	return std::string(timeString);
 }
+void OBSBasic::on_authButton_clicked() {
+	ui->viewSkimo->setEnabled(false);
+	ui->generateSkimo->setEnabled(false);
+
+	//Input box email
+	bool ok;
+	email = QInputDialog::getText(
+		this, tr("QInputDialog::getText()"), tr("Email address:"),
+		QLineEdit::Normal, "yourname@example.com", &ok);
+	if (!ok || email.isEmpty()) {
+		QMessageBox::information(this, QString("Enter email"), QString("Enter email address and click ok"));
+	}
+
+	//API call
+	QString req;
+	req.append("https://skimo.tv/user?username=");
+	req.append(email);
+	req.append("&apikey = yKLxpeweS42A78");
+	QUrl url(req);
+
+	QNetworkRequest request(QUrl("https://skimo.tv/user?username=wfengdahl@wpi.edu&apikey=yKLxpeweS42A78")); // without ID
+	authManager.get(request);
+}
 
 void OBSBasic::on_viewSkimo_clicked()
 {
@@ -5917,8 +5945,6 @@ void OBSBasic::on_viewSkimo_clicked()
 		QNetworkRequest request(
 			QUrl("https://skimo.tv/zip/76e79303")); // without ID
 		viewManager.get(request);
-
-		//system("curl \"https://skimo.tv/zip/76e79303\"");
 		//On get, load and display result
 
 		view->setFixedWidth(this->width());
@@ -5939,9 +5965,7 @@ void OBSBasic::on_viewSkimo_clicked()
 
 void OBSBasic::on_generateSkimo_clicked()
 {
-		
 	///////////////////////////////////////////////////////////////////
-
 	gen = !gen;
 	//If opening browser, load page and disable other buttons
 	if (gen) {
@@ -6035,6 +6059,46 @@ void OBSBasic::on_generateSkimo_clicked()
 	}
 	ui->recordButton->setEnabled(!gen);
 }
+void OBSBasic::authFinished(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError) {
+		QByteArray responseHash = reply->readAll();
+		bool ok;
+		QString text = QInputDialog::getText(
+			this, tr("QInputDialog::getText()"),
+			tr("Enter code to confirm email:"), QLineEdit::Normal,
+			"", &ok);
+		if (!ok || text.isEmpty()) {
+			QMessageBox::information(
+				this, QString("Code invalid"),
+				QString("Enter the code you recieved and press ok to confrim your email address"));
+			return;
+		}
+
+		QByteArray hashedCode = QCryptographicHash::hash(text.toUtf8(), QCryptographicHash::Sha256);
+		qDebug(responseHash);
+		qDebug(hashedCode);
+		if (responseHash.compare(hashedCode,Qt::CaseInsensitive) != 0) {
+			//Save email
+			config_set_string(GetGlobalConfig(), "General",
+						  "Email", email.toStdString().c_str());
+			qDebug(QString("EMAIL: "+email).toStdString().c_str());
+			//Enable
+			ui->viewSkimo->setEnabled(true);
+			ui->generateSkimo->setEnabled(true);
+		} else {
+			QMessageBox::information(
+				this, QString("Code invalid"),
+				QString("The code entered is not correct"));
+			return;
+		}
+	} else {
+		QMessageBox::warning(this, QTStr("Error authorizing"),
+				     QTStr("Not sure what happened, please do not try to enter unexpected special characters"));
+	}
+}
+
+
 
 void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 {
@@ -6056,13 +6120,7 @@ void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 
 void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 {
-	QByteArray response = reply->readAll();
-	QMessageBox::question(this, QTStr("VIEW"), QTStr(response));
-	qDebug("Response:   "+response);
-
 	if (reply->error() == QNetworkReply::NoError) {
-		QMessageBox::question(this, QTStr("Sucess"), QTStr(response));
-
 		QByteArray b = reply->readAll();
 		QFile file("C:\\Users\\wengd\\Downloads\\thing"); // "des" is the file path to the destination file
 		file.open(QIODevice::WriteOnly);
@@ -6086,7 +6144,7 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 					     QNetworkRequest::
 						     HttpReasonPhraseAttribute)
 					.toString();
-			QMessageBox::question(this, QTStr("Uh oh"), reason);
+			QMessageBox::question(this, QTStr("View failed to request"), reason);
 		}
 	}
 }

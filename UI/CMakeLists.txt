@@ -366,7 +366,7 @@ add_executable(obs WIN32
 	${obs_importers_SOURCES}
 	${obs_importers_HEADERS}
 	${obs_UI_HEADERS}
-	${obs_QRC_SOURCES} "Skimo/SkimoFiles.hpp")
+	${obs_QRC_SOURCES})
 
 if(WIN32)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)

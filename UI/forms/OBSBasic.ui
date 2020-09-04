@@ -100,6 +100,19 @@
             <property name="contextMenuPolicy">
              <enum>Qt::CustomContextMenu</enum>
             </property>
+            <widget class="QPushButton" name="authButton">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>0</y>
+               <width>75</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Sign in</string>
+             </property>
+            </widget>
             <addaction name="actionRemoveSource"/>
            </widget>
           </item>
@@ -178,7 +191,6 @@
      <addaction name="toggleControls"/>
      <addaction name="toggleStats"/>
     </widget>
-    <addaction name="actionFullscreenInterface"/>
     <addaction name="separator"/>
     <addaction name="viewMenuDocks"/>
     <addaction name="toggleListboxToolbars"/>
@@ -195,7 +207,6 @@
     <addaction name="separator"/>
    </widget>
    <addaction name="menu_File"/>
-   <addaction name="menuBasic_MainMenu_Edit"/>
    <addaction name="viewMenu"/>
    <addaction name="menuTools"/>
    <addaction name="menuBasic_MainMenu_Help"/>
@@ -390,7 +401,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>108</width>
+           <width>97</width>
            <height>16</height>
           </rect>
          </property>
