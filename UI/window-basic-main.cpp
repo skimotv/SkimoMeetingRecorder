@@ -6075,17 +6075,20 @@ void OBSBasic::authFinished(QNetworkReply *reply)
 			return;
 		}
 
-		QByteArray hashedCode = QCryptographicHash::hash(text.toUtf8(), QCryptographicHash::Sha256);
+		QByteArray hashedCode = QCryptographicHash::hash(text.toUtf8(), QCryptographicHash::Sha256).toHex();
 		qDebug(responseHash);
 		qDebug(hashedCode);
-		if (responseHash.compare(hashedCode,Qt::CaseInsensitive) != 0) {
+		if (responseHash.compare(hashedCode,Qt::CaseInsensitive) == 0) {
 			//Save email
 			config_set_string(GetGlobalConfig(), "General",
 						  "Email", email.toStdString().c_str());
-			qDebug(QString("EMAIL: "+email).toStdString().c_str());
 			//Enable
 			ui->viewSkimo->setEnabled(true);
 			ui->generateSkimo->setEnabled(true);
+			//Alert user
+			QMessageBox::information(
+				this, QString("Email registered"),
+				QString("Setup is complete, you may now upload skimo's with this email"));
 		} else {
 			QMessageBox::information(
 				this, QString("Code invalid"),
