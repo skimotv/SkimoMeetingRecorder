@@ -405,18 +405,25 @@ OBSBasic::OBSBasic(QWidget *parent)
 	else
 		ui->previewLabel->setHidden(!labels);
 
-	//ui->previewDisabledWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-	/*connect(ui->previewDisabledWidget,
-		SIGNAL(customContextMenuRequested(const QPoint &)), this,
-		SLOT(PreviewDisabledMenu(const QPoint &)));*/
-	/*connect(ui->enablePreviewButton, SIGNAL(clicked()), this,
-		SLOT(TogglePreview()));*/
-
 	connect(ui->scenes->model(),
 		SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)),
 		this,
 		SLOT(ScenesReordered(const QModelIndex &, int, int,
 				     const QModelIndex &, int)));
+
+
+	//Load email from file if possible
+	email = config_get_string(App()->GlobalConfig(),
+						 "General", "Email");
+	if (email.isEmpty()) {
+		ui->viewSkimo->setEnabled(false);
+		ui->generateSkimo->setEnabled(false);
+		QMessageBox::information(this, "Sign in",
+					 "Please sign in and confirm your email address (button in the upper left corner) to unlock generate and view features");
+	} else {
+		QMessageBox::information(this, "Welcome",
+					 "Welcome back " + email);
+	}
 }
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,
@@ -5928,10 +5935,10 @@ void OBSBasic::on_authButton_clicked() {
 	QString req;
 	req.append("https://skimo.tv/user?username=");
 	req.append(email);
-	req.append("&apikey = yKLxpeweS42A78");
+	req.append("&apikey=yKLxpeweS42A78");
 	QUrl url(req);
 
-	QNetworkRequest request(QUrl("https://skimo.tv/user?username=wfengdahl@wpi.edu&apikey=yKLxpeweS42A78")); // without ID
+	QNetworkRequest request(url); // without ID
 	authManager.get(request);
 }
 
@@ -5960,7 +5967,6 @@ void OBSBasic::on_viewSkimo_clicked()
 		view->hide();
 		ui->viewSkimo->setText("View Skimo");
 	}
-	ui->recordButton->setEnabled(!viewing);
 }
 
 void OBSBasic::on_generateSkimo_clicked()
@@ -6030,8 +6036,10 @@ void OBSBasic::on_generateSkimo_clicked()
 
 		QString myUrl;
 		myUrl = "https://skimo.tv/live/recording?assetid=";
+		myUrl.append(email); //User email
 		myUrl.append(fileInfo.fileName());//Unique ID for this skimo
-		myUrl.append("&apikey=yKLxpeweS42A78&username=wengdahl@gmail.com");
+		myUrl.append("&apikey=yKLxpeweS42A78&username=");
+		myUrl.append(email);
 
 		QUrl url(myUrl);
 		QNetworkRequest request(url);
@@ -6057,7 +6065,6 @@ void OBSBasic::on_generateSkimo_clicked()
 		view->hide();
 		ui->generateSkimo->setText("Generate Skimo");
 	}
-	ui->recordButton->setEnabled(!gen);
 }
 void OBSBasic::authFinished(QNetworkReply *reply)
 {
@@ -6114,7 +6121,6 @@ void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 		QMessageBox::warning(this, QTStr("Upload cancelled"),
 				      QTStr("No files uploaded"));
 	}
-	ui->recordButton->setEnabled(true);
 	ui->preview->setVisible(true);
 	view->hide();
 	ui->generateSkimo->setText("Generate Skimo");
