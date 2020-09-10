@@ -298,6 +298,7 @@ private:
 	QWebEngineView *view;
 	bool viewing = false;//True when view skimo is being displayed
 	bool gen = false; //True when skimo is generating
+	bool uploadInProgress = false;//True when upload is in progress
 
 	QString email;
 	QNetworkAccessManager authManager;

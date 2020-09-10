@@ -5976,90 +5976,112 @@ void OBSBasic::on_generateSkimo_clicked()
 	//If opening browser, load page and disable other buttons
 	if (gen) {
 		ui->preview->setVisible(false);
+		if (uploadInProgress) {
+			view->setHtml("TEST");
 
-		//Get file names
-		const char *mode =
-			config_get_string(basicConfig, "Output", "Mode");
-		const char *type =
-			config_get_string(basicConfig, "AdvOut", "RecType");
-		const char *adv_path =
-			strcmp(type, "Standard")
-				? config_get_string(basicConfig, "AdvOut",
-						    "FFFilePath")
-				: config_get_string(basicConfig, "AdvOut",
-						    "RecFilePath");
-		const char *path = strcmp(mode, "Advanced")
-					   ? config_get_string(basicConfig,
-							       "SimpleOutput",
-							       "FilePath")
-					   : adv_path;
-		QString vidFileName = QFileDialog::getOpenFileName(
-			this, tr("Open Video"), path,
-			tr("Video Files (*mp4)"));
+			view->setFixedWidth(this->width());
+			view->setFixedHeight(this->height() -
+					     ui->controlsDock->height());
+			view->show();
 
-		QString anFileName = QFileDialog::getOpenFileName(
-			this, tr("Open Annotation"), path, tr("Text Files (*txt)"));
+			ui->generateSkimo->setText(
+				"Close upload view (uploads continue in background)");
+			ui->viewSkimo->setText("View Skimo");
+		} else {
+			//Get file names
+			const char *mode = config_get_string(basicConfig,
+							     "Output", "Mode");
+			const char *type = config_get_string(
+				basicConfig, "AdvOut", "RecType");
+			const char *adv_path =
+				strcmp(type, "Standard")
+					? config_get_string(basicConfig,
+							    "AdvOut",
+							    "FFFilePath")
+					: config_get_string(basicConfig,
+							    "AdvOut",
+							    "RecFilePath");
+			const char *path =
+				strcmp(mode, "Advanced")
+					? config_get_string(basicConfig,
+							    "SimpleOutput",
+							    "FilePath")
+					: adv_path;
+			QString vidFileName = QFileDialog::getOpenFileName(
+				this, tr("Open Video"), path,
+				tr("Video Files (*mp4)"));
 
+			QString anFileName = QFileDialog::getOpenFileName(
+				this, tr("Open Annotation"), path,
+				tr("Text Files (*txt)"));
 
-		//Make Request
-		QHttpMultiPart *multiPart =
-			new QHttpMultiPart(QHttpMultiPart::FormDataType);
+			//Make Request
+			QHttpMultiPart *multiPart = new QHttpMultiPart(
+				QHttpMultiPart::FormDataType);
 
-		QHttpPart vidPart;
-		vidPart.setHeader(QNetworkRequest::ContentTypeHeader,QVariant("video/mp4"));
+			QHttpPart vidPart;
+			vidPart.setHeader(QNetworkRequest::ContentTypeHeader,
+					  QVariant("video/mp4"));
 
-		QFile *vidfile = new QFile(vidFileName);
-		QFileInfo fileInfo(vidfile->fileName());//Get name of file -> no path
-		vidPart.setHeader(
-			QNetworkRequest::ContentDispositionHeader,
-			QVariant("form-data; name=\"file\"; filename=\"" +
-				fileInfo.fileName() + "\""));
+			QFile *vidfile = new QFile(vidFileName);
+			QFileInfo fileInfo(
+				vidfile->fileName()); //Get name of file -> no path
+			vidPart.setHeader(
+				QNetworkRequest::ContentDispositionHeader,
+				QVariant(
+					"form-data; name=\"file\"; filename=\"" +
+					fileInfo.fileName() + "\""));
 
-		vidfile->open(QIODevice::ReadOnly);
-		vidPart.setBodyDevice(vidfile);
-		vidfile->setParent(
-			multiPart); // we cannot delete the file now, so delete it with the multiPart
+			vidfile->open(QIODevice::ReadOnly);
+			vidPart.setBodyDevice(vidfile);
+			vidfile->setParent(
+				multiPart); // we cannot delete the file now, so delete it with the multiPart
 
-		QHttpPart textPart;
-		textPart.setHeader(QNetworkRequest::ContentTypeHeader,
-				    QVariant("application/text"));
-		textPart.setHeader(QNetworkRequest::ContentDispositionHeader,
-				    QVariant("form-data; name=\"annotation\""));
-		QFile *txtfile = new QFile(anFileName);
-		txtfile->open(QIODevice::ReadOnly);
-		textPart.setBodyDevice(txtfile);
-		txtfile->setParent(
-			multiPart); // we cannot delete the file now, so delete it with the multiPart
+			QHttpPart textPart;
+			textPart.setHeader(QNetworkRequest::ContentTypeHeader,
+					   QVariant("application/text"));
+			textPart.setHeader(
+				QNetworkRequest::ContentDispositionHeader,
+				QVariant("form-data; name=\"annotation\""));
+			QFile *txtfile = new QFile(anFileName);
+			txtfile->open(QIODevice::ReadOnly);
+			textPart.setBodyDevice(txtfile);
+			txtfile->setParent(
+				multiPart); // we cannot delete the file now, so delete it with the multiPart
 
-		multiPart->append(vidPart);
-		multiPart->append(textPart);
+			multiPart->append(vidPart);
+			multiPart->append(textPart);
 
-		QString myUrl;
-		myUrl = "https://skimo.tv/live/recording?assetid=";
-		myUrl.append(email); //User email
-		myUrl.append(fileInfo.fileName());//Unique ID for this skimo
-		myUrl.append("&apikey=yKLxpeweS42A78&username=");
-		myUrl.append(email);
+			QString myUrl;
+			myUrl = "https://skimo.tv/live/recording?assetid=";
+			myUrl.append(email); //User email
+			myUrl.append(
+				fileInfo.fileName()); //Unique ID for this skimo
+			myUrl.append("&apikey=yKLxpeweS42A78&username=");
+			myUrl.append(email);
 
-		QUrl url(myUrl);
-		QNetworkRequest request(url);
-		/*request.setRawHeader("Content-Length",
+			QUrl url(myUrl);
+			QNetworkRequest request(url);
+			/*request.setRawHeader("Content-Length",
 				     QByteArray::number(ba.size()));*/
 
-		QNetworkReply *reply = genManager.post(request, multiPart);
-		multiPart->setParent(
-			reply); // delete the multiPart with the reply
-				// here connect signals etc.*/
+			QNetworkReply *reply =
+				genManager.post(request, multiPart);
+			multiPart->setParent(
+				reply); // delete the multiPart with the reply
+					// here connect signals etc.*/
 
-		//Show the view
-		view->setFixedWidth(this->width());
-		view->setFixedHeight(this->height() -
-				     ui->controlsDock->height());
-		view->show();
+			//Show the view
+			view->setFixedWidth(this->width());
+			view->setFixedHeight(this->height() -
+					     ui->controlsDock->height());
+			view->show();
 
-		ui->generateSkimo->setText("Cancel uploading Skimo");
-		ui->viewSkimo->setText("View Skimo");
-		viewing = false;
+			ui->generateSkimo->setText("Close upload view (uploads continue in background)");
+			ui->viewSkimo->setText("View Skimo");
+			viewing = false;
+			uploadInProgress = true;
+		}
 	} else {
 		ui->preview->setVisible(true);
 		view->hide();
@@ -6112,6 +6134,7 @@ void OBSBasic::authFinished(QNetworkReply *reply)
 
 void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 {
+	uploadInProgress = false;
 	if (reply->error() == QNetworkReply::NoError) {
 		QByteArray response = reply->readAll();
 		QMessageBox::information(this,
