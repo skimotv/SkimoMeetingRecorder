@@ -421,8 +421,27 @@ OBSBasic::OBSBasic(QWidget *parent)
 		QMessageBox::information(this, "Sign in",
 					 "Please sign in and confirm your email address (button in the upper left corner) to unlock generate and view features");
 	} else {
-		QMessageBox::information(this, "Welcome",
-					 "Welcome back " + email);
+		QString hash = config_get_string(App()->GlobalConfig(), "General",
+					  "hash");
+		QString unhash = config_get_string(App()->GlobalConfig(),
+						      "General",
+					  "unhash");
+
+		QByteArray hashedCode =	QCryptographicHash::hash(unhash.toUtf8(),
+						 QCryptographicHash::Sha256)
+				.toHex();
+
+		if (hash.compare(hashedCode, Qt::CaseInsensitive) == 0) {
+			QMessageBox::information(this, "Welcome",
+						 "Welcome back " + email);
+			ui->authButton->setText("Sign out");
+		}
+		else {
+			QMessageBox::information(this, "Problem with config file",
+						 "Issue with saved hash in config file, please log out and log in again to fix it");
+			ui->viewSkimo->setEnabled(false);
+			ui->generateSkimo->setEnabled(false);
+		}
 	}
 }
 
@@ -5919,27 +5938,41 @@ std::string OBSBasic::getTimestamp()
 	return std::string(timeString);
 }
 void OBSBasic::on_authButton_clicked() {
-	ui->viewSkimo->setEnabled(false);
-	ui->generateSkimo->setEnabled(false);
+	if (email.length()) {
+		ui->viewSkimo->setEnabled(false);
+		ui->generateSkimo->setEnabled(false);
 
-	//Input box email
-	bool ok;
-	email = QInputDialog::getText(
-		this, tr("QInputDialog::getText()"), tr("Email address:"),
-		QLineEdit::Normal, "yourname@example.com", &ok);
-	if (!ok || email.isEmpty()) {
-		QMessageBox::information(this, QString("Enter email"), QString("Enter email address and click ok"));
+		email = "";
+		//Clear data in config file
+		config_set_string(GetGlobalConfig(), "General", "Email", email.toStdString().c_str());
+		config_set_string(GetGlobalConfig(), "General", "hash", "");
+		config_set_string(GetGlobalConfig(), "General", "unhash", "");
+
+		ui->authButton->setText("Sign in");
+	} else {
+		//Input box email
+		bool ok;
+		email = QInputDialog::getText(this,
+						tr("Sign in"),
+						tr("Email address:"),
+						QLineEdit::Normal,
+						"yourname@example.com", &ok);
+		if (!ok || email.isEmpty()) {
+			QMessageBox::information(
+				this, QString("Enter email"),
+				QString("Enter email address and click ok"));
+		}
+
+		//API call
+		QString req;
+		req.append("https://skimo.tv/user?username=");
+		req.append(email);
+		req.append("&apikey=yKLxpeweS42A78");
+		QUrl url(req);
+
+		QNetworkRequest request(url); // without ID
+		authManager.get(request);
 	}
-
-	//API call
-	QString req;
-	req.append("https://skimo.tv/user?username=");
-	req.append(email);
-	req.append("&apikey=yKLxpeweS42A78");
-	QUrl url(req);
-
-	QNetworkRequest request(url); // without ID
-	authManager.get(request);
 }
 
 void OBSBasic::on_viewSkimo_clicked()
@@ -6105,12 +6138,15 @@ void OBSBasic::authFinished(QNetworkReply *reply)
 		}
 
 		QByteArray hashedCode = QCryptographicHash::hash(text.toUtf8(), QCryptographicHash::Sha256).toHex();
-		qDebug(responseHash);
-		qDebug(hashedCode);
 		if (responseHash.compare(hashedCode,Qt::CaseInsensitive) == 0) {
 			//Save email
 			config_set_string(GetGlobalConfig(), "General",
 						  "Email", email.toStdString().c_str());
+			//Save hashes, lets us stop users from manually writing email into file
+			config_set_string(GetGlobalConfig(), "General", "hash",
+					 hashedCode);
+			config_set_string(GetGlobalConfig(), "General", "unhash",
+					  text.toUtf8());
 			//Enable
 			ui->viewSkimo->setEnabled(true);
 			ui->generateSkimo->setEnabled(true);
@@ -6118,6 +6154,8 @@ void OBSBasic::authFinished(QNetworkReply *reply)
 			QMessageBox::information(
 				this, QString("Email registered"),
 				QString("Setup is complete, you may now upload skimo's with this email"));
+
+			ui->authButton->setText("Sign out");
 		} else {
 			QMessageBox::information(
 				this, QString("Code invalid"),
