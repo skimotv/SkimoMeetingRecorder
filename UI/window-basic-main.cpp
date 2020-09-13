@@ -6041,10 +6041,18 @@ void OBSBasic::on_generateSkimo_clicked()
 			QHttpPart textPart;
 			textPart.setHeader(QNetworkRequest::ContentTypeHeader,
 					   QVariant("application/text"));
+
+
+			QFile *txtfile = new QFile(anFileName);
+			QFileInfo fileInfoTxt(
+				txtfile->fileName()); //Get name of file -> no path
 			textPart.setHeader(
 				QNetworkRequest::ContentDispositionHeader,
-				QVariant("form-data; name=\"annotation\""));
-			QFile *txtfile = new QFile(anFileName);
+				QVariant(
+					"form-data; name=\"annotation\"; filename=\"" +
+					fileInfoTxt.fileName() + "\""));
+
+
 			txtfile->open(QIODevice::ReadOnly);
 			textPart.setBodyDevice(txtfile);
 			txtfile->setParent(
@@ -6052,6 +6060,9 @@ void OBSBasic::on_generateSkimo_clicked()
 
 			multiPart->append(vidPart);
 			multiPart->append(textPart);
+
+			qDebug() << "annotation file size:" << txtfile->size();
+			qDebug() << "video file size:" << vidfile->size();
 
 			QString myUrl;
 			myUrl = "https://skimo.tv/live/recording?assetid=";
