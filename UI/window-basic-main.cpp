@@ -2276,8 +2276,7 @@ void OBSBasic::CreateHotkeys()
 		return false;                                              \
 	}
 
-	LoadHotkeyPair(streamingHotkeys, "OBSBasic.StartStreaming",
-		       "OBSBasic.StopStreaming");
+
 
 	auto cb = [](void *data, obs_hotkey_id, obs_hotkey_t *, bool pressed) {
 		OBSBasic &basic = *static_cast<OBSBasic *>(data);
@@ -2286,10 +2285,7 @@ void OBSBasic::CreateHotkeys()
 		}
 	};
 
-	forceStreamingStopHotkey = obs_hotkey_register_frontend(
-		"OBSBasic.ForceStopStreaming",
-		Str("Basic.Main.ForceStopStreaming"), cb, this);
-	LoadHotkey(forceStreamingStopHotkey, "OBSBasic.ForceStopStreaming");
+
 
 	recordingHotkeys = obs_hotkey_pair_register_frontend(
 		"OBSBasic.StartRecording", Str("Basic.Main.StartRecording"),
@@ -2315,35 +2311,7 @@ void OBSBasic::CreateHotkeys()
 	LoadHotkeyPair(pauseHotkeys, "OBSBasic.PauseRecording",
 		       "OBSBasic.UnpauseRecording");
 
-	replayBufHotkeys = obs_hotkey_pair_register_frontend(
-		"OBSBasic.StartReplayBuffer",
-		Str("Basic.Main.StartReplayBuffer"),
-		"OBSBasic.StopReplayBuffer", Str("Basic.Main.StopReplayBuffer"),
-		MAKE_CALLBACK(!basic.outputHandler->ReplayBufferActive(),
-			      basic.StartReplayBuffer,
-			      "Starting replay buffer"),
-		MAKE_CALLBACK(basic.outputHandler->ReplayBufferActive(),
-			      basic.StopReplayBuffer, "Stopping replay buffer"),
-		this, this);
-	LoadHotkeyPair(replayBufHotkeys, "OBSBasic.StartReplayBuffer",
-		       "OBSBasic.StopReplayBuffer");
 
-	if (vcamEnabled) {
-		vcamHotkeys = obs_hotkey_pair_register_frontend(
-			"OBSBasic.StartVirtualCam",
-			Str("Basic.Main.StartVirtualCam"),
-			"OBSBasic.StopVirtualCam",
-			Str("Basic.Main.StopVirtualCam"),
-			MAKE_CALLBACK(!basic.outputHandler->VirtualCamActive(),
-				      basic.StartVirtualCam,
-				      "Starting virtual camera"),
-			MAKE_CALLBACK(basic.outputHandler->VirtualCamActive(),
-				      basic.StopVirtualCam,
-				      "Stopping virtual camera"),
-			this, this);
-		LoadHotkeyPair(vcamHotkeys, "OBSBasic.StartVirtualCam",
-			       "OBSBasic.StopVirtualCam");
-	}
 
 	togglePreviewHotkeys = obs_hotkey_pair_register_frontend(
 		"OBSBasic.EnablePreview",
