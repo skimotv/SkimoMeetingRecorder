@@ -6133,7 +6133,7 @@ void OBSBasic::authFinished(QNetworkReply *reply)
 		if (!ok || text.isEmpty()) {
 			QMessageBox::information(
 				this, QString("Code invalid"),
-				QString("Enter the code you recieved and press ok to confrim your email address"));
+				QString("Enter the code you received and press ok to confirm your email address"));
 			return;
 		}
 
