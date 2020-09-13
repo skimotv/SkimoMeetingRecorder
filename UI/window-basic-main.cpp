@@ -4830,7 +4830,7 @@ void OBSBasic::CreateSourcePopupMenu(int idx, bool preview)
 		popup.addAction(QTStr("Properties"), this,
 				SLOT(on_actionSourceProperties_triggered()));
 
-	} 
+	}
 
 	popup.exec(QCursor::pos());
 }
@@ -6153,7 +6153,7 @@ void OBSBasic::authFinished(QNetworkReply *reply)
 			//Alert user
 			QMessageBox::information(
 				this, QString("Email registered"),
-				QString("Setup is complete, you may now upload skimo's with this email"));
+				QString("Setup is complete. You can now start generating Skimo using the Skimo Engine"));
 
 			ui->authButton->setText("Sign out");
 		} else {
