@@ -5955,6 +5955,8 @@ void OBSBasic::on_viewSkimo_clicked()
 		viewManager.get(request);
 		//On get, load and display result
 
+	
+
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
 					ui->controlsDock->height());
@@ -6049,8 +6051,7 @@ void OBSBasic::on_generateSkimo_clicked()
 			textPart.setHeader(
 				QNetworkRequest::ContentDispositionHeader,
 				QVariant(
-					"form-data; name=\"annotation\"; filename=\"" +
-					fileInfoTxt.fileName() + "\""));
+					"form-data; name=\"annotation\"; filename=\"annotations.txt\""));
 
 
 			txtfile->open(QIODevice::ReadOnly);
@@ -6061,8 +6062,6 @@ void OBSBasic::on_generateSkimo_clicked()
 			multiPart->append(vidPart);
 			multiPart->append(textPart);
 
-			qDebug() << "annotation file size:" << txtfile->size();
-			qDebug() << "video file size:" << vidfile->size();
 
 			QString myUrl;
 			myUrl = "https://skimo.tv/live/recording?assetid=";
@@ -6170,11 +6169,13 @@ void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 {
 	if (reply->error() == QNetworkReply::NoError) {
-		QByteArray b = reply->readAll();
-		QFile file("C:\\Users\\wengd\\Downloads\\thing"); // "des" is the file path to the destination file
+		QFile loadFile("C:\\Users\\wengd\\Downloads\\wfengdahl@wpi.edu09_03_2020_19_39_43.mp4.zip");
+		loadFile.open(QIODevice::ReadOnly);
+
+		QFile file("C:\\Users\\wengd\\Downloads\\thing.zip"); // "des" is the file path to the destination file
 		file.open(QIODevice::WriteOnly);
-		QDataStream out(&file);
-		out << b;
+		file.write(loadFile.readAll()); //reply->readAll());
+		file.close();
 		reply->deleteLater();
 
 		//This is faked for now

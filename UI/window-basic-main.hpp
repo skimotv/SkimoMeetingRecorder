@@ -300,6 +300,7 @@ private:
 	bool gen = false; //True when skimo is generating
 	bool uploadInProgress = false;//True when upload is in progress
 
+
 	QString email;
 	QNetworkAccessManager authManager;
 	QNetworkAccessManager genManager;
