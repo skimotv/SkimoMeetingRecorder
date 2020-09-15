@@ -5951,7 +5951,7 @@ void OBSBasic::on_viewSkimo_clicked()
 		ui->preview->setVisible(false);
 
 		QNetworkRequest request(
-			QUrl("https://skimo.tv/zip/76e79303")); // without ID
+			QUrl("https://skimo.tv/zip/76e79303"));
 		viewManager.get(request);
 		//On get, load and display result
 
@@ -6169,12 +6169,13 @@ void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 {
 	if (reply->error() == QNetworkReply::NoError) {
-		QFile loadFile("C:\\Users\\wengd\\Downloads\\wfengdahl@wpi.edu09_03_2020_19_39_43.mp4.zip");
-		loadFile.open(QIODevice::ReadOnly);
+		//Using this, was able to manually load a file into the thing
+		/*QFile loadFile("C:\\Users\\wengd\\Downloads\\wfengdahl@wpi.edu09_03_2020_19_39_43.mp4.zip");
+		loadFile.open(QIODevice::ReadOnly);*/
 
-		QFile file("C:\\Users\\wengd\\Downloads\\thing.zip"); // "des" is the file path to the destination file
+		QFile file("C:\\Users\\wengd\\Downloads\\thing.html"); // "des" is the file path to the destination file
 		file.open(QIODevice::WriteOnly);
-		file.write(loadFile.readAll()); //reply->readAll());
+		file.write(reply->readAll());
 		file.close();
 		reply->deleteLater();
 
