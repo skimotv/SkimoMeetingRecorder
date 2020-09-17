@@ -6014,9 +6014,12 @@ void OBSBasic::on_generateSkimo_clicked()
 				this, tr("Open Video"), path,
 				tr("Video Files (*mp4)"));
 
-			QString anFileName = QFileDialog::getOpenFileName(
-				this, tr("Open Annotation"), path,
-				tr("Text Files (*txt)"));
+			//If user clicked cancel
+			if (vidFileName == NULL) {
+				ui->preview->setVisible(true);
+				gen = !gen;
+				return;
+			}
 
 			//Make Request
 			QHttpMultiPart *multiPart = new QHttpMultiPart(
@@ -6045,7 +6048,9 @@ void OBSBasic::on_generateSkimo_clicked()
 					   QVariant("application/text"));
 
 
-			QFile *txtfile = new QFile(anFileName);
+			QFile *txtfile = new QFile(fileInfo.absoluteDir().absolutePath()+"/annotations.txt");
+			qDebug(QString("FILE: "+txtfile->fileName()).toStdString().c_str());
+			
 			QFileInfo fileInfoTxt(
 				txtfile->fileName()); //Get name of file -> no path
 			textPart.setHeader(
@@ -6054,14 +6059,15 @@ void OBSBasic::on_generateSkimo_clicked()
 					"form-data; name=\"annotation\"; filename=\"annotations.txt\""));
 
 
-			txtfile->open(QIODevice::ReadOnly);
-			textPart.setBodyDevice(txtfile);
-			txtfile->setParent(
-				multiPart); // we cannot delete the file now, so delete it with the multiPart
 
+			//Append the two files to the request
 			multiPart->append(vidPart);
-			multiPart->append(textPart);
-
+			if (txtfile->open(QIODevice::ReadOnly)) {//Only append annotation file if it exists
+				textPart.setBodyDevice(txtfile);
+				txtfile->setParent(
+					multiPart); // we cannot delete the file now, so delete it with the multiPart
+				multiPart->append(textPart);
+			}
 
 			QString myUrl;
 			myUrl = "https://skimo.tv/live/recording?assetid=";
@@ -6073,8 +6079,6 @@ void OBSBasic::on_generateSkimo_clicked()
 
 			QUrl url(myUrl);
 			QNetworkRequest request(url);
-			/*request.setRawHeader("Content-Length",
-				     QByteArray::number(ba.size()));*/
 
 			QNetworkReply *reply =
 				genManager.post(request, multiPart);
@@ -6173,7 +6177,7 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 		/*QFile loadFile("C:\\Users\\wengd\\Downloads\\wfengdahl@wpi.edu09_03_2020_19_39_43.mp4.zip");
 		loadFile.open(QIODevice::ReadOnly);*/
 
-		QFile file("C:\\Users\\wengd\\Downloads\\thing.html"); // "des" is the file path to the destination file
+		QFile file("C:\\Users\\wengd\\Downloads\\thing.zip"); // "des" is the file path to the destination file
 		file.open(QIODevice::WriteOnly);
 		file.write(reply->readAll());
 		file.close();
