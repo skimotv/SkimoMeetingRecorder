@@ -5951,11 +5951,11 @@ void OBSBasic::on_viewSkimo_clicked()
 		ui->preview->setVisible(false);
 
 		QNetworkRequest request(
-			QUrl("https://skimo.tv/zip/76e79303"));
+			QUrl("https://skimo.tv/files/76e79303.zip"));
 		viewManager.get(request);
 		//On get, load and display result
 
-	
+
 
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
@@ -6050,7 +6050,7 @@ void OBSBasic::on_generateSkimo_clicked()
 
 			QFile *txtfile = new QFile(fileInfo.absoluteDir().absolutePath()+"/annotations.txt");
 			qDebug(QString("FILE: "+txtfile->fileName()).toStdString().c_str());
-			
+
 			QFileInfo fileInfoTxt(
 				txtfile->fileName()); //Get name of file -> no path
 			textPart.setHeader(
@@ -6177,7 +6177,7 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 		/*QFile loadFile("C:\\Users\\wengd\\Downloads\\wfengdahl@wpi.edu09_03_2020_19_39_43.mp4.zip");
 		loadFile.open(QIODevice::ReadOnly);*/
 
-		QFile file("C:\\Users\\wengd\\Downloads\\thing.zip"); // "des" is the file path to the destination file
+		QFile file("/Users/vasusrini/a.zip"); // "des" is the file path to the destination file
 		file.open(QIODevice::WriteOnly);
 		file.write(reply->readAll());
 		file.close();
