@@ -95,6 +95,7 @@ using namespace std;
 #endif
 
 #include "ui-config.h"
+#include <QProcess>
 
 struct QCef;
 struct QCefCookieManager;
@@ -6177,11 +6178,29 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 		/*QFile loadFile("C:\\Users\\wengd\\Downloads\\wfengdahl@wpi.edu09_03_2020_19_39_43.mp4.zip");
 		loadFile.open(QIODevice::ReadOnly);*/
 
-		QFile file("/Users/vasusrini/a.zip"); // "des" is the file path to the destination file
+		QFile file("C:\\Users\\wengd\\Downloads\\thing.zip"); // "des" is the file path to the destination file
 		file.open(QIODevice::WriteOnly);
 		file.write(reply->readAll());
 		file.close();
 		reply->deleteLater();
+
+		//Unzip - Didn't have sucess yet
+		/*QString extractProgram = "C:\\Program Files\\7-Zip\\7z.exe";
+		QStringList extractArguments;
+		extractArguments << "x";  // extract files and directories
+		extractArguments << "-y"; // suppress questions
+		extractArguments
+			<< "-o" << "C:/Users/wengd/Downloads"; // extract to installdir
+		extractArguments << "C:/Users/wengd/Downloads/thing.zip";
+
+		std::cout << extractProgram.toStdString() << " "
+			  << extractArguments.join(" ").toStdString()
+			  << std::endl;
+
+		// start extraction
+		QProcess *extractionProcess = new QProcess();
+		extractionProcess->start(extractProgram, extractArguments);*/
+
 
 		//This is faked for now
 		view->load(QUrl(QUrl::fromLocalFile(
