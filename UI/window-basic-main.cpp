@@ -5957,7 +5957,6 @@ void OBSBasic::on_viewSkimo_clicked()
 		//On get, load and display result
 
 
-
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
 					ui->controlsDock->height());
@@ -6021,6 +6020,7 @@ void OBSBasic::on_generateSkimo_clicked()
 				gen = !gen;
 				return;
 			}
+
 
 			//Make Request
 			QHttpMultiPart *multiPart = new QHttpMultiPart(
@@ -6178,28 +6178,29 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 		/*QFile loadFile("C:\\Users\\wengd\\Downloads\\wfengdahl@wpi.edu09_03_2020_19_39_43.mp4.zip");
 		loadFile.open(QIODevice::ReadOnly);*/
 
-		QFile file("C:\\Users\\wengd\\Downloads\\thing.zip"); // "des" is the file path to the destination file
+
+		QFile file("/Users/vasusrini/a.zip"); // "des" is the file path to the destination file
 		file.open(QIODevice::WriteOnly);
 		file.write(reply->readAll());
 		file.close();
 		reply->deleteLater();
 
-		//Unzip - Didn't have sucess yet
-		/*QString extractProgram = "C:\\Program Files\\7-Zip\\7z.exe";
-		QStringList extractArguments;
-		extractArguments << "x";  // extract files and directories
-		extractArguments << "-y"; // suppress questions
-		extractArguments
-			<< "-o" << "C:/Users/wengd/Downloads"; // extract to installdir
-		extractArguments << "C:/Users/wengd/Downloads/thing.zip";
+    /**** Start Fiverr job
+		QuaZip zip("/Users/vasusrini/a.zip");
+		zip.open(QuaZip::mdUnzip);
 
-		std::cout << extractProgram.toStdString() << " "
-			  << extractArguments.join(" ").toStdString()
-			  << std::endl;
+		QuaZipFile file(&zip);
 
-		// start extraction
-		QProcess *extractionProcess = new QProcess();
-		extractionProcess->start(extractProgram, extractArguments);*/
+		for(bool f=zip.goToFirstFile(); f; f=zip.goToNextFile()) {
+    	file.open(QIODevice::ReadOnly);
+    //same functionality as QIODevice::readData() -- data is a char*, maxSize is qint64
+    	file.readData(data,maxSize);
+    //do something with the data
+    	file.close();
+		}
+
+		zip.close();
+		*** end fiverr job */
 
 
 		//This is faked for now
