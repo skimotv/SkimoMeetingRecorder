@@ -144,13 +144,6 @@
          </property>
         </spacer>
        </item>
-       <item>
-        <widget class="QPushButton" name="aboutOBS">
-         <property name="text">
-          <string>About Skimo Meeting Recording</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
     </layout>
