@@ -306,6 +306,25 @@ private:
 	QNetworkAccessManager genManager;
 	QNetworkAccessManager viewManager;
 
+	// vasu added this start
+	QString pathToStoreSkimo;
+	QNetworkAccessManager sourceMp4Manager;
+	QNetworkAccessManager subtitlesSubManager;
+	QNetworkAccessManager annotationsTxtManager;
+	QNetworkAccessManager LogoPngManager;
+	QNetworkAccessManager favIconManager;
+	QNetworkAccessManager skimoLogoPngManager;
+	QNetworkAccessManager screenCssManager;
+	QNetworkAccessManager revealCssManager;
+	QNetworkAccessManager mainMinCssManager;
+	QNetworkAccessManager skimoCssManager;
+	QNetworkAccessManager handleCssManager;
+	QNetworkAccessManager revealJsManager;
+	QNetworkAccessManager videoPlayerJsManager;
+	QNetworkAccessManager handleJsManager;
+	QNetworkAccessManager SkimoJsManager;
+	// vasu added this end
+
 	void UpdateMultiviewProjectorMenu();
 
 	void DrawBackdrop(float cx, float cy);
@@ -916,6 +935,24 @@ private slots:
 	void authFinished(QNetworkReply *reply);
 	void generateSkimoFinished(QNetworkReply *reply);
 	void viewSkimoFinished(QNetworkReply *reply);
+
+	// vasu added this start
+	void getSourceMp4(QNetworkReply *reply);
+	void getSubtitlesSub(QNetworkReply *reply);
+	void getAnnotationsTxt(QNetworkReply *reply);
+	void getLogoPng(QNetworkReply *reply);
+	void getFavIcon(QNetworkReply *reply);
+	void getSkimoLogoPng(QNetworkReply *reply);
+	void getScreenCss(QNetworkReply *reply);
+	void getRevealCss(QNetworkReply *reply);
+	void getMainMinCss(QNetworkReply *reply);
+	void getSkimoCss(QNetworkReply *reply);
+	void getHandleCss(QNetworkReply *reply);
+	void getRevealJS(QNetworkReply *reply);
+	void getVideoPlayerJS(QNetworkReply *reply);
+	void getHandleJS(QNetworkReply *reply);
+	void getSkimoJS(QNetworkReply *reply);
+	// vasu added this end
 
 	void VCamButtonClicked();
 	void on_settingsButton_clicked();
