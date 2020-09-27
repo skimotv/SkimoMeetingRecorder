@@ -34,13 +34,13 @@ OBSAbout::OBSAbout(QWidget *parent) : QDialog(parent), ui(new Ui::OBSAbout)
 
 	ui->contribute->setText(QTStr("About.Contribute"));
 	ui->donate->setText(
-		"&nbsp;&nbsp;<a href='https://obsproject.com/contribute'>" +
+		"&nbsp;&nbsp;<a href='https://github.com/skimotv/SkimoMeetingRecorder'>" +
 		QTStr("About.Donate") + "</a>");
 	ui->donate->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	ui->donate->setOpenExternalLinks(true);
 
 	ui->getInvolved->setText(
-		"&nbsp;&nbsp;<a href='https://github.com/obsproject/obs-studio/blob/master/CONTRIBUTING.rst'>" +
+		"&nbsp;&nbsp;<a href='https://github.com/skimotv/SkimoMeetingRecorder'>" +
 		QTStr("About.GetInvolved") + "</a>");
 	ui->getInvolved->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	ui->getInvolved->setOpenExternalLinks(true);
@@ -131,7 +131,7 @@ void OBSAbout::ShowAuthors()
 	QString error = "Error! File could not be read.\n\n \
 		Go to: https://github.com/obsproject/obs-studio/blob/master/AUTHORS";
 
-	if (!GetDataFilePath("authors/AUTHORS", path)) {//Change to OBS-Authors if 
+	if (!GetDataFilePath("authors/AUTHORS", path)) {//Change to OBS-Authors if
 		ui->textBrowser->setPlainText(error);
 		return;
 	}
