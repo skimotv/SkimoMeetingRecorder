@@ -308,6 +308,7 @@ private:
 
 	// vasu added this start
 	QString pathToStoreSkimo;
+	QString assetId;
 	QNetworkAccessManager sourceMp4Manager;
 	QNetworkAccessManager subtitlesSubManager;
 	QNetworkAccessManager annotationsTxtManager;
