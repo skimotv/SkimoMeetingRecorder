@@ -35,13 +35,13 @@ SkimoAbout::SkimoAbout(QWidget *parent)
 
 	ui->contribute->setText(QTStr("About.Contribute"));
 	ui->donate->setText(
-		"&nbsp;&nbsp;<a href='https://obsproject.com/contribute'>" +
+		"&nbsp;&nbsp;<a href='https://github.com/skimotv/SkimoMeetingRecorder'>" +
 		QTStr("About.Donate") + "</a>");
 	ui->donate->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	ui->donate->setOpenExternalLinks(true);
 
 	ui->getInvolved->setText(
-		"&nbsp;&nbsp;<a href='https://github.com/obsproject/obs-studio/blob/master/CONTRIBUTING.rst'>" +
+		"&nbsp;&nbsp;<a href='https://github.com/skimotv/SkimoMeetingRecorder'>" +
 		QTStr("About.GetInvolved") + "</a>");
 	ui->getInvolved->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	ui->getInvolved->setOpenExternalLinks(true);
