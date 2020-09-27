@@ -1932,9 +1932,41 @@ void OBSBasic::OBSInit()
 		&OBSBasic::authFinished);
 	connect(&genManager, &QNetworkAccessManager::finished, this,
 		&OBSBasic::generateSkimoFinished);
-	connect(&viewManager, &QNetworkAccessManager::finished, this,
-		&OBSBasic::viewSkimoFinished);
 
+		// vasu added this start
+		connect(&sourceMp4Manager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getSourceMp4);
+		connect(&subtitlesSubManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getSubtitlesSub);
+		connect(&annotationsTxtManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getAnnotationsTxt);
+		connect(&LogoPngManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getLogoPng);
+		connect(&favIconManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getFavIcon);
+		connect(&skimoLogoPngManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getSkimoLogoPng);
+		connect(&screenCssManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getScreenCss);
+		connect(&revealCssManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getRevealCss);
+		connect(&mainMinCssManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getMainMinCss);
+		connect(&skimoCssManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getSkimoCss);
+		connect(&handleCssManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getHandleCss);
+		connect(&revealJsManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::getRevealJS);
+		connect(&videoPlayerJsManager, &QNetworkAccessManager::finished, this,
+		 &OBSBasic::getVideoPlayerJS);
+		connect(&handleJsManager, &QNetworkAccessManager::finished, this,
+ 			&OBSBasic::getHandleJS);
+		connect(&SkimoJsManager, &QNetworkAccessManager::finished, this,
+	 		&OBSBasic::getSkimoJS);
+		// vasu added this end
+		connect(&viewManager, &QNetworkAccessManager::finished, this,
+			&OBSBasic::viewSkimoFinished);
 	//If the first source is null, no inputs are set so the user should be provided with default screen recorder
 	#ifdef _WIN32 || _WIN64
 	if (!(ui->sources->Get(0))) {
@@ -5951,9 +5983,78 @@ void OBSBasic::on_viewSkimo_clicked()
 	if (viewing) {
 		ui->preview->setVisible(false);
 
+		//vasu changed this start
+		// AssetId directory
+		string path = GetDefaultVideoSavePath();
+		pathToStoreSkimo = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+																						QString::fromStdString(path),
+																						QFileDialog::ShowDirsOnly
+																						| QFileDialog::DontResolveSymlinks);
+
+		QDir cssDir(pathToStoreSkimo+"/css");
+		if (!cssDir.exists())
+			cssDir.mkpath(".");
+
+	  QDir jsDir(pathToStoreSkimo+"/js");
+		if (!jsDir.exists())
+			jsDir.mkpath(".");
+
+		QString assetId = pathToStoreSkimo.right(pathToStoreSkimo.length()-pathToStoreSkimo.lastIndexOf("/")+1);
+		blog(LOG_INFO, "=============================================");
+		blog(LOG_INFO, "assetId is : %s\n", assetId.toStdString().c_str());
+		QNetworkRequest request1(QUrl("https://skimo.tv/" + assetId + "/source.mp4"));
+		sourceMp4Manager.get(request1);
+		QNetworkRequest request2(QUrl("https://skimo.tv/" + assetId + "/subtitles.sub"));
+		subtitlesSubManager.get(request2);
+		QNetworkRequest request3(QUrl("https://skimo.tv/" + assetId + "/annotations.txt"));
+		annotationsTxtManager.get(request3);
+
+
+		// img directory
+		QNetworkRequest request4(
+			QUrl("https://skimo.tv/img/logo.png"));
+		LogoPngManager.get(request4);
+		QNetworkRequest request5(
+			QUrl("https://skimo.tv/img/favicon.ico"));
+		favIconManager.get(request5);
+		QNetworkRequest request6(
+			QUrl("https://skimo.tv/img/skimologo.png"));
+		skimoLogoPngManager.get(request6);
+		QNetworkRequest request7(
+			QUrl("https://skimo.tv/css/screen.css"));
+		screenCssManager.get(request7);
+		QNetworkRequest request8(
+			QUrl("https://skimo.tv/css/reveal.css"));
+		revealCssManager.get(request8);
+		QNetworkRequest request9(
+			QUrl("https://skimo.tv/css/main.min.css"));
+		mainMinCssManager.get(request9);
+		QNetworkRequest request10(
+			QUrl("https://skimo.tv/css/skimo.css"));
+		skimoCssManager.get(request10);
+		QNetworkRequest request11(
+			QUrl("https://skimo.tv/css/handle.css"));
+		handleCssManager.get(request11);
+		QNetworkRequest request12(
+			QUrl("https://skimo.tv/js/reveal.js"));
+		revealJsManager.get(request12);
+		QNetworkRequest request13(
+			QUrl("https://skimo.tv/js/video-player.js"));
+		videoPlayerJsManager.get(request13);
+		QNetworkRequest request14(
+			QUrl("https://skimo.tv/js/handle.js"));
+		handleJsManager.get(request14);
+		QNetworkRequest request15(
+			QUrl("https://skimo.tv/js/skimo.js"));
+		SkimoJsManager.get(request15);
+
 		QNetworkRequest request(
-			QUrl("https://skimo.tv/files/76e79303.zip"));
+			QUrl("https://skimo.tv/" + assetId + "/skimo.html"));
 		viewManager.get(request);
+
+		//vasu changed this end
+
+
 		//On get, load and display result
 
 
@@ -6178,8 +6279,7 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 		/*QFile loadFile("C:\\Users\\wengd\\Downloads\\wfengdahl@wpi.edu09_03_2020_19_39_43.mp4.zip");
 		loadFile.open(QIODevice::ReadOnly);*/
 
-
-		QFile file("/Users/vasusrini/a.zip"); // "des" is the file path to the destination file
+		QFile file(pathToStoreSkimo + "/skimo.html"); // "des" is the file path to the destination file
 		file.open(QIODevice::WriteOnly);
 		file.write(reply->readAll());
 		file.close();
@@ -6205,7 +6305,7 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 
 		//This is faked for now
 		view->load(QUrl(QUrl::fromLocalFile(
-			QFileInfo("76e79303\\76e79303\\skimo.html")
+			QFileInfo(pathToStoreSkimo + "/skimo.html")
 				.absoluteFilePath())));
 	} else // handle error
 	{
@@ -6223,6 +6323,178 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 		}
 	}
 }
+
+// vasu added this start
+
+void OBSBasic::getSourceMp4(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/source.mp4");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+
+void OBSBasic::getSubtitlesSub(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/subtitles.sub");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+
+void OBSBasic::getAnnotationsTxt(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/annotations.txt");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getLogoPng(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/logo.png");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getFavIcon(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/favicon.ico");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getSkimoLogoPng(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/skimologo.png");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getScreenCss(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/css/screen.css");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getRevealCss(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/css/reveal.css");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getMainMinCss(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/css/main.min.css");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getSkimoCss(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/css/skimo.css");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getHandleCss(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/css/handle.css");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getRevealJS(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/js/reveal.js");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getVideoPlayerJS(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/js/video-player.js");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getHandleJS(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/js/handle.js");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+void OBSBasic::getSkimoJS(QNetworkReply *reply)
+{
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(pathToStoreSkimo + "/js/skimo.js");
+		file.open(QIODevice::WriteOnly);
+		file.write(reply->readAll());
+		file.close();
+		reply->deleteLater();
+	}
+}
+
+// vasu added this end
 
 void OBSBasic::VCamButtonClicked()
 {
