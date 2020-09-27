@@ -32,7 +32,9 @@
 #include <QTextStream>
 #include <QInputDialog>
 #include <QTime>
+//Webengine
 #include <QWebEngineView>
+#include <QWebEngineUrlScheme>
 
 //HTTP stuff
 #include <QOAuth2AuthorizationCodeFlow>
@@ -6176,37 +6178,64 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 	if (reply->error() == QNetworkReply::NoError) {
 		//Using this, was able to manually load a file into the thing
 		/*QFile loadFile("C:\\Users\\wengd\\Downloads\\wfengdahl@wpi.edu09_03_2020_19_39_43.mp4.zip");
-		loadFile.open(QIODevice::ReadOnly);*/
+		loadFile.open(QIODevice::ReadOnly);*/		
+
+		QString fileLocation;//Location to save file, this will be changed once we confirm it works
+		QProcess extractionProcess;//Extraction process
+
+		#ifdef _WIN32
+			fileLocation= "C:\\Users\\wengd\\Downloads";
+
+			QFile file(fileLocation+"\\thing.zip"); // "des" is the file path to the destination file
+			file.open(QIODevice::WriteOnly);
+			file.write(reply->readAll());
+			file.close();
+			reply->deleteLater();
+
+			// assemble extraction command
+			QString extractProgram = "7-Zip\\7z.exe";//Folder 7-Zip in same directory as application
+			QStringList extractArguments;
+			extractArguments << "x";  // extract files and directories
+			extractArguments << "-y"; // suppress questions
+			extractArguments
+				<< "-o" + fileLocation+ "\\TEST"; // extract to installdir
+			extractArguments <<  fileLocation + "\\thing.zip";
+
+			//qDebug() << extractProgram << " "  << extractArguments.join(" ");
+
+			// start extraction
+			extractionProcess.start(extractProgram, extractArguments);
+			
+		#endif
+		#ifdef __APPLE__
+			fileLocation = "/Users/vasusrini";
+
+			QString cmdString("unzip " + fileLocation + "/a.zip" +
+					  " -d " + fileLocation + "/TEST");
+			qDebug() << cmdString;
+
+			extractionProcess.start(cmdString); 
+		#endif
+
+		extractionProcess.waitForFinished();//Wait for ZIP to complete
+		
+
+		
+		/*qDebug() << "TASK DONE " << extractionProcess.exitCode()
+			 << "\nOUTPUT "
+			 << extractionProcess.readAllStandardOutput()
+			 << "\nERROR "
+			 << extractionProcess.errorString();*/
 
 
-		QFile file("/Users/vasusrini/a.zip"); // "des" is the file path to the destination file
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
+		/*QWebEngineUrlScheme scheme("file");
+		scheme.setSyntax(QWebEngineUrlScheme::Syntax::HostAndPort);
+		scheme.setDefaultPort(2345);
+		scheme.setFlags(QWebEngineUrlScheme::LocalAccessAllowed);
+		QWebEngineUrlScheme::registerScheme(scheme);*/
 
-    /**** Start Fiverr job
-		QuaZip zip("/Users/vasusrini/a.zip");
-		zip.open(QuaZip::mdUnzip);
-
-		QuaZipFile file(&zip);
-
-		for(bool f=zip.goToFirstFile(); f; f=zip.goToNextFile()) {
-    	file.open(QIODevice::ReadOnly);
-    //same functionality as QIODevice::readData() -- data is a char*, maxSize is qint64
-    	file.readData(data,maxSize);
-    //do something with the data
-    	file.close();
-		}
-
-		zip.close();
-		*** end fiverr job */
-
-
-		//This is faked for now
-		view->load(QUrl(QUrl::fromLocalFile(
-			QFileInfo("76e79303\\76e79303\\skimo.html")
-				.absoluteFilePath())));
+		//Load from unzipped file
+		view->load(QUrl(QUrl::fromLocalFile(fileLocation+"/TEST/76e79303/skimo.html")));
 	} else // handle error
 	{
 		QVariant statusCode = reply->attribute(
