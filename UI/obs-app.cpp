@@ -1224,8 +1224,6 @@ void OBSApp::AppInit()
 		throw "Failed to initialize global config";
 	if (!InitLocale())
 		throw "Failed to load locale";
-	if (!InitTheme())
-		throw "Failed to load theme";
 
 	config_set_default_string(globalConfig, "Basic", "Profile",
 				  Str("Untitled"));
