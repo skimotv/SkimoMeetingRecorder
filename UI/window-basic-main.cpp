@@ -6306,7 +6306,8 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 		view->load(QUrl(QUrl::fromLocalFile(
 			QFileInfo(pathToStoreSkimo + "/skimo.html")
 				.absoluteFilePath())));
-	} else // handle error
+	}
+	else // handle error
 	{
 		QVariant statusCode = reply->attribute(
 			QNetworkRequest::HttpStatusCodeAttribute);
