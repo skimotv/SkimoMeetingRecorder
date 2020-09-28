@@ -1074,7 +1074,7 @@ bool OBSApp::SetTheme(std::string name, std::string path)
 		if (ret > 0 && QFile::exists(userDir)) {
 			path = string(userDir);
 		} else if (!GetDataFilePath(name.c_str(), path)) {
-			OBSErrorBox(NULL, "Failed to find %s.", name.c_str());
+	//		OBSErrorBox(NULL, "Failed to find %s.", name.c_str());
 			return false;
 		}
 	}
