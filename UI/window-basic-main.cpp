@@ -5999,7 +5999,7 @@ void OBSBasic::on_viewSkimo_clicked()
 		if (!jsDir.exists())
 			jsDir.mkpath(".");
 
-		assetId = pathToStoreSkimo.right(pathToStoreSkimo.length()-pathToStoreSkimo.lastIndexOf("/")+1);
+		assetId = pathToStoreSkimo.right(pathToStoreSkimo.length()-pathToStoreSkimo.lastIndexOf("/")-1);
 		blog(LOG_INFO, "=============================================");
 		blog(LOG_INFO, "assetId is : %s\n", assetId.toStdString().c_str());
 		QNetworkRequest request1(QUrl("https://skimo.tv/" + assetId + "/source.mp4"));
@@ -6334,6 +6334,12 @@ void OBSBasic::getSourceMp4(QNetworkReply *reply)
 		file.write(reply->readAll());
 		file.close();
 		reply->deleteLater();
+	}
+	else
+  {
+		QMessageBox::information(
+			this, QString("No Skimo!!"),
+			QString("Asset ID not found in the Skimo Engine"));
 	}
 }
 
