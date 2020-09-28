@@ -6052,7 +6052,7 @@ void OBSBasic::on_viewSkimo_clicked()
 			QUrl("https://skimo.tv/" + assetId + "/skimo.html"));
 		viewManager.get(request);
 
-	
+
 		//On get, load and display result
 		numFiles = 0;//COunt number of sucessful downloads
 
@@ -6368,7 +6368,7 @@ void OBSBasic::getSkimoJS(QNetworkReply *reply)
 }
 void OBSBasic::getSkimoHTML(QNetworkReply *reply)
 {
-	saveSkimoFile(reply, "skimo.html");
+	saveSkimoFile(reply, "/skimo.html");
 }
 void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 {
