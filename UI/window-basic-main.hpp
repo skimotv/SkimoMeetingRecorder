@@ -300,6 +300,9 @@ private:
 	bool gen = false; //True when skimo is generating
 	bool uploadInProgress = false;//True when upload is in progress
 
+	int numFiles = 0;
+	const int TOTAL_CALLS = 16;
+
 
 	QString email;
 	QNetworkAccessManager authManager;
@@ -953,7 +956,9 @@ private slots:
 	void getVideoPlayerJS(QNetworkReply *reply);
 	void getHandleJS(QNetworkReply *reply);
 	void getSkimoJS(QNetworkReply *reply);
+	void getSkimoHTML(QNetworkReply *reply);
 	// vasu added this end
+	void saveSkimoFile(QNetworkReply *reply, QString subPath);//Save file to the given directory
 
 	void VCamButtonClicked();
 	void on_settingsButton_clicked();

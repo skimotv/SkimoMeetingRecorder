@@ -1966,7 +1966,7 @@ void OBSBasic::OBSInit()
 	 		&OBSBasic::getSkimoJS);
 		// vasu added this end
 		connect(&viewManager, &QNetworkAccessManager::finished, this,
-			&OBSBasic::viewSkimoFinished);
+			&OBSBasic::getSkimoHTML);
 	//If the first source is null, no inputs are set so the user should be provided with default screen recorder
 	#ifdef _WIN32 || _WIN64
 	if (!(ui->sources->Get(0))) {
@@ -6052,11 +6052,9 @@ void OBSBasic::on_viewSkimo_clicked()
 			QUrl("https://skimo.tv/" + assetId + "/skimo.html"));
 		viewManager.get(request);
 
-		//vasu changed this end
-
-
+	
 		//On get, load and display result
-
+		numFiles = 0;//COunt number of sucessful downloads
 
 		view->setFixedWidth(this->width());
 		view->setFixedHeight(this->height() -
@@ -6272,57 +6270,6 @@ void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 	gen = false;
 }
 
-void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
-{
-	if (reply->error() == QNetworkReply::NoError) {
-		//Using this, was able to manually load a file into the thing
-		/*QFile loadFile("C:\\Users\\wengd\\Downloads\\wfengdahl@wpi.edu09_03_2020_19_39_43.mp4.zip");
-		loadFile.open(QIODevice::ReadOnly);*/
-
-		QFile file(pathToStoreSkimo + "/skimo.html"); // "des" is the file path to the destination file
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-
-    /**** Start Fiverr job
-		QuaZip zip("/Users/vasusrini/a.zip");
-		zip.open(QuaZip::mdUnzip);
-
-		QuaZipFile file(&zip);
-
-		for(bool f=zip.goToFirstFile(); f; f=zip.goToNextFile()) {
-    	file.open(QIODevice::ReadOnly);
-    //same functionality as QIODevice::readData() -- data is a char*, maxSize is qint64
-    	file.readData(data,maxSize);
-    //do something with the data
-    	file.close();
-		}
-
-		zip.close();
-		*** end fiverr job */
-
-
-		view->load(QUrl(QUrl::fromLocalFile(
-			QFileInfo(pathToStoreSkimo + "/skimo.html")
-				.absoluteFilePath())));
-	}
-	else // handle error
-	{
-		QVariant statusCode = reply->attribute(
-			QNetworkRequest::HttpStatusCodeAttribute);
-		int status = statusCode.toInt();
-
-		if (status != 200) {
-			QString reason =
-				reply->attribute(
-					     QNetworkRequest::
-						     HttpReasonPhraseAttribute)
-					.toString();
-			QMessageBox::question(this, QTStr("View failed to request"), reason);
-		}
-	}
-}
 
 // vasu added this start
 
@@ -6330,14 +6277,10 @@ void OBSBasic::getSourceMp4(QNetworkReply *reply)
 {
 	if (reply->error() == QNetworkReply::NoError)
 	{
-		QFile file(pathToStoreSkimo + "/source.mp4");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
+		saveSkimoFile(reply, "/source.mp4");
 	}
 	else
-  {
+	{
 		QMessageBox::information(
 			this, QString("No Skimo!!"),
 			QString("Asset ID not found in the Skimo Engine"));
@@ -6353,6 +6296,10 @@ void OBSBasic::getSubtitlesSub(QNetworkReply *reply)
 		file.write(reply->readAll());
 		file.close();
 		reply->deleteLater();
+		numFiles++;
+		if (numFiles == TOTAL_CALLS) {
+			viewSkimoFinished(nullptr);
+		}
 	}
 }
 
@@ -6365,142 +6312,106 @@ void OBSBasic::getAnnotationsTxt(QNetworkReply *reply)
 		file.write(reply->readAll());
 		file.close();
 		reply->deleteLater();
+		numFiles++;
+		if (numFiles == TOTAL_CALLS) {
+			viewSkimoFinished(nullptr);
+		}
 	}
 }
 void OBSBasic::getLogoPng(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/logo.png");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/logo.png");
 }
 void OBSBasic::getFavIcon(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/favicon.ico");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/favicon.ico");
 }
 void OBSBasic::getSkimoLogoPng(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/skimologo.png");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/skimologo.png");
 }
 void OBSBasic::getScreenCss(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/css/screen.css");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/css/screen.css");
 }
 void OBSBasic::getRevealCss(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/css/reveal.css");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/css/reveal.css");
 }
 void OBSBasic::getMainMinCss(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/css/main.min.css");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/css/main.min.css");
 }
 void OBSBasic::getSkimoCss(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/css/skimo.css");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/css/skimo.css");
 }
 void OBSBasic::getHandleCss(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/css/handle.css");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/css/handle.css");
 }
 void OBSBasic::getRevealJS(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/js/reveal.js");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/js/reveal.js");
 }
 void OBSBasic::getVideoPlayerJS(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/js/video-player.js");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/js/video-player.js");
 }
 void OBSBasic::getHandleJS(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/js/handle.js");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-	}
+	saveSkimoFile(reply, "/js/handle.js");
 }
 void OBSBasic::getSkimoJS(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/js/skimo.js");
+	saveSkimoFile(reply, "/js/skimo.js");
+}
+void OBSBasic::getSkimoHTML(QNetworkReply *reply)
+{
+	saveSkimoFile(reply, "skimo.html");
+}
+void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
+{
+	if (reply->error() == QNetworkReply::NoError) {
+		QFile file(pathToStoreSkimo + subPath);
 		file.open(QIODevice::WriteOnly);
 		file.write(reply->readAll());
 		file.close();
 		reply->deleteLater();
+		numFiles++;
+		if (numFiles == TOTAL_CALLS) {
+			viewSkimoFinished(nullptr);
+		}
+		qDebug()<<numFiles<<" "<< subPath;
 	}
 }
 
 // vasu added this end
+
+//Run this when all files downloaded
+void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
+{
+	//if (reply->error() == QNetworkReply::NoError) {
+		view->load(QUrl(QUrl::fromLocalFile(
+			QFileInfo(pathToStoreSkimo + "/skimo.html")
+				.absoluteFilePath())));
+	/*} else // handle error
+	{
+		QVariant statusCode = reply->attribute(
+			QNetworkRequest::HttpStatusCodeAttribute);
+		int status = statusCode.toInt();
+
+		if (status != 200) {
+			QString reason =
+				reply->attribute(
+					     QNetworkRequest::
+						     HttpReasonPhraseAttribute)
+					.toString();
+			QMessageBox::question(
+				this, QTStr("View failed to request"), reason);
+		}
+	}*/
+}
 
 void OBSBasic::VCamButtonClicked()
 {
