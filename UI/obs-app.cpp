@@ -1101,6 +1101,8 @@ bool OBSApp::InitTheme()
 OBSApp::OBSApp(int &argc, char **argv, profiler_name_store_t *store)
 	: QApplication(argc, argv), profilerNameStore(store)
 {
+	qDebug() << "ARGC: " << argc;
+	qDebug() << "ARGV: " << argv;
 	sleepInhibitor = os_inhibit_sleep_create("OBS Video/audio");
 
 	setWindowIcon(QIcon::fromTheme("skimologo", QIcon(":/res/images/skimologo.png")));
@@ -1881,6 +1883,7 @@ static auto ProfilerFree = [](void *) {
 static const char *run_program_init = "run_program_init";
 static int run_program(fstream &logFile, int argc, char *argv[])
 {
+	qDebug() << "START RUNNING";
 	int ret = -1;
 
 	auto profilerNameStore = CreateNameStore();
@@ -1906,6 +1909,36 @@ static int run_program(fstream &logFile, int argc, char *argv[])
 #if __APPLE__
 	InstallNSApplicationSubclass();
 #endif
+
+	//This doesnt work yet, should be something like this to let JS in webengine access filesystem
+	/*qDebug() << "ARGC: " << argc;
+	qDebug() << "ARGV: " << argv;
+
+	QStringList argumentsAdded;
+	argumentsAdded.append("--disable-web-security");
+	int i = 0;
+
+	int new_argc = argc + argumentsAdded.size();
+	char **new_argv = (char **)malloc((new_argc + 1) * sizeof(char *));
+
+	// Store previous arguments
+	for (i = 0; i < argc; i++) {
+		size_t length = strlen(argv[i]) + 1;
+		new_argv[i] = (char *)malloc(length);
+		memcpy(new_argv[i], argv[i], length);
+	}
+
+	// Store new arguments
+	i = 0;
+	foreach(QString s, argumentsAdded)
+	{
+		new_argv[argc + i] = new char[s.toLocal8Bit().size() + 1];
+		strcpy(new_argv[argc + i], s.toLocal8Bit().constData());
+		i++;
+	}
+	// Finish array with NULL value
+	new_argv[new_argc] = NULL;*/
+
 
 	OBSApp program(argc, argv, profilerNameStore.get());
 	try {
@@ -1989,7 +2022,8 @@ static int run_program(fstream &logFile, int argc, char *argv[])
 
 		prof.Stop();
 
-		ret = program.exec();
+		ret = 0;
+		program.exec();
 
 	} catch (const char *error) {
 		blog(LOG_ERROR, "%s", error);

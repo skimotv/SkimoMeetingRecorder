@@ -6284,39 +6284,19 @@ void OBSBasic::getSourceMp4(QNetworkReply *reply)
 		QMessageBox::information(
 			this, QString("No Skimo!!"),
 			QString("Asset ID not found in the Skimo Engine"));
+		//Trigger the button clicked method again to close the view menu
+		on_viewSkimo_clicked();
 	}
 }
 
 void OBSBasic::getSubtitlesSub(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/subtitles.sub");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-		numFiles++;
-		if (numFiles == TOTAL_CALLS) {
-			viewSkimoFinished(nullptr);
-		}
-	}
+	saveSkimoFile(reply, "/subtitles.sub");
 }
 
 void OBSBasic::getAnnotationsTxt(QNetworkReply *reply)
 {
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		QFile file(pathToStoreSkimo + "/annotations.txt");
-		file.open(QIODevice::WriteOnly);
-		file.write(reply->readAll());
-		file.close();
-		reply->deleteLater();
-		numFiles++;
-		if (numFiles == TOTAL_CALLS) {
-			viewSkimoFinished(nullptr);
-		}
-	}
+	saveSkimoFile(reply, "/annotations.txt");
 }
 void OBSBasic::getLogoPng(QNetworkReply *reply)
 {
