@@ -1899,13 +1899,13 @@ void OBSBasic::OBSInit()
 	ui->sources->UpdateIcons();
 
 #if !defined(_WIN32) && !defined(__APPLE__)
-	delete ui->actionShowCrashLogs;
-	delete ui->actionUploadLastCrashLog;
-	delete ui->menuCrashLogs;
+	//delete ui->actionShowCrashLogs;
+	//delete ui->actionUploadLastCrashLog;
+	//delete ui->menuCrashLogs;
 	delete ui->actionCheckForUpdates;
 	ui->actionShowCrashLogs = nullptr;
-	ui->actionUploadLastCrashLog = nullptr;
-	ui->menuCrashLogs = nullptr;
+	//ui->actionUploadLastCrashLog = nullptr;
+	//ui->menuCrashLogs = nullptr;
 	ui->actionCheckForUpdates = nullptr;
 #elif _WIN32 || __APPLE__
 	if (App()->IsUpdaterDisabled())
@@ -5119,7 +5119,7 @@ void OBSBasic::UploadLog(const char *subdir, const char *file, const bool crash)
 		return;
 
 	ui->menuLogFiles->setEnabled(false);
-	ui->menuCrashLogs->setEnabled(false);
+	//ui->menuCrashLogs->setEnabled(false);
 
 	stringstream ss;
 	ss << "OBS " << App()->GetVersionString() << " log file uploaded at "
@@ -5193,7 +5193,7 @@ void OBSBasic::on_actionCheckForUpdates_triggered()
 void OBSBasic::logUploadFinished(const QString &text, const QString &error)
 {
 	ui->menuLogFiles->setEnabled(true);
-	ui->menuCrashLogs->setEnabled(true);
+//	ui->menuCrashLogs->setEnabled(true);
 
 	if (text.isEmpty()) {
 		OBSMessageBox::critical(
@@ -5207,7 +5207,7 @@ void OBSBasic::logUploadFinished(const QString &text, const QString &error)
 void OBSBasic::crashUploadFinished(const QString &text, const QString &error)
 {
 	ui->menuLogFiles->setEnabled(true);
-	ui->menuCrashLogs->setEnabled(true);
+	//ui->menuCrashLogs->setEnabled(true);
 
 	if (text.isEmpty()) {
 		OBSMessageBox::critical(
