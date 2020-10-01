@@ -7544,6 +7544,7 @@ void OBSBasic::SystemTrayInit()
 	sysTrayReplayBuffer = new QAction(QTStr("Basic.Main.StartReplayBuffer"),
 					  trayIcon.data());
 	exit = new QAction(QTStr("Exit"), trayIcon.data());
+	sysTrayBookmark = new QAction(QTStr("New Bookmark"), trayIcon.data());
 
 	trayMenu = new QMenu;
 	previewProjector = new QMenu(QTStr("PreviewProjector"));
@@ -7554,6 +7555,7 @@ void OBSBasic::SystemTrayInit()
 				 SLOT(OpenStudioProgramProjector()));
 	trayMenu->addAction(showHide);
 	trayMenu->addAction(sysTrayRecord);
+	trayMenu->addAction(sysTrayBookmark);
 	trayMenu->addAction(exit);
 	trayIcon->setContextMenu(trayMenu);
 	trayIcon->show();
@@ -7567,6 +7569,8 @@ void OBSBasic::SystemTrayInit()
 	connect(showHide, SIGNAL(triggered()), this, SLOT(ToggleShowHide()));
 	connect(sysTrayRecord, SIGNAL(triggered()), this,
 		SLOT(on_recordButton_clicked()));
+	connect(sysTrayBookmark, SIGNAL(triggered()), this,
+			SLOT(on_bookmarkButton_clicked()));
 	connect(sysTrayReplayBuffer.data(), &QAction::triggered, this,
 		&OBSBasic::ReplayBufferClicked);
 	connect(exit, SIGNAL(triggered()), this, SLOT(close()));
