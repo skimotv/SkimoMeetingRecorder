@@ -6171,9 +6171,8 @@ void OBSBasic::on_generateSkimo_clicked()
 
 			QString myUrl;
 			myUrl = "https://skimo.tv/live/recording?assetid=";
-			myUrl.append(email); //User email
 			myUrl.append(
-				fileInfo.fileName()); //Unique ID for this skimo
+				fileInfo.completeBaseName()); //Unique ID for this skimo
 			myUrl.append("&apikey=yKLxpeweS42A78&username=");
 			myUrl.append(email);
 
