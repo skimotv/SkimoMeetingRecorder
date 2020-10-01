@@ -31,7 +31,7 @@
 set -eE
 
 ## SET UP ENVIRONMENT ##
-PRODUCT_NAME="OBS-Studio"
+PRODUCT_NAME="Skimo Smart Meeting Recorder"
 
 CHECKOUT_DIR="$(git rev-parse --show-toplevel)"
 DEPS_BUILD_DIR="${CHECKOUT_DIR}/../obs-build-dependencies"
@@ -216,10 +216,10 @@ configure_obs_build() {
     NIGHTLY_DIR="${CHECKOUT_DIR}/nightly-${CUR_DATE}"
     PACKAGE_NAME=$(find . -name "*.dmg")
 
-    if [ -d ./OBS.app ]; then
+    if [ -d ./Skimo.app ]; then
         ensure_dir "${NIGHTLY_DIR}"
-        mv ../build/OBS.app .
-        info "You can find OBS.app in ${NIGHTLY_DIR}"
+        mv ../build/Skimo.app .
+        info "You can find Skimo.app in ${NIGHTLY_DIR}"
     fi
     ensure_dir "${CHECKOUT_DIR}/build"
     if ([ -n "${PACKAGE_NAME}" ] && [ -f ${PACKAGE_NAME} ]); then
@@ -230,7 +230,7 @@ configure_obs_build() {
 
     ensure_dir "${CHECKOUT_DIR}/build"
 
-    hr "Run CMAKE for OBS..."
+    hr "Run CMAKE for Skimo..."
     cmake -DENABLE_SPARKLE_UPDATER=ON \
         -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 \
         -DDISABLE_PYTHON=ON  \
@@ -249,7 +249,7 @@ configure_obs_build() {
 
 run_obs_build() {
     ensure_dir "${CHECKOUT_DIR}/build"
-    hr "Build OBS..."
+    hr "Build Skimo..."
     make -j4
 }
 
@@ -257,109 +257,109 @@ run_obs_build() {
 bundle_dylibs() {
     ensure_dir "${CHECKOUT_DIR}/build"
 
-    if [ ! -d ./OBS.app ]; then
-        error "No OBS.app bundle found"
+    if [ ! -d ./Skimo.app ]; then
+        error "No Skimo.app bundle found"
         exit 1
     fi
 
     hr "Bundle dylibs for macOS application"
 
     step "Run dylibBundler.."
-    ${CI_SCRIPTS}/app/dylibBundler -cd -of -a ./OBS.app -q -f \
-        -s ./OBS.app/Contents/MacOS \
+    ${CI_SCRIPTS}/app/dylibBundler -cd -of -a ./Skimo.app -q -f \
+        -s ./Skimo.app/Contents/MacOS \
         -s "${DEPS_BUILD_DIR}/sparkle/Sparkle.framework" \
         -s ./rundir/RelWithDebInfo/bin/ \
-        -x ./OBS.app/Contents/PlugIns/coreaudio-encoder.so \
-        -x ./OBS.app/Contents/PlugIns/decklink-ouput-ui.so \
-        -x ./OBS.app/Contents/PlugIns/frontend-tools.so \
-        -x ./OBS.app/Contents/PlugIns/image-source.so \
-        -x ./OBS.app/Contents/PlugIns/linux-jack.so \
-        -x ./OBS.app/Contents/PlugIns/mac-avcapture.so \
-        -x ./OBS.app/Contents/PlugIns/mac-capture.so \
-        -x ./OBS.app/Contents/PlugIns/mac-decklink.so \
-        -x ./OBS.app/Contents/PlugIns/mac-syphon.so \
-        -x ./OBS.app/Contents/PlugIns/mac-vth264.so \
-        -x ./OBS.app/Contents/PlugIns/obs-browser.so \
-        -x ./OBS.app/Contents/PlugIns/obs-browser-page \
-        -x ./OBS.app/Contents/PlugIns/obs-ffmpeg.so \
-        -x ./OBS.app/Contents/PlugIns/obs-filters.so \
-        -x ./OBS.app/Contents/PlugIns/obs-transitions.so \
-        -x ./OBS.app/Contents/PlugIns/obs-vst.so \
-        -x ./OBS.app/Contents/PlugIns/rtmp-services.so \
-        -x ./OBS.app/Contents/MacOS/obs-ffmpeg-mux \
-        -x ./OBS.app/Contents/MacOS/obslua.so \
-        -x ./OBS.app/Contents/PlugIns/obs-x264.so \
-        -x ./OBS.app/Contents/PlugIns/text-freetype2.so \
-        -x ./OBS.app/Contents/PlugIns/obs-libfdk.so \
-        -x ./OBS.app/Contents/PlugIns/obs-outputs.so
+        -x ./Skimo.app/Contents/PlugIns/coreaudio-encoder.so \
+        -x ./Skimo.app/Contents/PlugIns/decklink-ouput-ui.so \
+        -x ./Skimo.app/Contents/PlugIns/frontend-tools.so \
+        -x ./Skimo.app/Contents/PlugIns/image-source.so \
+        -x ./Skimo.app/Contents/PlugIns/linux-jack.so \
+        -x ./Skimo.app/Contents/PlugIns/mac-avcapture.so \
+        -x ./Skimo.app/Contents/PlugIns/mac-capture.so \
+        -x ./Skimo.app/Contents/PlugIns/mac-decklink.so \
+        -x ./Skimo.app/Contents/PlugIns/mac-syphon.so \
+        -x ./Skimo.app/Contents/PlugIns/mac-vth264.so \
+        -x ./Skimo.app/Contents/PlugIns/obs-browser.so \
+        -x ./Skimo.app/Contents/PlugIns/obs-browser-page \
+        -x ./Skimo.app/Contents/PlugIns/obs-ffmpeg.so \
+        -x ./Skimo.app/Contents/PlugIns/obs-filters.so \
+        -x ./Skimo.app/Contents/PlugIns/obs-transitions.so \
+        -x ./Skimo.app/Contents/PlugIns/obs-vst.so \
+        -x ./Skimo.app/Contents/PlugIns/rtmp-services.so \
+        -x ./Skimo.app/Contents/MacOS/obs-ffmpeg-mux \
+        -x ./Skimo.app/Contents/MacOS/obslua.so \
+        -x ./Skimo.app/Contents/PlugIns/obs-x264.so \
+        -x ./Skimo.app/Contents/PlugIns/text-freetype2.so \
+        -x ./Skimo.app/Contents/PlugIns/obs-libfdk.so \
+        -x ./Skimo.app/Contents/PlugIns/obs-outputs.so
     step "Move libobs-opengl to final destination"
-    cp ./libobs-opengl/libobs-opengl.so ./OBS.app/Contents/Frameworks
+    cp ./libobs-opengl/libobs-opengl.so ./Skimo.app/Contents/Frameworks
 }
 
 install_frameworks() {
     ensure_dir "${CHECKOUT_DIR}/build"
 
-    if [ ! -d ./OBS.app ]; then
-        error "No OBS.app bundle found"
+    if [ ! -d ./Skimo.app ]; then
+        error "No Skimo.app bundle found"
         exit 1
     fi
 
     hr "Adding Chromium Embedded Framework"
     step "Copy Framework..."
-    sudo cp -R "${DEPS_BUILD_DIR}/cef_binary_${CEF_BUILD_VERSION:-${CI_CEF_VERSION}}_macosx64/Release/Chromium Embedded Framework.framework" ./OBS.app/Contents/Frameworks/
-    sudo chown -R $(whoami) ./OBS.app/Contents/Frameworks/
+    sudo cp -R "${DEPS_BUILD_DIR}/cef_binary_${CEF_BUILD_VERSION:-${CI_CEF_VERSION}}_macosx64/Release/Chromium Embedded Framework.framework" ./Skimo.app/Contents/Frameworks/
+    sudo chown -R $(whoami) ./Skimo.app/Contents/Frameworks/
 }
 
 prepare_macos_bundle() {
     ensure_dir "${CHECKOUT_DIR}/build"
 
     if [ ! -d ./rundir/RelWithDebInfo/bin ]; then
-        error "No OBS build found"
+        error "No Skimo build found"
         return
     fi
 
-    if [ -d ./OBS.app ]; then rm -rf ./OBS.app; fi
+    if [ -d ./Skimo.app ]; then rm -rf ./Skimo.app; fi
 
-    hr "Preparing OBS.app bundle"
+    hr "Preparing Skimo.app bundle"
     step "Copy binary and plugins..."
-    mkdir -p OBS.app/Contents/MacOS
-    mkdir OBS.app/Contents/PlugIns
-    mkdir OBS.app/Contents/Resources
+    mkdir -p Skimo.app/Contents/MacOS
+    mkdir Skimo.app/Contents/PlugIns
+    mkdir Skimo.app/Contents/Resources
 
-    cp rundir/RelWithDebInfo/bin/obs ./OBS.app/Contents/MacOS
-    cp rundir/RelWithDebInfo/bin/obs-ffmpeg-mux ./OBS.app/Contents/MacOS
-    cp rundir/RelWithDebInfo/bin/libobsglad.0.dylib ./OBS.app/Contents/MacOS
-    cp -R rundir/RelWithDebInfo/data ./OBS.app/Contents/Resources
-    cp ${CI_SCRIPTS}/app/obs.icns ./OBS.app/Contents/Resources
-    cp -R rundir/RelWithDebInfo/obs-plugins/ ./OBS.app/Contents/PlugIns
-    cp ${CI_SCRIPTS}/app/Info.plist ./OBS.app/Contents
+    cp rundir/RelWithDebInfo/bin/obs ./Skimo.app/Contents/MacOS
+    cp rundir/RelWithDebInfo/bin/obs-ffmpeg-mux ./Skimo.app/Contents/MacOS
+    cp rundir/RelWithDebInfo/bin/libobsglad.0.dylib ./Skimo.app/Contents/MacOS
+    cp -R rundir/RelWithDebInfo/data ./Skimo.app/Contents/Resources
+    cp ${CI_SCRIPTS}/app/obs.icns ./Skimo.app/Contents/Resources
+    cp -R rundir/RelWithDebInfo/obs-plugins/ ./Skimo.app/Contents/PlugIns
+    cp ${CI_SCRIPTS}/app/Info.plist ./Skimo.app/Contents
     # Scripting plugins are required to be placed in same directory as binary
-    if [ -d ./OBS.app/Contents/Resources/data/obs-scripting ]; then
-        mv ./OBS.app/Contents/Resources/data/obs-scripting/obslua.so ./OBS.app/Contents/MacOS/
-        # mv ./OBS.app/Contents/Resources/data/obs-scripting/_obspython.so ./OBS.app/Contents/MacOS/
-        # mv ./OBS.app/Contents/Resources/data/obs-scripting/obspython.py ./OBS.app/Contents/MacOS/
-        rm -rf ./OBS.app/Contents/Resources/data/obs-scripting/
+    if [ -d ./Skimo.app/Contents/Resources/data/obs-scripting ]; then
+        mv ./Skimo.app/Contents/Resources/data/obs-scripting/obslua.so ./Skimo.app/Contents/MacOS/
+        # mv ./Skimo.app/Contents/Resources/data/obs-scripting/_obspython.so ./Skimo.app/Contents/MacOS/
+        # mv ./Skimo.app/Contents/Resources/data/obs-scripting/obspython.py ./Skimo.app/Contents/MacOS/
+        rm -rf ./Skimo.app/Contents/Resources/data/obs-scripting/
     fi
 
     bundle_dylibs
     install_frameworks
 
-    cp ${CI_SCRIPTS}/app/OBSPublicDSAKey.pem ./OBS.app/Contents/Resources
+    cp ${CI_SCRIPTS}/app/OBSPublicDSAKey.pem ./Skimo.app/Contents/Resources
 
     step "Set bundle meta information..."
-    plutil -insert CFBundleVersion -string ${GIT_TAG}-${GIT_HASH} ./OBS.app/Contents/Info.plist
-    plutil -insert CFBundleShortVersionString -string ${GIT_TAG}-${GIT_HASH} ./OBS.app/Contents/Info.plist
-    plutil -insert OBSFeedsURL -string https://obsproject.com/osx_update/feeds.xml ./OBS.app/Contents/Info.plist
-    plutil -insert SUFeedURL -string https://obsproject.com/osx_update/stable/updates.xml ./OBS.app/Contents/Info.plist
-    plutil -insert SUPublicDSAKeyFile -string OBSPublicDSAKey.pem ./OBS.app/Contents/Info.plist
+    plutil -insert CFBundleVersion -string ${GIT_TAG}-${GIT_HASH} ./Skimo.app/Contents/Info.plist
+    plutil -insert CFBundleShortVersionString -string ${GIT_TAG}-${GIT_HASH} ./Skimo.app/Contents/Info.plist
+    plutil -insert OBSFeedsURL -string https://obsproject.com/osx_update/feeds.xml ./Skimo.app/Contents/Info.plist
+    plutil -insert SUFeedURL -string https://obsproject.com/osx_update/stable/updates.xml ./Skimo.app/Contents/Info.plist
+    plutil -insert SUPublicDSAKeyFile -string OBSPublicDSAKey.pem ./Skimo.app/Contents/Info.plist
 }
 
 ## CREATE MACOS DISTRIBUTION AND INSTALLER IMAGE ##
 prepare_macos_image() {
     ensure_dir "${CHECKOUT_DIR}/build"
 
-    if [ ! -d ./OBS.app ]; then
-        error "No OBS.app bundle found"
+    if [ ! -d ./Skimo.app ]; then
+        error "No Skimo.app bundle found"
         return
     fi
 
@@ -429,38 +429,38 @@ codesign_bundle() {
     ensure_dir "${CHECKOUT_DIR}/build"
     trap "caught_error 'code-signing app'" ERR
 
-    if [ ! -d ./OBS.app ]; then
-        error "No OBS.app bundle found"
+    if [ ! -d ./Skimo.app ]; then
+        error "No Skimo.app bundle found"
         return
     fi
 
     hr "Code-signing application bundle"
 
-    xattr -crs ./OBS.app
+    xattr -crs ./Skimo.app
 
     read_codesign_ident
     step "Code-sign Sparkle framework..."
     echo -n "${COLOR_ORANGE}"
-    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./OBS.app/Contents/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/fileop"
-    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./OBS.app/Contents/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate"
-    codesign --force --options runtime --sign "${CODESIGN_IDENT}" --deep ./OBS.app/Contents/Frameworks/Sparkle.framework
+    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./Skimo.app/Contents/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/fileop"
+    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./Skimo.app/Contents/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate"
+    codesign --force --options runtime --sign "${CODESIGN_IDENT}" --deep ./Skimo.app/Contents/Frameworks/Sparkle.framework
     echo -n "${COLOR_RESET}"
 
     step "Code-sign CEF framework..."
     echo -n "${COLOR_ORANGE}"
-    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./OBS.app/Contents/Frameworks/Chromium Embedded Framework.framework/Libraries/libEGL.dylib"
-    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./OBS.app/Contents/Frameworks/Chromium Embedded Framework.framework/Libraries/libswiftshader_libEGL.dylib"
-    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./OBS.app/Contents/Frameworks/Chromium Embedded Framework.framework/Libraries/libGLESv2.dylib"
-    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./OBS.app/Contents/Frameworks/Chromium Embedded Framework.framework/Libraries/libswiftshader_libGLESv2.dylib"
-    codesign --force --options runtime --sign "${CODESIGN_IDENT}" --deep "./OBS.app/Contents/Frameworks/Chromium Embedded Framework.framework"
+    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./Skimo.app/Contents/Frameworks/Chromium Embedded Framework.framework/Libraries/libEGL.dylib"
+    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./Skimo.app/Contents/Frameworks/Chromium Embedded Framework.framework/Libraries/libswiftshader_libEGL.dylib"
+    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./Skimo.app/Contents/Frameworks/Chromium Embedded Framework.framework/Libraries/libGLESv2.dylib"
+    codesign --force --options runtime --sign "${CODESIGN_IDENT}" "./Skimo.app/Contents/Frameworks/Chromium Embedded Framework.framework/Libraries/libswiftshader_libGLESv2.dylib"
+    codesign --force --options runtime --sign "${CODESIGN_IDENT}" --deep "./Skimo.app/Contents/Frameworks/Chromium Embedded Framework.framework"
     echo -n "${COLOR_RESET}"
 
-    step "Code-sign OBS code..."
+    step "Code-sign Skimo code..."
     echo -n "${COLOR_ORANGE}"
-    codesign --force --options runtime --entitlements "${CI_SCRIPTS}/app/entitlements.plist" --sign "${CODESIGN_IDENT}" --deep ./OBS.app
+    codesign --force --options runtime --entitlements "${CI_SCRIPTS}/app/entitlements.plist" --sign "${CODESIGN_IDENT}" --deep ./Skimo.app
     echo -n "${COLOR_RESET}"
     step "Check code-sign result..."
-    codesign -dvv ./OBS.app
+    codesign -dvv ./Skimo.app
 }
 
 codesign_image() {
@@ -470,7 +470,7 @@ codesign_image() {
     trap "caught_error 'code-signing image'" ERR
 
     if [ ! -f "${FILE_NAME}" ]; then
-        error "No OBS disk image found"
+        error "No Skimo disk image found"
         return
     fi
 
@@ -478,7 +478,7 @@ codesign_image() {
 
     read_codesign_ident
 
-    step "Code-sign OBS installer image..."
+    step "Code-sign Skimo installer image..."
     echo -n "${COLOR_ORANGE}";
     codesign --force --sign "${CODESIGN_IDENT}" "${FILE_NAME}"
     echo -n "${COLOR_RESET}"
@@ -532,18 +532,18 @@ package_macos() {
 notarize_macos() {
     if [ ! -n "${NOTARIZE_OBS}" ]; then step "Skipping macOS notarization"; return; fi;
 
-    hr "Notarizing OBS for macOS"
+    hr "Notarizing Skimo for macOS"
     trap "caught_error 'notarizing app'" ERR
 
     ensure_dir "${CHECKOUT_DIR}/build"
 
     if [ -f "${FILE_NAME}" ]; then
         NOTARIZE_TARGET="${FILE_NAME}"
-        xcnotary precheck "./OBS.app"
-    elif [ -d "OBS.app" ]; then
-        NOTARIZE_TARGET="./OBS.app"
+        xcnotary precheck "./Skimo.app"
+    elif [ -d "Skimo.app" ]; then
+        NOTARIZE_TARGET="./Skimo.app"
     else
-        error "No notarization app bundle ('OBS.app') or disk image ('${FILE_NAME}') found"
+        error "No notarization app bundle ('Skimo.app') or disk image ('${FILE_NAME}') found"
         return
     fi
 
