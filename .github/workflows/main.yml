@@ -166,66 +166,66 @@ jobs:
         working-directory: ${{ github.workspace }}/build
         shell: bash
         run: |
-          if [ -d ./OBS.app ]; then rm -rf ./OBS.app; fi
-          mkdir -p OBS.app/Contents/MacOS
-          mkdir OBS.app/Contents/PlugIns
-          mkdir OBS.app/Contents/Resources
+          if [ -d ./Skimo.app ]; then rm -rf ./Skimo.app; fi
+          mkdir -p Skimo.app/Contents/MacOS
+          mkdir Skimo.app/Contents/PlugIns
+          mkdir Skimo.app/Contents/Resources
 
-          cp rundir/RelWithDebInfo/bin/obs ./OBS.app/Contents/MacOS
-          cp rundir/RelWithDebInfo/bin/obs-ffmpeg-mux ./OBS.app/Contents/MacOS
-          cp rundir/RelWithDebInfo/bin/libobsglad.0.dylib ./OBS.app/Contents/MacOS
-          cp -R rundir/RelWithDebInfo/data ./OBS.app/Contents/Resources
-          cp ../CI/scripts/macos/app/obs.icns ./OBS.app/Contents/Resources
-          cp -R rundir/RelWithDebInfo/obs-plugins/ ./OBS.app/Contents/PlugIns
-          cp ../CI/scripts/macos/app/Info.plist ./OBS.app/Contents
+          cp rundir/RelWithDebInfo/bin/obs ./Skimo.app/Contents/MacOS
+          cp rundir/RelWithDebInfo/bin/obs-ffmpeg-mux ./Skimo.app/Contents/MacOS
+          cp rundir/RelWithDebInfo/bin/libobsglad.0.dylib ./Skimo.app/Contents/MacOS
+          cp -R rundir/RelWithDebInfo/data ./Skimo.app/Contents/Resources
+          cp ../CI/scripts/macos/app/obs.icns ./Skimo.app/Contents/Resources
+          cp -R rundir/RelWithDebInfo/obs-plugins/ ./Skimo.app/Contents/PlugIns
+          cp ../CI/scripts/macos/app/Info.plist ./Skimo.app/Contents
 
-          if [ -d ./OBS.app/Contents/Resources/data/obs-scripting ]; then
-            mv ./OBS.app/Contents/Resources/data/obs-scripting/obslua.so ./OBS.app/Contents/MacOS/
-            # mv ./OBS.app/Contents/Resources/data/obs-scripting/_obspython.so ./OBS.app/Contents/MacOS/
-            # mv ./OBS.app/Contents/Resources/data/obs-scripting/obspython.py ./OBS.app/Contents/MacOS/
-            rm -rf ./OBS.app/Contents/Resources/data/obs-scripting/
+          if [ -d ./Skimo.app/Contents/Resources/data/obs-scripting ]; then
+            mv ./Skimo.app/Contents/Resources/data/obs-scripting/obslua.so ./Skimo.app/Contents/MacOS/
+            # mv ./Skimo.app/Contents/Resources/data/obs-scripting/_obspython.so ./Skimo.app/Contents/MacOS/
+            # mv ./Skimo.app/Contents/Resources/data/obs-scripting/obspython.py ./Skimo.app/Contents/MacOS/
+            rm -rf ./Skimo.app/Contents/Resources/data/obs-scripting/
           fi
 
-          ../CI/scripts/macos/app/dylibBundler -cd -of -a ./OBS.app -q -f \
-            -s ./OBS.app/Contents/MacOS \
+          ../CI/scripts/macos/app/dylibBundler -cd -of -a ./Skimo.app -q -f \
+            -s ./Skimo.app/Contents/MacOS \
             -s "${{ github.workspace }}/cmbuild/sparkle/Sparkle.framework" \
             -s ./rundir/RelWithDebInfo/bin \
-            -x ./OBS.app/Contents/PlugIns/coreaudio-encoder.so \
-            -x ./OBS.app/Contents/PlugIns/decklink-ouput-ui.so \
-            -x ./OBS.app/Contents/PlugIns/frontend-tools.so \
-            -x ./OBS.app/Contents/PlugIns/image-source.so \
-            -x ./OBS.app/Contents/PlugIns/linux-jack.so \
-            -x ./OBS.app/Contents/PlugIns/mac-avcapture.so \
-            -x ./OBS.app/Contents/PlugIns/mac-capture.so \
-            -x ./OBS.app/Contents/PlugIns/mac-decklink.so \
-            -x ./OBS.app/Contents/PlugIns/mac-syphon.so \
-            -x ./OBS.app/Contents/PlugIns/mac-vth264.so \
-            -x ./OBS.app/Contents/PlugIns/obs-browser.so \
-            -x ./OBS.app/Contents/PlugIns/obs-browser-page \
-            -x ./OBS.app/Contents/PlugIns/obs-ffmpeg.so \
-            -x ./OBS.app/Contents/PlugIns/obs-filters.so \
-            -x ./OBS.app/Contents/PlugIns/obs-transitions.so \
-            -x ./OBS.app/Contents/PlugIns/obs-vst.so \
-            -x ./OBS.app/Contents/PlugIns/rtmp-services.so \
-            -x ./OBS.app/Contents/MacOS/obs-ffmpeg-mux \
-            -x ./OBS.app/Contents/MacOS/obslua.so \
-            -x ./OBS.app/Contents/PlugIns/obs-x264.so \
-            -x ./OBS.app/Contents/PlugIns/text-freetype2.so \
-            -x ./OBS.app/Contents/PlugIns/obs-libfdk.so \
-            -x ./OBS.app/Contents/PlugIns/obs-outputs.so
+            -x ./Skimo.app/Contents/PlugIns/coreaudio-encoder.so \
+            -x ./Skimo.app/Contents/PlugIns/decklink-ouput-ui.so \
+            -x ./Skimo.app/Contents/PlugIns/frontend-tools.so \
+            -x ./Skimo.app/Contents/PlugIns/image-source.so \
+            -x ./Skimo.app/Contents/PlugIns/linux-jack.so \
+            -x ./Skimo.app/Contents/PlugIns/mac-avcapture.so \
+            -x ./Skimo.app/Contents/PlugIns/mac-capture.so \
+            -x ./Skimo.app/Contents/PlugIns/mac-decklink.so \
+            -x ./Skimo.app/Contents/PlugIns/mac-syphon.so \
+            -x ./Skimo.app/Contents/PlugIns/mac-vth264.so \
+            -x ./Skimo.app/Contents/PlugIns/obs-browser.so \
+            -x ./Skimo.app/Contents/PlugIns/obs-browser-page \
+            -x ./Skimo.app/Contents/PlugIns/obs-ffmpeg.so \
+            -x ./Skimo.app/Contents/PlugIns/obs-filters.so \
+            -x ./Skimo.app/Contents/PlugIns/obs-transitions.so \
+            -x ./Skimo.app/Contents/PlugIns/obs-vst.so \
+            -x ./Skimo.app/Contents/PlugIns/rtmp-services.so \
+            -x ./Skimo.app/Contents/MacOS/obs-ffmpeg-mux \
+            -x ./Skimo.app/Contents/MacOS/obslua.so \
+            -x ./Skimo.app/Contents/PlugIns/obs-x264.so \
+            -x ./Skimo.app/Contents/PlugIns/text-freetype2.so \
+            -x ./Skimo.app/Contents/PlugIns/obs-libfdk.so \
+            -x ./Skimo.app/Contents/PlugIns/obs-outputs.so
 
-          mv ./libobs-opengl/libobs-opengl.so ./OBS.app/Contents/Frameworks
+          mv ./libobs-opengl/libobs-opengl.so ./Skimo.app/Contents/Frameworks
 
-          sudo cp -R "${{ github.workspace }}/cmbuild/cef_binary_${{ env.CEF_BUILD_VERSION }}_macosx64/Release/Chromium Embedded Framework.framework" ./OBS.app/Contents/Frameworks/
-          sudo chown -R $(whoami) ./OBS.app/Contents/Frameworks/
+          sudo cp -R "${{ github.workspace }}/cmbuild/cef_binary_${{ env.CEF_BUILD_VERSION }}_macosx64/Release/Chromium Embedded Framework.framework" ./Skimo.app/Contents/Frameworks/
+          sudo chown -R $(whoami) ./Skimo.app/Contents/Frameworks/
 
-          cp ../CI/scripts/macos/app/OBSPublicDSAKey.pem ./OBS.app/Contents/Resources
+          cp ../CI/scripts/macos/app/OBSPublicDSAKey.pem ./Skimo.app/Contents/Resources
 
-          plutil -insert CFBundleVersion -string ${{ env.OBS_GIT_TAG }}-${{ env.OBS_GIT_HASH }} ./OBS.app/Contents/Info.plist
-          plutil -insert CFBundleShortVersionString -string ${{ env.OBS_GIT_TAG }}-${{ env.OBS_GIT_HASH }} ./OBS.app/Contents/Info.plist
-          plutil -insert OBSFeedsURL -string https://obsproject.com/osx_update/feeds.xml ./OBS.app/Contents/Info.plist
-          plutil -insert SUFeedURL -string https://obsproject.com/osx_update/stable/updates.xml ./OBS.app/Contents/Info.plist
-          plutil -insert SUPublicDSAKeyFile -string OBSPublicDSAKey.pem ./OBS.app/Contents/Info.plist
+          plutil -insert CFBundleVersion -string ${{ env.OBS_GIT_TAG }}-${{ env.OBS_GIT_HASH }} ./Skimo.app/Contents/Info.plist
+          plutil -insert CFBundleShortVersionString -string ${{ env.OBS_GIT_TAG }}-${{ env.OBS_GIT_HASH }} ./Skimo.app/Contents/Info.plist
+          plutil -insert OBSFeedsURL -string https://obsproject.com/osx_update/feeds.xml ./Skimo.app/Contents/Info.plist
+          plutil -insert SUFeedURL -string https://obsproject.com/osx_update/stable/updates.xml ./Skimo.app/Contents/Info.plist
+          plutil -insert SUPublicDSAKeyFile -string OBSPublicDSAKey.pem ./Skimo.app/Contents/Info.plist
       - name: 'Package'
         if: success() && (github.event_name != 'pull_request' || env.SEEKING_TESTERS == '1')
         working-directory: ${{ github.workspace }}/build
