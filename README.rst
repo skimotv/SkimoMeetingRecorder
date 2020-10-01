@@ -13,7 +13,7 @@ What is Skimo Meeting Recorder?
 How to Install
 ==============
 
-1. run ~/.bashrc 
+1. run source ~/.bashrc 
 2. brew install dylibbundler
 3. brew install qt (5.15.1)
 4. git clone --recursive https://github.com/skimotv/SkimoMeetingRecorder.git 
