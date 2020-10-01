@@ -13,18 +13,33 @@ What is Skimo Meeting Recorder?
 How to Install
 ==============
 
-1. run source ~/.bashrc 
+1. run source ~/.bashrc
 2. brew install dylibbundler
 3. brew install qt (5.15.1)
-4. git clone --recursive https://github.com/skimotv/SkimoMeetingRecorder.git 
+4. git clone --recursive https://github.com/skimotv/SkimoMeetingRecorder.git
 5. cd SkimoMeetingRecorder
-6. rm -Rf build 
+6. rm -Rf build
 7. mkdir build
 8. cd build
-9. cmake -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDISABLE_PYTHON=ON .. 
-10. make 
+9. cmake -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDISABLE_PYTHON=ON ..
+10. make
 
-.bashrc 
+How to run
+===========
+1. ./CI/full-build-macos.sh -b
+1. To build Skimo Smart Smart Meeting Recorder as-is with full browser-source support,
+simply run ./CI/full-build-macos.sh from the checkout directory
+(The script will take care of downloading all necessary dependencies).
+2. To create an app-bundle after building Skimo Smart Meeting Recorder,
+run the script with the -b flag: ./CI/full-build-macos.sh -b
+3. To create a disk image after building Skimo Smart Meeting Recorder,
+run the script with the -p flag: ./CI/full-build-macos.sh -b -p
+4. To notarize an app bundle after building and bundling OBS,
+run the script with the -n flag: ./CI/full-build-macos.sh -b -n
+5. To create an app-bundle without building Skimo Smart Meeting Recorder again,
+run the script with the -s flag: ./CI/full-build-macos.sh -s -b
+
+.bashrc
 =======
 QTDIR=/usr/local/Cellar
 export QTDIR
@@ -50,3 +65,7 @@ Qt5Svg_DIR=$CMAKE_MODULE_PATH/Qt5Svg
 export Qt5Svg_DIR
 Qt5Xml_DIR=$CMAKE_MODULE_PATH/Qt5Xml
 export Qt5Xml_DIR
+
+Reference
+=========
+Use the following as reference: https://github.com/obsproject/obs-studio/wiki/Install-Instructions#macos-install-directions
