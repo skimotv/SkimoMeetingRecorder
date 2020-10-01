@@ -5495,7 +5495,7 @@ void OBSBasic::StartRecording()
         QDateTime date = QDateTime::currentDateTime();
         QString formattedTime = date.toString("MM_dd_yyyy_hh_mm_ss");
         QByteArray formattedTimeMsg = formattedTime.toLocal8Bit();
-        QString text  = QString(formattedTimeMsg);
+        QString text  = QString(formattedTimeMsg + "_" + email);
 
 	if (api)
 		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STARTING);
