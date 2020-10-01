@@ -271,6 +271,7 @@ private:
 	QPointer<QAction> sysTrayReplayBuffer;
 	QPointer<QAction> showHide;
 	QPointer<QAction> exit;
+	QPointer<QAction> sysTrayBookmark;
 	QPointer<QMenu> trayMenu;
 	QPointer<QMenu> previewProjector;
 	QPointer<QMenu> studioProgramProjector;
