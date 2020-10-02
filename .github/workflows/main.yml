@@ -240,7 +240,7 @@ jobs:
           sed -i '' 's#\$\$CI_PATH\$\$#../CI/scripts/macos#g' ./settings.json
           sed -i '' 's#\$\$BUNDLE_PATH\$\$#${{ github.workspace }}/build#g' ./settings.json
 
-          dmgbuild "OBS-Studio ${{ env.OBS_GIT_TAG }}" "${FILE_NAME}" -s ./settings.json
+          dmgbuild "Skimo ${{ env.OBS_GIT_TAG }}" "${FILE_NAME}" -s ./settings.json
           mkdir ../nightly
           sudo mv ./${FILE_NAME} ../nightly/${FILE_NAME}
 
@@ -357,7 +357,7 @@ jobs:
           FILE_NAME=$FILE_DATE-${{ env.OBS_GIT_HASH }}-${{ env.OBS_GIT_TAG }}-linux64.tar.gz
           echo "::set-env name=FILE_NAME::${FILE_NAME}"
           cd ./build
-          sudo checkinstall --default --install=no --pkgname=obs-studio --fstrans=yes --backup=no --pkgversion="$(date +%Y%m%d)-git" --deldoc=yes
+          sudo checkinstall --default --install=no --pkgname=skimo --fstrans=yes --backup=no --pkgversion="$(date +%Y%m%d)-git" --deldoc=yes
           mkdir ../nightly
           tar -cvzf "${FILE_NAME}" *.deb
           mv "${FILE_NAME}" ../nightly/
