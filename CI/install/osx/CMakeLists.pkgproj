@@ -22,7 +22,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>../../../build/OBS.app</string>
+									<string>../../../build/Skimo.app</string>
 									<key>PATH_TYPE</key>
 									<integer>3</integer>
 									<key>PERMISSIONS</key>
@@ -593,7 +593,7 @@
 				<key>IDENTIFIER</key>
 				<string>org.obsproject.pkg.obs-studio</string>
 				<key>NAME</key>
-				<string>OBS</string>
+				<string>skimo</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>
@@ -1015,7 +1015,7 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>OBS</string>
+			<string>skimo</string>
 		</dict>
 	</dict>
 	<key>TYPE</key>
