@@ -330,7 +330,7 @@ prepare_macos_bundle() {
     cp rundir/RelWithDebInfo/bin/obs-ffmpeg-mux ./Skimo.app/Contents/MacOS
     cp rundir/RelWithDebInfo/bin/libobsglad.0.dylib ./Skimo.app/Contents/MacOS
     cp -R rundir/RelWithDebInfo/data ./Skimo.app/Contents/Resources
-    cp ${CI_SCRIPTS}/app/obs.icns ./Skimo.app/Contents/Resources
+    cp ${CI_SCRIPTS}/app/skimo.icns ./Skimo.app/Contents/Resources
     cp -R rundir/RelWithDebInfo/obs-plugins/ ./Skimo.app/Contents/PlugIns
     cp ${CI_SCRIPTS}/app/Info.plist ./Skimo.app/Contents
     # Scripting plugins are required to be placed in same directory as binary
