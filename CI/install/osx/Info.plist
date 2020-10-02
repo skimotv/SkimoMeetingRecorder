@@ -5,9 +5,9 @@
 	<key>CFBundleIconFile</key>
 	<string>obs.icns</string>
 	<key>CFBundleName</key>
-	<string>OBS</string>
+	<string>Skimo</string>
 	<key>CFBundleGetInfoString</key>
-	<string>OBS - Free and Open Source Streaming/Recording Software</string>
+	<string>Skimo Smart Meeting Recorder</string>
 	<key>CFBundleExecutable</key>
 	<string>obs</string>
 	<key>CFBundleIdentifier</key>
@@ -21,8 +21,8 @@
 	<key>LSAppNapIsDisabled</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
- 	<string>OBS needs to access the camera to enable camera sources to work.</string>
+ 	<string>Skimo needs to access the camera to enable camera sources to work.</string>
  	<key>NSMicrophoneUsageDescription</key>
- 	<string>OBS needs to access the microphone to enable audio input.</string>
+ 	<string>Skimo needs to access the microphone to enable audio input.</string>
 </dict>
 </plist>
