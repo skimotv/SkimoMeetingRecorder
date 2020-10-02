@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIconFile</key>
-	<string>obs.icns</string>
+	<string>skimo.icns</string>
 	<key>CFBundleName</key>
 	<string>Skimo</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Skimo - Free and Open Source Screen Recording, Bookmarking and Anotation Software</string>
+	<string>Skimo Smart Screeen Recorder</string>
 	<key>CFBundleExecutable</key>
 	<string>obs</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.skimo.smartmeeting.recorder</string>
+	<string>tv.skimo.smartmeeting.recorder</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>LSMinimumSystemVersion</key>
