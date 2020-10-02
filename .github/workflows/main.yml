@@ -175,7 +175,7 @@ jobs:
           cp rundir/RelWithDebInfo/bin/obs-ffmpeg-mux ./Skimo.app/Contents/MacOS
           cp rundir/RelWithDebInfo/bin/libobsglad.0.dylib ./Skimo.app/Contents/MacOS
           cp -R rundir/RelWithDebInfo/data ./Skimo.app/Contents/Resources
-          cp ../CI/scripts/macos/app/obs.icns ./Skimo.app/Contents/Resources
+          cp ../CI/scripts/macos/app/skimo.icns ./Skimo.app/Contents/Resources
           cp -R rundir/RelWithDebInfo/obs-plugins/ ./Skimo.app/Contents/PlugIns
           cp ../CI/scripts/macos/app/Info.plist ./Skimo.app/Contents
 
