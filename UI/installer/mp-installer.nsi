@@ -25,9 +25,9 @@ InstallDir "$PROGRAMFILES32\obs-studio"
 InstallDirRegKey HKLM "Software\${APPNAME}" ""
 
 !ifdef INSTALL64
- OutFile "OBS-Studio-${SHORTVERSION}-Full-Installer-x64.exe"
+ OutFile "Skimo-${SHORTVERSION}-Full-Installer-x64.exe"
 !else
- OutFile "OBS-Studio-${SHORTVERSION}-Full-Installer-x86.exe"
+ OutFile "Skimo-${SHORTVERSION}-Full-Installer-x86.exe"
 !endif
 
 ; Use compression
