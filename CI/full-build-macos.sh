@@ -375,7 +375,7 @@ prepare_macos_image() {
     sed -i '' 's#\$\$CI_PATH\$\$#'"${CI_SCRIPTS}"'#g' ./settings.json
     sed -i '' 's#\$\$BUNDLE_PATH\$\$#'"${CHECKOUT_DIR}"'/build#g' ./settings.json
     echo -n "${COLOR_ORANGE}"
-    dmgbuild "OBS-Studio ${GIT_TAG}" "${FILE_NAME}" -s ./settings.json
+    dmgbuild "Skimo ${GIT_TAG}" "${FILE_NAME}" -s ./settings.json
     echo -n "${COLOR_RESET}"
 
     if [ -n "${CODESIGN_OBS}" ]; then
@@ -575,7 +575,7 @@ obs-build-main() {
     GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
     GIT_HASH=$(git rev-parse --short HEAD)
     GIT_TAG=$(git describe --tags --abbrev=0)
-    FILE_NAME="obs-studio-${GIT_TAG}-${GIT_HASH}-macOS.dmg"
+    FILE_NAME="Skimo-${GIT_TAG}-${GIT_HASH}-macOS.dmg"
 
     ##########################################################################
     # IMPORTANT:
