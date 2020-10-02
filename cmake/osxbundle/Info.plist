@@ -5,11 +5,11 @@
 	<key>CFBundleIconFile</key>
 	<string>OBS.icns</string>
 	<key>CFBundleName</key>
-	<string>OBS</string>
+	<string>Skimo</string>
 	<key>CFBundleGetInfoString</key>
-	<string>OBS - Free and Open Source Streaming/Recording Software</string>
+	<string>Skimo - Free and Open Source Screen Recording, Bookmarking and Anotation Software</string>
 	<key>CFBundleExecutable</key>
-	<string>OBS</string>
+	<string>obs</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.obsproject.obs-studio</string>
 	<key>CFBundlePackageType</key>
