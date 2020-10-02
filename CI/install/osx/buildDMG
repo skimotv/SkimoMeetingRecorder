@@ -1,1 +1,1 @@
-dmgbuild -s ./settings.json "OBS" Skimo.dmg
+dmgbuild -s ./settings.json "skimo" Skimo.dmg
