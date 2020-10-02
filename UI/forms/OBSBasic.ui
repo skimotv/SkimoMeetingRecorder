@@ -162,8 +162,6 @@
     <addaction name="actionWebsite"/>
     <addaction name="separator"/>
     <addaction name="menuLogFiles"/>
-    <addaction name="separator"/>
-    <addaction name="actionCheckForUpdates"/>
     <addaction name="actionShowAbout"/>
     <addaction name="separator"/>
    </widget>
