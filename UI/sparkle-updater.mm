@@ -44,7 +44,7 @@ static inline bool equali(NSString *a, NSString *b)
 		item = app;
 
 	NSBundle *host = updater.hostBundle;
-	if (mpkg && (!app || equali(host.bundlePath, @"/Applications/OBS.app")))
+	if (mpkg && (!app || equali(host.bundlePath, @"/Applications/Skimo.app")))
 		item = mpkg;
 
 	NSMutableDictionary *dict = [NSMutableDictionary
