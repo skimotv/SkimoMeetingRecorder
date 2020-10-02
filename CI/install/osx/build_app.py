@@ -3,7 +3,7 @@
 candidate_paths = "bin obs-plugins data".split()
 
 plist_path = "../cmake/osxbundle/Info.plist"
-icon_path = "../cmake/osxbundle/obs.icns"
+icon_path = "../cmake/osxbundle/skimo.icns"
 run_path = "../cmake/osxbundle/obslaunch.sh"
 
 #not copied
