@@ -13,7 +13,7 @@ mkdir OBS.app/Contents/Resources
 
 cp -R rundir/RelWithDebInfo/bin/ ./OBS.app/Contents/MacOS
 cp -R rundir/RelWithDebInfo/data ./OBS.app/Contents/Resources
-cp ../CI/scripts/macos/app/obs.icns ./OBS.app/Contents/Resources
+cp ../CI/scripts/macos/app/skimo.icns ./OBS.app/Contents/Resources
 cp -R rundir/RelWithDebInfo/obs-plugins/ ./OBS.app/Contents/PlugIns
 cp ../CI/scripts/macos/app/Info.plist ./OBS.app/Contents
 
