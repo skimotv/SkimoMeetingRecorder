@@ -103,7 +103,7 @@ static inline bool bundle_matches(NSBundle *bundle)
 		return false;
 
 	NSRange r = [bundle.executablePath rangeOfString:@"Contents/MacOS/"];
-	return [bundle.bundleIdentifier isEqual:@"com.skimo.smartmeeting.recorder"] &&
+	return [bundle.bundleIdentifier isEqual:@"tv.skimo.smartmeeting.recorder"] &&
 	       r.location != NSNotFound;
 }
 
