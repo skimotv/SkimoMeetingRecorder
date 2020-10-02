@@ -24,7 +24,7 @@ jobs:
       MACOS_DEPS_VERSION: '2020-08-06'
       VLC_VERSION: '3.0.8'
       SPARKLE_VERSION: '1.23.0'
-      QT_VERSION: '5.14.1'
+      QT_VERSION: '5.15.1'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
