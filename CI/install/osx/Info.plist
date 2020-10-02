@@ -11,7 +11,7 @@
 	<key>CFBundleExecutable</key>
 	<string>obs</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.obsproject.obs-studio</string>
+	<string>com.skimo.smartmeeting.recorder</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>LSMinimumSystemVersion</key>
