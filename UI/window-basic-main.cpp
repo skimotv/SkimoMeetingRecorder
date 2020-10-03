@@ -71,6 +71,8 @@
 #include <sstream>
 #include "auth-oauth.hpp"
 
+#include "Skimo/localFileServer.h"
+
 #ifdef _WIN32
 #include "win-update/win-update.hpp"
 #include "windows.h"
@@ -1992,6 +1994,9 @@ void OBSBasic::OBSInit()
 	//Create the view widget, used to show javascript & HTML files
 	view = new QWebEngineView(ui->centralwidget);
 	view->setVisible(false);
+
+	//Initialize the webserver responsible for getting files
+	myServer = new FileServer(8081, this);
 }
 
 void OBSBasic::OnFirstLoad()
@@ -6353,12 +6358,12 @@ void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 {
 	if (reply->error() == QNetworkReply::NoError) {
 		QFile file(pathToStoreSkimo + subPath);
-		file.open(QIODevice::WriteOnly);
+		/*file.open(QIODevice::WriteOnly);
 		file.write(reply->readAll());
-		file.close();
+		file.close();*/
 		reply->deleteLater();
 		numFiles++;
-		if (numFiles == TOTAL_CALLS) {
+		if (numFiles == TOTAL_CALLS-1) {
 			viewSkimoFinished(nullptr);
 		}
 		qDebug()<<numFiles<<" "<< subPath;
@@ -6371,7 +6376,7 @@ void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 {
 	//if (reply->error() == QNetworkReply::NoError) {
-		view->load(QUrl(QUrl::fromLocalFile(
+	view->load(QUrl(QUrl::fromLocalFile(
 			QFileInfo(pathToStoreSkimo + "/skimo.html")
 				.absoluteFilePath())));
 	/*} else // handle error

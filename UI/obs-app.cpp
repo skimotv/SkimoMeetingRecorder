@@ -1091,10 +1091,6 @@ bool OBSApp::SetTheme(std::string name, std::string path)
 bool OBSApp::InitTheme()
 {
 	defaultPalette = palette();
-
-	const char *themeName =
-		config_get_string(globalConfig, "General", "CurrentTheme2");
-
 	return SetTheme("System");
 }
 

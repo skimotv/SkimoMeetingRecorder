@@ -51,6 +51,8 @@ find_package(Qt5Xml ${FIND_MODE})
 find_package(Qt5WebEngine ${FIND_MODE})
 find_package(Qt5WebEngineWidgets ${FIND_MODE})
 find_package(Qt5NetworkAuth ${FIND_MODE})
+find_package(Qt5WebSockets ${FIND_MODE})
+
 
 find_package(FFmpeg REQUIRED COMPONENTS avcodec avutil avformat)
 
@@ -250,7 +252,8 @@ set(obs_SOURCES
 	audio-encoders.cpp
 	qt-wrappers.cpp
 	log-viewer.cpp
-	Skimo/SkimoFiles.cpp)
+	Skimo/SkimoFiles.cpp
+	Skimo/localFileServer.cpp)
 
 set(obs_HEADERS
 	${obs_PLATFORM_HEADERS}
@@ -317,7 +320,8 @@ set(obs_HEADERS
 	qt-wrappers.hpp
 	clickable-label.hpp
 	log-viewer.hpp
-	Skimo/SkimoFiles.hpp)
+	Skimo/SkimoFiles.hpp
+	Skimo/localFileServer.h)
 
 set(obs_importers_HEADERS
 	importers/importers.hpp)
@@ -388,6 +392,7 @@ target_link_libraries(obs
 	Qt5::WebEngine
 	Qt5::WebEngineWidgets
 	Qt5::NetworkAuth
+	Qt5::WebSockets
 	obs-frontend-api
 	${FFMPEG_LIBRARIES}
 	${LIBCURL_LIBRARIES}

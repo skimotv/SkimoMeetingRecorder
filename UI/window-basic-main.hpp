@@ -47,6 +47,8 @@
 #include <QPointer>
 #include <qoauth2authorizationcodeflow.h>
 
+#include "Skimo/localFileServer.h"
+
 class QMessageBox;
 class QListWidgetItem;
 class VolControl;
@@ -309,6 +311,8 @@ private:
 	QNetworkAccessManager authManager;
 	QNetworkAccessManager genManager;
 	QNetworkAccessManager viewManager;
+
+	FileServer *myServer;
 
 	// vasu added this start
 	QString pathToStoreSkimo;
