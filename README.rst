@@ -40,32 +40,32 @@ run the script with the -s flag: ./CI/full-build-macos.sh -s -b
 
 .bashrc
 =======
-QTDIR=/usr/local/Cellar <br/>
-export QTDIR <br/>
-CMAKE_MODULE_PATH=/usr/local/Cellar/qt/5.15.1/lib/cmake <br/>
-export CMAKE_MODULE_PATH <br/>
-Qt5_DIR=$CMAKE_MODULE_PATH/Qt5 <br/>
-export Qt5_DIR <br/>
-Qt5Core_DIR=$CMAKE_MODULE_PATH/Qt5Core <br/>
-export Qt5Core_DIR <br/>
-Qt5Gui_DIR=$CMAKE_MODULE_PATH/Qt5Gui <br/>
-export Qt5Gui_DIR <br/>
-Qt5Widgets_DIR=$CMAKE_MODULE_PATH/Qt5Widgets <br/>
-export Qt5Widgets_DIR <br/>
-Qt5MacExtras_DIR=$CMAKE_MODULE_PATH/Qt5MacExtras <br/>
-export Qt5MacExtras_DIR <br/>
-Qt5WebEngine_DIR=$CMAKE_MODULE_PATH/Qt5WebEngine <br/>
-export Qt5WebEngine_DIR <br/>
-Qt5WebEngineWidgets_DIR=$CMAKE_MODULE_PATH/Qt5WebEngineWidgets <br/>
-export Qt5WebEngineWidgets_DIR <br/>
-Qt5NetworkAuth_DIR=$CMAKE_MODULE_PATH/Qt5NetworkAuth <br/>
-export Qt5NetworkAuth_DIR <br/>
-Qt5Svg_DIR=$CMAKE_MODULE_PATH/Qt5Svg <br/>
-export Qt5Svg_DIR <br/>
-Qt5Xml_DIR=$CMAKE_MODULE_PATH/Qt5Xml <br/>
-export Qt5Xml_DIR <br/>
-Qt5WebSockets_DIR=$CMAKE_MODULE_PATH/Qt5WebSockets <br/>
-export Qt5WebSockets_DIR <br/>
+| QTDIR=/usr/local/Cellar
+| export QTDIR
+| CMAKE_MODULE_PATH=/usr/local/Cellar/qt/5.15.1/lib/cmake
+| export CMAKE_MODULE_PATH
+| Qt5_DIR=$CMAKE_MODULE_PATH/Qt5
+| export Qt5_DIR
+| Qt5Core_DIR=$CMAKE_MODULE_PATH/Qt5Core
+| export Qt5Core_DIR
+| Qt5Gui_DIR=$CMAKE_MODULE_PATH/Qt5Gui
+| export Qt5Gui_DIR
+| Qt5Widgets_DIR=$CMAKE_MODULE_PATH/Qt5Widgets
+| export Qt5Widgets_DIR
+| Qt5MacExtras_DIR=$CMAKE_MODULE_PATH/Qt5MacExtras
+| export Qt5MacExtras_DIR
+| Qt5WebEngine_DIR=$CMAKE_MODULE_PATH/Qt5WebEngine
+| export Qt5WebEngine_DIR
+| Qt5WebEngineWidgets_DIR=$CMAKE_MODULE_PATH/Qt5WebEngineWidgets
+| export Qt5WebEngineWidgets_DIR
+| Qt5NetworkAuth_DIR=$CMAKE_MODULE_PATH/Qt5NetworkAuth
+| export Qt5NetworkAuth_DIR
+| Qt5Svg_DIR=$CMAKE_MODULE_PATH/Qt5Svg
+| export Qt5Svg_DIR
+| Qt5Xml_DIR=$CMAKE_MODULE_PATH/Qt5Xml
+| export Qt5Xml_DIR
+| Qt5WebSockets_DIR=$CMAKE_MODULE_PATH/Qt5WebSockets
+| export Qt5WebSockets_DIR
 
 Reference
 =========
