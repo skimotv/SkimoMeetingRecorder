@@ -26,7 +26,6 @@ How to Install
 
 How to run
 ===========
-1. ./CI/full-build-macos.sh -b
 1. To build Skimo Smart Smart Meeting Recorder as-is with full browser-source support,
 simply run ./CI/full-build-macos.sh from the checkout directory
 (The script will take care of downloading all necessary dependencies).
@@ -65,7 +64,8 @@ Qt5Svg_DIR=$CMAKE_MODULE_PATH/Qt5Svg
 export Qt5Svg_DIR
 Qt5Xml_DIR=$CMAKE_MODULE_PATH/Qt5Xml
 export Qt5Xml_DIR
-
+Qt5WebSockets_DIR=$CMAKE_MODULE_PATH/Qt5WebSockets
+export Qt5WebSockets_DIR
 Reference
 =========
 Use the following as reference: https://github.com/obsproject/obs-studio/wiki/Install-Instructions#macos-install-directions
