@@ -304,7 +304,7 @@ private:
 	bool uploadInProgress = false;//True when upload is in progress
 
 	int numFiles = 0;
-	const int TOTAL_CALLS = 16;
+	const int TOTAL_CALLS = 13;
 
 
 	QString email;
