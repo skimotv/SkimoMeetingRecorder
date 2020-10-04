@@ -1935,13 +1935,8 @@ void OBSBasic::OBSInit()
 	connect(&genManager, &QNetworkAccessManager::finished, this,
 		&OBSBasic::generateSkimoFinished);
 
-		// vasu added this start
-		connect(&sourceMp4Manager, &QNetworkAccessManager::finished, this,
-			&OBSBasic::getSourceMp4);
 		connect(&subtitlesSubManager, &QNetworkAccessManager::finished, this,
-			&OBSBasic::getSubtitlesSub);
-		connect(&annotationsTxtManager, &QNetworkAccessManager::finished, this,
-			&OBSBasic::getAnnotationsTxt);
+		&OBSBasic::getSubtitlesSub);
 		connect(&LogoPngManager, &QNetworkAccessManager::finished, this,
 			&OBSBasic::getLogoPng);
 		connect(&favIconManager, &QNetworkAccessManager::finished, this,
@@ -6007,12 +6002,12 @@ void OBSBasic::on_viewSkimo_clicked()
 		assetId = pathToStoreSkimo.right(pathToStoreSkimo.length()-pathToStoreSkimo.lastIndexOf("/")-1);
 		blog(LOG_INFO, "=============================================");
 		blog(LOG_INFO, "assetId is : %s\n", assetId.toStdString().c_str());
-		QNetworkRequest request1(QUrl("https://skimo.tv/" + assetId + "/source.mp4"));
-		sourceMp4Manager.get(request1);
+	//	QNetworkRequest request1(QUrl("https://skimo.tv/" + assetId + "/source.mp4"));
+	//	sourceMp4Manager.get(request1);
 		QNetworkRequest request2(QUrl("https://skimo.tv/" + assetId + "/subtitles.sub"));
 		subtitlesSubManager.get(request2);
-		QNetworkRequest request3(QUrl("https://skimo.tv/" + assetId + "/annotations.txt"));
-		annotationsTxtManager.get(request3);
+	//	QNetworkRequest request3(QUrl("https://skimo.tv/" + assetId + "/annotations.txt"));
+//		annotationsTxtManager.get(request3);
 
 
 		// img directory
@@ -6114,12 +6109,17 @@ void OBSBasic::on_generateSkimo_clicked()
 							    "SimpleOutput",
 							    "FilePath")
 					: adv_path;
-			QString vidFileName = QFileDialog::getOpenFileName(
-				this, tr("Open Video"), path,
-				tr("Video Files (*mp4)"));
+		//	QString vidFileName = QFileDialog::getOpenFileName(
+		//		this, tr("Open Video"), path,
+			//	tr("Video Files (*mp4)"));
+
+			QString dirSkimo = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+																								QString::fromStdString(path),
+																								QFileDialog::ShowDirsOnly
+																								| QFileDialog::DontResolveSymlinks);
 
 			//If user clicked cancel
-			if (vidFileName == NULL) {
+			if (dirSkimo == NULL) {
 				ui->preview->setVisible(true);
 				gen = !gen;
 				return;
@@ -6134,7 +6134,7 @@ void OBSBasic::on_generateSkimo_clicked()
 			vidPart.setHeader(QNetworkRequest::ContentTypeHeader,
 					  QVariant("video/mp4"));
 
-			QFile *vidfile = new QFile(vidFileName);
+			QFile *vidfile = new QFile(dirSkimo + "/source.mp4");
 			QFileInfo fileInfo(
 				vidfile->fileName()); //Get name of file -> no path
 			vidPart.setHeader(
@@ -6158,6 +6158,10 @@ void OBSBasic::on_generateSkimo_clicked()
 
 			QFileInfo fileInfoTxt(
 				txtfile->fileName()); //Get name of file -> no path
+			QRegExp tagExp("/");
+			QStringList firstList = fileInfo.absoluteDir().absolutePath().split(tagExp);
+			QString theAssetId = firstList.takeLast();
+			blog(LOG_INFO, "assetid is  %s", theAssetId.toStdString().c_str());
 			textPart.setHeader(
 				QNetworkRequest::ContentDispositionHeader,
 				QVariant(
@@ -6176,8 +6180,8 @@ void OBSBasic::on_generateSkimo_clicked()
 
 			QString myUrl;
 			myUrl = "https://skimo.tv/live/recording?assetid=";
-			myUrl.append(
-				fileInfo.completeBaseName()); //Unique ID for this skimo
+			myUrl.append(theAssetId);
+				//fileInfo.absoluteDir().absolutePath()); //Unique ID for this skimo
 			myUrl.append("&apikey=yKLxpeweS42A78&username=");
 			myUrl.append(email);
 
@@ -6357,16 +6361,17 @@ void OBSBasic::getSkimoHTML(QNetworkReply *reply)
 void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 {
 	if (reply->error() == QNetworkReply::NoError) {
+		blog(LOG_INFO, "Storing the file in %s\n", QString(pathToStoreSkimo+subPath).toStdString().c_str());
 		QFile file(pathToStoreSkimo + subPath);
-		/*file.open(QIODevice::WriteOnly);
+		file.open(QIODevice::WriteOnly);
 		file.write(reply->readAll());
-		file.close();*/
+		file.close();
 		reply->deleteLater();
 		numFiles++;
 		if (numFiles == TOTAL_CALLS-1) {
 			viewSkimoFinished(nullptr);
 		}
-		qDebug()<<numFiles<<" "<< subPath;
+		blog(LOG_INFO, "No of files downloaded so far is %d", numFiles);
 	}
 }
 
@@ -6379,7 +6384,7 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 	view->load(QUrl(QUrl::fromLocalFile(
 			QFileInfo(pathToStoreSkimo + "/skimo.html")
 				.absoluteFilePath())));
-	/*} else // handle error
+	/* else // handle error
 	{
 		QVariant statusCode = reply->attribute(
 			QNetworkRequest::HttpStatusCodeAttribute);
