@@ -66,6 +66,7 @@ Qt5Xml_DIR=$CMAKE_MODULE_PATH/Qt5Xml
 export Qt5Xml_DIR
 Qt5WebSockets_DIR=$CMAKE_MODULE_PATH/Qt5WebSockets
 export Qt5WebSockets_DIR
+
 Reference
 =========
 Use the following as reference: https://github.com/obsproject/obs-studio/wiki/Install-Instructions#macos-install-directions
