@@ -951,7 +951,7 @@ bool SimpleOutput::ConfigureRecording(bool updateReplayBuffer, std::string dir)
 		obs_data_set_int(settings, "max_size_mb",
 				 usingRecordingPreset ? rbSize : 0);
 	} else {
-		f = GetFormatString(dir.c_str(), nullptr, nullptr);
+		f = GetFormatString("source", nullptr, nullptr);
 		strPath = GetOutputFilename(foldPath.c_str(), ffmpegOutput ? "avi" : format,
 					    noSpace, overwriteIfExists,
 					    f.c_str());
