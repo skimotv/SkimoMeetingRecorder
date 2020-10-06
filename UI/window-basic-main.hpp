@@ -304,7 +304,7 @@ private:
 	bool uploadInProgress = false;//True when upload is in progress
 
 	int numFiles = 0;
-	const int TOTAL_CALLS = 13;
+	const int TOTAL_CALLS = 12;
 
 
 	QString email;
@@ -959,7 +959,6 @@ private slots:
 	void getHandleCss(QNetworkReply *reply);
 	void getRevealJS(QNetworkReply *reply);
 	void getVideoPlayerJS(QNetworkReply *reply);
-	void getHandleJS(QNetworkReply *reply);
 	void getSkimoJS(QNetworkReply *reply);
 	void getSkimoHTML(QNetworkReply *reply);
 	// vasu added this end

@@ -51,4 +51,7 @@
     <file>images/settings/general.svg</file>
     <file>images/settings/hotkeys.svg</file>
   </qresource>
+	<qresource>
+		<file alias="handle.js">javascript/handle.js</file>
+	</qresource>
 </RCC>

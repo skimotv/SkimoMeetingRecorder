@@ -1957,8 +1957,7 @@ void OBSBasic::OBSInit()
 			&OBSBasic::getRevealJS);
 		connect(&videoPlayerJsManager, &QNetworkAccessManager::finished, this,
 		 &OBSBasic::getVideoPlayerJS);
-		connect(&handleJsManager, &QNetworkAccessManager::finished, this,
- 			&OBSBasic::getHandleJS);
+		
 		connect(&SkimoJsManager, &QNetworkAccessManager::finished, this,
 	 		&OBSBasic::getSkimoJS);
 		// vasu added this end
@@ -6041,9 +6040,6 @@ void OBSBasic::on_viewSkimo_clicked()
 		QNetworkRequest request13(
 			QUrl("https://skimo.tv/js/video-player.js"));
 		videoPlayerJsManager.get(request13);
-		QNetworkRequest request14(
-			QUrl("https://skimo.tv/js/handle.js"));
-		handleJsManager.get(request14);
 		QNetworkRequest request15(
 			QUrl("https://skimo.tv/js/skimo.js"));
 		SkimoJsManager.get(request15);
@@ -6346,10 +6342,6 @@ void OBSBasic::getVideoPlayerJS(QNetworkReply *reply)
 {
 	saveSkimoFile(reply, "/js/video-player.js");
 }
-void OBSBasic::getHandleJS(QNetworkReply *reply)
-{
-	saveSkimoFile(reply, "/js/handle.js");
-}
 void OBSBasic::getSkimoJS(QNetworkReply *reply)
 {
 	saveSkimoFile(reply, "/js/skimo.js");
@@ -6363,12 +6355,12 @@ void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 	if (reply->error() == QNetworkReply::NoError) {
 		blog(LOG_INFO, "Storing the file in %s\n", QString(pathToStoreSkimo+subPath).toStdString().c_str());
 		QFile file(pathToStoreSkimo + subPath);
-		/*file.open(QIODevice::WriteOnly);
+		file.open(QIODevice::WriteOnly);
 		file.write(reply->readAll());
-		file.close();*/
+		file.close();
 		reply->deleteLater();
 		numFiles++;
-		if (numFiles == TOTAL_CALLS-1) {
+		if (numFiles == TOTAL_CALLS) {
 			viewSkimoFinished(nullptr);
 		}
 		blog(LOG_INFO, "No of files downloaded so far is %d", numFiles);
@@ -6381,6 +6373,20 @@ void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 {
 	//if (reply->error() == QNetworkReply::NoError) {
+
+	//Load handle.js
+	QFile fileIn(":/handle.js");
+
+	QFile fileOut(pathToStoreSkimo + "/js/handle.js");
+	fileOut.open(QIODevice::WriteOnly);
+	fileIn.open(QIODevice::ReadOnly);
+
+	fileOut.write(fileIn.readAll());
+
+	fileOut.close();
+	fileIn.close();
+
+	//Show skimo
 	myServer->setOpenDirectory(pathToStoreSkimo);
 
 	view->load(QUrl(QUrl::fromLocalFile(
