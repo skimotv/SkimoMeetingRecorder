@@ -1,8 +1,7 @@
 #include "Skimo/localFileServer.h"
 #include "QtWebSockets/qwebsocketserver.h"
 #include "QtWebSockets/qwebsocket.h"
-#include <QtCore/QDebug>
-#include <QtCore\qfile.h>
+#include <QtCore>
 
 QT_USE_NAMESPACE
 

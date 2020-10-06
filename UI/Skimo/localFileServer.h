@@ -1,9 +1,7 @@
 #ifndef ECHOSERVER_H
 #define ECHOSERVER_H
 
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtCore/QByteArray>
+#include <QtCore>
 
 QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
