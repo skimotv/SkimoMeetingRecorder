@@ -6363,9 +6363,9 @@ void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 	if (reply->error() == QNetworkReply::NoError) {
 		blog(LOG_INFO, "Storing the file in %s\n", QString(pathToStoreSkimo+subPath).toStdString().c_str());
 		QFile file(pathToStoreSkimo + subPath);
-		file.open(QIODevice::WriteOnly);
+		/*file.open(QIODevice::WriteOnly);
 		file.write(reply->readAll());
-		file.close();
+		file.close();*/
 		reply->deleteLater();
 		numFiles++;
 		if (numFiles == TOTAL_CALLS-1) {
@@ -6381,6 +6381,8 @@ void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 {
 	//if (reply->error() == QNetworkReply::NoError) {
+	myServer->setOpenDirectory(pathToStoreSkimo);
+
 	view->load(QUrl(QUrl::fromLocalFile(
 			QFileInfo(pathToStoreSkimo + "/skimo.html")
 				.absoluteFilePath())));
