@@ -314,7 +314,6 @@ private:
 
 	FileServer *myServer;
 
-	// vasu added this start
 	QString pathToStoreSkimo;
 	QString assetId;
 	QNetworkAccessManager sourceMp4Manager;
@@ -332,7 +331,6 @@ private:
 	QNetworkAccessManager videoPlayerJsManager;
 	QNetworkAccessManager handleJsManager;
 	QNetworkAccessManager SkimoJsManager;
-	// vasu added this end
 
 	void UpdateMultiviewProjectorMenu();
 
@@ -945,7 +943,6 @@ private slots:
 	void generateSkimoFinished(QNetworkReply *reply);
 	void viewSkimoFinished(QNetworkReply *reply);
 
-	// vasu added this start
 	void getSourceMp4(QNetworkReply *reply);
 	void getSubtitlesSub(QNetworkReply *reply);
 	void getAnnotationsTxt(QNetworkReply *reply);
@@ -961,7 +958,6 @@ private slots:
 	void getVideoPlayerJS(QNetworkReply *reply);
 	void getSkimoJS(QNetworkReply *reply);
 	void getSkimoHTML(QNetworkReply *reply);
-	// vasu added this end
 	void saveSkimoFile(QNetworkReply *reply, QString subPath);//Save file to the given directory
 
 	void VCamButtonClicked();
