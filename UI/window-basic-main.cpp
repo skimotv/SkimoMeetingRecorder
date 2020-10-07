@@ -1957,10 +1957,9 @@ void OBSBasic::OBSInit()
 			&OBSBasic::getRevealJS);
 		connect(&videoPlayerJsManager, &QNetworkAccessManager::finished, this,
 		 &OBSBasic::getVideoPlayerJS);
-		
+
 		connect(&SkimoJsManager, &QNetworkAccessManager::finished, this,
 	 		&OBSBasic::getSkimoJS);
-		// vasu added this end
 		connect(&viewManager, &QNetworkAccessManager::finished, this,
 			&OBSBasic::getSkimoHTML);
 	//If the first source is null, no inputs are set so the user should be provided with default screen recorder
@@ -5489,8 +5488,6 @@ void OBSBasic::StartRecording()
 	//TODO - clean up, add error checking maybe
 	bool ok;
 
-        // vasu added this
-        // ===============
         QDateTime date = QDateTime::currentDateTime();
         QString formattedTime = date.toString("MM_dd_yyyy_hh_mm_ss");
         QByteArray formattedTimeMsg = formattedTime.toLocal8Bit();
@@ -5982,7 +5979,6 @@ void OBSBasic::on_viewSkimo_clicked()
 	if (viewing) {
 		ui->preview->setVisible(false);
 
-		//vasu changed this start
 		// AssetId directory
 		string path = GetDefaultVideoSavePath();
 		pathToStoreSkimo = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
@@ -6001,15 +5997,9 @@ void OBSBasic::on_viewSkimo_clicked()
 		assetId = pathToStoreSkimo.right(pathToStoreSkimo.length()-pathToStoreSkimo.lastIndexOf("/")-1);
 		blog(LOG_INFO, "=============================================");
 		blog(LOG_INFO, "assetId is : %s\n", assetId.toStdString().c_str());
-	//	QNetworkRequest request1(QUrl("https://skimo.tv/" + assetId + "/source.mp4"));
-	//	sourceMp4Manager.get(request1);
+
 		QNetworkRequest request2(QUrl("https://skimo.tv/" + assetId + "/subtitles.sub"));
 		subtitlesSubManager.get(request2);
-	//	QNetworkRequest request3(QUrl("https://skimo.tv/" + assetId + "/annotations.txt"));
-//		annotationsTxtManager.get(request3);
-
-
-		// img directory
 		QNetworkRequest request4(
 			QUrl("https://skimo.tv/img/logo.png"));
 		LogoPngManager.get(request4);
@@ -6275,7 +6265,6 @@ void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 }
 
 
-// vasu added this start
 
 void OBSBasic::getSourceMp4(QNetworkReply *reply)
 {
@@ -6367,7 +6356,6 @@ void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 	}
 }
 
-// vasu added this end
 
 //Run this when all files downloaded
 void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
