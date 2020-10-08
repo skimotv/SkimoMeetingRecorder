@@ -98,30 +98,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="contribute">
-         <property name="text">
-          <string notr="true">Contribute</string>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="donate">
-         <property name="text">
-          <string notr="true">Donate</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="getInvolved">
-         <property name="text">
-          <string notr="true">Get Involved</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QTextBrowser" name="textBrowser">
          <property name="openExternalLinks">
           <bool>true</bool>
