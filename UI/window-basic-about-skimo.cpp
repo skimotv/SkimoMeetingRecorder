@@ -25,10 +25,9 @@ SkimoAbout::SkimoAbout(QWidget *parent)
 		bitness = " (64 bit)";
 
 #ifdef HAVE_OBSCONFIG_H
-	ver += OBS_VERSION;
+	ver = "1.0";
 #else
-	ver += LIBOBS_API_MAJOR_VER + "." + LIBOBS_API_MINOR_VER + "." +
-	       LIBOBS_API_PATCH_VER;
+	ver = "1.0";
 #endif
 
 	ui->version->setText(ver + bitness);
