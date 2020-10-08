@@ -941,9 +941,8 @@ private slots:
 	//Network replies
 	void authFinished(QNetworkReply *reply);
 	void generateSkimoFinished(QNetworkReply *reply);
-	void viewSkimoFinished(QNetworkReply *reply);
+	void viewSkimoFinished();
 
-	void getSourceMp4(QNetworkReply *reply);
 	void getSubtitlesSub(QNetworkReply *reply);
 	void getAnnotationsTxt(QNetworkReply *reply);
 	void getLogoPng(QNetworkReply *reply);
