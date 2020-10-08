@@ -3296,7 +3296,7 @@ void trigger_sparkle_update();
 
 void OBSBasic::TimedCheckForUpdates()
 {
-	if (App()->IsUpdaterDisabled())
+	/*if (App()->IsUpdaterDisabled())
 		return;
 	if (!config_get_bool(App()->GlobalConfig(), "General",
 			     "EnableAutoUpdates"))
@@ -3322,7 +3322,7 @@ void OBSBasic::TimedCheckForUpdates()
 
 	if (secs > UPDATE_CHECK_INTERVAL)
 		CheckForUpdates(false);
-#endif
+#endif*/
 }
 
 void OBSBasic::CheckForUpdates(bool manualUpdate)
@@ -3344,7 +3344,7 @@ void OBSBasic::CheckForUpdates(bool manualUpdate)
 
 void OBSBasic::updateCheckFinished()
 {
-	ui->actionCheckForUpdates->setEnabled(true);
+	//ui->actionCheckForUpdates->setEnabled(true);
 }
 
 void OBSBasic::DuplicateSelectedScene()
@@ -5185,7 +5185,7 @@ void OBSBasic::on_actionUploadLastCrashLog_triggered()
 
 void OBSBasic::on_actionCheckForUpdates_triggered()
 {
-	CheckForUpdates(true);
+	//CheckForUpdates(true);
 }
 
 void OBSBasic::logUploadFinished(const QString &text, const QString &error)
@@ -5976,7 +5976,8 @@ void OBSBasic::on_viewSkimo_clicked()
 {
 	viewing = !viewing;
 	//If opening browser, load page and disable other buttons
-	if (viewing) {
+	if (viewing)
+	{
 		ui->preview->setVisible(false);
 
 		// AssetId directory
@@ -5986,70 +5987,92 @@ void OBSBasic::on_viewSkimo_clicked()
 																						QFileDialog::ShowDirsOnly
 																						| QFileDialog::DontResolveSymlinks);
 
-		QDir cssDir(pathToStoreSkimo+"/css");
-		if (!cssDir.exists())
-			cssDir.mkpath(".");
+    QFileInfo skimoHTML(pathToStoreSkimo + "/skimo.html");
+		if(skimoHTML.exists())
+		{
+			viewSkimoFinished();
+			view->setFixedWidth(this->width());
+			view->setFixedHeight(this->height() -
+			ui->controlsDock->height());
+			view->show();
+		}
+		else
+		{
+			QFile file1(pathToStoreSkimo + "/favicon.ico");
+			file1.remove();
+			QFile file2(pathToStoreSkimo + "/logo.png");
+			file2.remove();
+			QFile file3(pathToStoreSkimo + "/skimologo.png");
+			file3.remove();
+			QDir dir1(pathToStoreSkimo + "/js");
+			dir1.removeRecursively();
+			QDir dir2(pathToStoreSkimo + "/css");
+			dir2.removeRecursively();
 
-	  QDir jsDir(pathToStoreSkimo+"/js");
-		if (!jsDir.exists())
-			jsDir.mkpath(".");
+			QDir cssDir(pathToStoreSkimo+"/css");
+			if (!cssDir.exists())
+				cssDir.mkpath(".");
 
-		assetId = pathToStoreSkimo.right(pathToStoreSkimo.length()-pathToStoreSkimo.lastIndexOf("/")-1);
-		blog(LOG_INFO, "=============================================");
-		blog(LOG_INFO, "assetId is : %s\n", assetId.toStdString().c_str());
+	  	QDir jsDir(pathToStoreSkimo+"/js");
+			if (!jsDir.exists())
+				jsDir.mkpath(".");
 
-		QNetworkRequest request2(QUrl("https://skimo.tv/" + assetId + "/subtitles.sub"));
-		subtitlesSubManager.get(request2);
-		QNetworkRequest request4(
-			QUrl("https://skimo.tv/img/logo.png"));
-		LogoPngManager.get(request4);
-		QNetworkRequest request5(
-			QUrl("https://skimo.tv/img/favicon.ico"));
-		favIconManager.get(request5);
-		QNetworkRequest request6(
-			QUrl("https://skimo.tv/img/skimologo.png"));
-		skimoLogoPngManager.get(request6);
-		QNetworkRequest request7(
-			QUrl("https://skimo.tv/css/screen.css"));
-		screenCssManager.get(request7);
-		QNetworkRequest request8(
-			QUrl("https://skimo.tv/css/reveal.css"));
-		revealCssManager.get(request8);
-		QNetworkRequest request9(
-			QUrl("https://skimo.tv/css/main.min.css"));
-		mainMinCssManager.get(request9);
-		QNetworkRequest request10(
-			QUrl("https://skimo.tv/css/skimo.css"));
-		skimoCssManager.get(request10);
-		QNetworkRequest request11(
-			QUrl("https://skimo.tv/css/handle.css"));
-		handleCssManager.get(request11);
-		QNetworkRequest request12(
-			QUrl("https://skimo.tv/js/reveal.js"));
-		revealJsManager.get(request12);
-		QNetworkRequest request13(
-			QUrl("https://skimo.tv/js/video-player.js"));
-		videoPlayerJsManager.get(request13);
-		QNetworkRequest request15(
-			QUrl("https://skimo.tv/js/skimo.js"));
-		SkimoJsManager.get(request15);
+				assetId = pathToStoreSkimo.right(pathToStoreSkimo.length()-pathToStoreSkimo.lastIndexOf("/")-1);
+				blog(LOG_INFO, "=============================================");
+				blog(LOG_INFO, "assetId is : %s\n", assetId.toStdString().c_str());
 
-		QNetworkRequest request(
-			QUrl("https://skimo.tv/" + assetId + "/skimo.html"));
-		viewManager.get(request);
+				QNetworkRequest request2(QUrl("https://skimo.tv/" + assetId + "/subtitles.sub"));
+				subtitlesSubManager.get(request2);
+				QNetworkRequest request4(
+					QUrl("https://skimo.tv/img/logo.png"));
+				LogoPngManager.get(request4);
+				QNetworkRequest request5(
+					QUrl("https://skimo.tv/img/favicon.ico"));
+				favIconManager.get(request5);
+				QNetworkRequest request6(
+					QUrl("https://skimo.tv/img/skimologo.png"));
+				skimoLogoPngManager.get(request6);
+				QNetworkRequest request7(
+					QUrl("https://skimo.tv/css/screen.css"));
+				screenCssManager.get(request7);
+				QNetworkRequest request8(
+					QUrl("https://skimo.tv/css/reveal.css"));
+				revealCssManager.get(request8);
+				QNetworkRequest request9(
+					QUrl("https://skimo.tv/css/main.min.css"));
+				mainMinCssManager.get(request9);
+				QNetworkRequest request10(
+					QUrl("https://skimo.tv/css/skimo.css"));
+				skimoCssManager.get(request10);
+				QNetworkRequest request11(
+					QUrl("https://skimo.tv/css/handle.css"));
+				handleCssManager.get(request11);
+				QNetworkRequest request12(
+					QUrl("https://skimo.tv/js/reveal.js"));
+				revealJsManager.get(request12);
+				QNetworkRequest request13(
+					QUrl("https://skimo.tv/js/video-player.js"));
+				videoPlayerJsManager.get(request13);
+				QNetworkRequest request15(
+					QUrl("https://skimo.tv/js/skimo.js"));
+				SkimoJsManager.get(request15);
 
+				QNetworkRequest request(
+					QUrl("https://skimo.tv/" + assetId + "/skimo.html"));
+				viewManager.get(request);
 
-		//On get, load and display result
-		numFiles = 0;//COunt number of sucessful downloads
+				//On get, load and display result
+				numFiles = 0;//COunt number of sucessful downloads
 
-		view->setFixedWidth(this->width());
-		view->setFixedHeight(this->height() -
-					ui->controlsDock->height());
-		view->show();
+				view->setFixedWidth(this->width());
+				view->setFixedHeight(this->height() -
+				ui->controlsDock->height());
+				view->show();
 
-		ui->viewSkimo->setText("Close Skimo view");
-		ui->generateSkimo->setText("Generate Skimo");
-		gen = false;
+				ui->viewSkimo->setText("Close Skimo view");
+				ui->generateSkimo->setText("Generate Skimo");
+				gen = false;
+   }
 	} else {
 		ui->preview->setVisible(true);
 		view->hide();
@@ -6152,8 +6175,6 @@ void OBSBasic::on_generateSkimo_clicked()
 				QNetworkRequest::ContentDispositionHeader,
 				QVariant(
 					"form-data; name=\"annotation\"; filename=\"annotations.txt\""));
-
-
 
 			//Append the two files to the request
 			multiPart->append(vidPart);
@@ -6264,24 +6285,6 @@ void OBSBasic::generateSkimoFinished(QNetworkReply * reply)
 	gen = false;
 }
 
-
-
-void OBSBasic::getSourceMp4(QNetworkReply *reply)
-{
-	if (reply->error() == QNetworkReply::NoError)
-	{
-		saveSkimoFile(reply, "/source.mp4");
-	}
-	else
-	{
-		QMessageBox::information(
-			this, QString("No Skimo!!"),
-			QString("Asset ID not found in the Skimo Engine"));
-		//Trigger the button clicked method again to close the view menu
-		on_viewSkimo_clicked();
-	}
-}
-
 void OBSBasic::getSubtitlesSub(QNetworkReply *reply)
 {
 	saveSkimoFile(reply, "/subtitles.sub");
@@ -6337,11 +6340,36 @@ void OBSBasic::getSkimoJS(QNetworkReply *reply)
 }
 void OBSBasic::getSkimoHTML(QNetworkReply *reply)
 {
-	saveSkimoFile(reply, "/skimo.html");
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		saveSkimoFile(reply, "/skimo.html");
+	}
+	else
+	{
+		QFile file1(pathToStoreSkimo + "/favicon.ico");
+		file1.remove();
+		QFile file2(pathToStoreSkimo + "/logo.png");
+ 		file2.remove();
+		QFile file3(pathToStoreSkimo + "/skimologo.png");
+		file3.remove();
+		QDir dir1(pathToStoreSkimo + "/js");
+		dir1.removeRecursively();
+		QDir dir2(pathToStoreSkimo + "/css");
+		dir2.removeRecursively();
+
+		QMessageBox::information(
+			this, QString("No Skimo!!"),
+			QString("Asset ID not found in the Skimo Engine"));
+		//Trigger the button clicked method again to close the view menu
+		ui->preview->setVisible(true);
+		view->hide();
+		ui->viewSkimo->setText("View Skimo");
+	}
 }
 void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 {
-	if (reply->error() == QNetworkReply::NoError) {
+	if (reply->error() == QNetworkReply::NoError)
+	{
 		blog(LOG_INFO, "Storing the file in %s\n", QString(pathToStoreSkimo+subPath).toStdString().c_str());
 		QFile file(pathToStoreSkimo + subPath);
 		file.open(QIODevice::WriteOnly);
@@ -6349,19 +6377,16 @@ void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 		file.close();
 		reply->deleteLater();
 		numFiles++;
-		if (numFiles == TOTAL_CALLS) {
-			viewSkimoFinished(nullptr);
-		}
+		if (numFiles == TOTAL_CALLS)
+			viewSkimoFinished();
 		blog(LOG_INFO, "No of files downloaded so far is %d", numFiles);
 	}
 }
 
 
 //Run this when all files downloaded
-void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
+void OBSBasic::viewSkimoFinished()
 {
-	//if (reply->error() == QNetworkReply::NoError) {
-
 	//Load handle.js
 	QFile fileIn(":/handle.js");
 
@@ -6374,28 +6399,10 @@ void OBSBasic::viewSkimoFinished(QNetworkReply *reply)
 	fileOut.close();
 	fileIn.close();
 
-	//Show skimo
 	myServer->setOpenDirectory(pathToStoreSkimo);
-
 	view->load(QUrl(QUrl::fromLocalFile(
-			QFileInfo(pathToStoreSkimo + "/skimo.html")
-				.absoluteFilePath())));
-	/* else // handle error
-	{
-		QVariant statusCode = reply->attribute(
-			QNetworkRequest::HttpStatusCodeAttribute);
-		int status = statusCode.toInt();
-
-		if (status != 200) {
-			QString reason =
-				reply->attribute(
-					     QNetworkRequest::
-						     HttpReasonPhraseAttribute)
-					.toString();
-			QMessageBox::question(
-				this, QTStr("View failed to request"), reason);
-		}
-	}*/
+				QFileInfo(pathToStoreSkimo + "/skimo.html")
+					.absoluteFilePath())));
 }
 
 void OBSBasic::VCamButtonClicked()
