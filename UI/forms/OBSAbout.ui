@@ -76,7 +76,7 @@
        <item>
         <widget class="QLabel" name="name">
          <property name="text">
-          <string notr="true">Skimo Meeting Recorder</string>
+          <string notr="true">Skimo Smart Meeting Recorder</string>
          </property>
         </widget>
        </item>
