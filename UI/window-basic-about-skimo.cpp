@@ -104,11 +104,11 @@ void SkimoAbout::ShowAbout()
 	QString text;
 
 	//The following text is taken from skimo.tv
-	text += "<h1>Skimo Meeting Recorder:</h1>";
+	text += "<h1>Skimo Smart Meeting Recorder:</h1>";
 	text += "<p style=\"font-size:16px;\">";
 
 
-	text += "Skimo Meeting Recorder is an open source screen recording software which is installable in Mac, Windows and Linux and is forked from OBS Studio.<br>";
+	text += "Skimo Smart Meeting Recorder is an open source screen recording software which is installable in Mac, Windows and Linux and is forked from OBS Studio.<br>";
 	text += "It enables users to record any meeting regardless of provider, bookmark for remarkable events and annotate any part of the video while recording.<br>";
 	text +=	"Skimo Recorder can be used along with Skimo Newton to watch the recordings, and be able to access your bookmarks and annotations in the recordings.";
 
