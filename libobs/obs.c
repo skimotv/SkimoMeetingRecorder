@@ -1077,7 +1077,7 @@ uint32_t obs_get_version(void)
 
 const char *obs_get_version_string(void)
 {
-	return OBS_VERSION;
+	return "1.0";
 }
 
 void obs_set_locale(const char *locale)
