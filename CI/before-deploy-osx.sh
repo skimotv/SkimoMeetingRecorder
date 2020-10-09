@@ -83,8 +83,8 @@ install_name_tool -change /usr/local/opt/qt/lib/QtWidgets.framework/Versions/5/Q
 cp ../CI/install/osx/OBSPublicDSAKey.pem Skimo.app/Contents/Resources
 
 # edit plist
-plutil -insert CFBundleVersion -string $GIT_TAG ./Skimo.app/Contents/Info.plist
-plutil -insert CFBundleShortVersionString -string $GIT_TAG ./Skimo.app/Contents/Info.plist
+plutil -insert CFBundleVersion -string "1.0" ./Skimo.app/Contents/Info.plist
+plutil -insert CFBundleShortVersionString -string "1.0" ./Skimo.app/Contents/Info.plist
 plutil -insert OBSFeedsURL -string https://obsproject.com/osx_update/feeds.xml ./Skimo.app/Contents/Info.plist
 plutil -insert SUFeedURL -string https://obsproject.com/osx_update/stable/updates.xml ./Skimo.app/Contents/Info.plist
 plutil -insert SUPublicDSAKeyFile -string OBSPublicDSAKey.pem ./Skimo.app/Contents/Info.plist
