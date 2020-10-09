@@ -347,8 +347,8 @@ prepare_macos_bundle() {
     cp ${CI_SCRIPTS}/app/OBSPublicDSAKey.pem ./Skimo.app/Contents/Resources
 
     step "Set bundle meta information..."
-    plutil -insert CFBundleVersion -string ${GIT_TAG}-${GIT_HASH} ./Skimo.app/Contents/Info.plist
-    plutil -insert CFBundleShortVersionString -string ${GIT_TAG}-${GIT_HASH} ./Skimo.app/Contents/Info.plist
+    plutil -insert CFBundleVersion -string "1.0" ./Skimo.app/Contents/Info.plist
+    plutil -insert CFBundleShortVersionString -string "1.0" ./Skimo.app/Contents/Info.plist
     plutil -insert OBSFeedsURL -string https://obsproject.com/osx_update/feeds.xml ./Skimo.app/Contents/Info.plist
     plutil -insert SUFeedURL -string https://obsproject.com/osx_update/stable/updates.xml ./Skimo.app/Contents/Info.plist
     plutil -insert SUPublicDSAKeyFile -string OBSPublicDSAKey.pem ./Skimo.app/Contents/Info.plist
@@ -371,11 +371,11 @@ prepare_macos_image() {
 
     step "Run dmgbuild..."
     cp "${CI_SCRIPTS}/package/settings.json.template" ./settings.json
-    sed -i '' 's#\$\$VERSION\$\$#'"${GIT_TAG}"'#g' ./settings.json
+    sed -i '' 's#\$\$VERSION\$\$#'"1.0"'#g' ./settings.json
     sed -i '' 's#\$\$CI_PATH\$\$#'"${CI_SCRIPTS}"'#g' ./settings.json
     sed -i '' 's#\$\$BUNDLE_PATH\$\$#'"${CHECKOUT_DIR}"'/build#g' ./settings.json
     echo -n "${COLOR_ORANGE}"
-    dmgbuild "Skimo ${GIT_TAG}" "${FILE_NAME}" -s ./settings.json
+    dmgbuild "Skimo 1.0" "${FILE_NAME}" -s ./settings.json
     echo -n "${COLOR_RESET}"
 
     if [ -n "${CODESIGN_OBS}" ]; then
@@ -575,7 +575,7 @@ obs-build-main() {
     GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
     GIT_HASH=$(git rev-parse --short HEAD)
     GIT_TAG=$(git describe --tags --abbrev=0)
-    FILE_NAME="Skimo-${GIT_TAG}-${GIT_HASH}-macOS.dmg"
+    FILE_NAME="Skimo-1.0.dmg"
 
     ##########################################################################
     # IMPORTANT:
