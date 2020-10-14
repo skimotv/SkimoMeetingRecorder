@@ -408,7 +408,7 @@ read_codesign_ident() {
 #   + Your Apple developer ID is needed for notarization
 #   + An app-specific password is necessary for notarization from CLI
 #   + This password will be stored in your macOS keychain under the identifier
-#     'OBS-Codesign-Password'with access Apple's 'altool' only.
+#     'Skimo-CodeSign-Password'with access Apple's 'altool' only.
 ##############################################################################
 
 read_codesign_pass() {
@@ -417,7 +417,7 @@ read_codesign_pass() {
         read -p "${COLOR_ORANGE}  + Apple account id: ${COLOR_RESET}" CODESIGN_IDENT_USER
         CODESIGN_IDENT_PASS=$(stty -echo; read -p "${COLOR_ORANGE}  + Apple developer password: ${COLOR_RESET}" pwd; stty echo; echo $pwd)
         echo -n "${COLOR_ORANGE}"
-        xcrun altool --store-password-in-keychain-item "OBS-Codesign-Password" -u "${CODESIGN_IDENT_USER}" -p "${CODESIGN_IDENT_PASS}"
+        xcrun altool --store-password-in-keychain-item "Skimo-CodeSign-Password" -u "${CODESIGN_IDENT_USER}" -p "${CODESIGN_IDENT_PASS}"
         echo -n "${COLOR_RESET}"
         CODESIGN_IDENT_SHORT=$(echo "${CODESIGN_IDENT}" | sed -En "s/.+\((.+)\)/\1/p")
     fi
@@ -552,7 +552,7 @@ notarize_macos() {
         read_codesign_pass
 
         step "Run xcnotary with ${NOTARIZE_TARGET}..."
-        xcnotary notarize "${NOTARIZE_TARGET}" --developer-account "${CODESIGN_IDENT_USER}" --developer-password-keychain-item "OBS-Codesign-Password" --provider "${CODESIGN_IDENT_SHORT}"
+        xcnotary notarize "${NOTARIZE_TARGET}" --developer-account "${CODESIGN_IDENT_USER}" --developer-password-keychain-item "Skimo-CodeSign-Password" --provider "${CODESIGN_IDENT_SHORT}"
     fi
 }
 
