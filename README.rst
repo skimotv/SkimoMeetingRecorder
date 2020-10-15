@@ -37,10 +37,15 @@ run the script with the -p flag: ./CI/full-build-macos.sh -b -p
 run the script with the -n flag: ./CI/full-build-macos.sh -b -n
 5. To create an app-bundle without building Skimo Smart Meeting Recorder again,
 run the script with the -s flag: ./CI/full-build-macos.sh -s -b
-6. Create a directory SkimoImg in Desktop
-7. Copy the bundle to a directory cp -R Skimo.app  ~/Desktop/SkimoImg
-8. Create an image from the folder SkimoImg using Disk Utility
-9. xcrun altool --notarize-app    --primary-bundle-id "tv.skimo.smartmeeting.recorder" --username <Apple Username> --password <application password and not your appleid> --file ~/Desktop/SkimoImg.dmg
+6. codesign --force --options runtime --deep --sign "Developer ID Application: Vasudevan Srinivasan" ./Skimo.app
+7. Create a directory SkimoImg in Desktop
+8. Copy the bundle to a directory cp -R Skimo.app  ~/Desktop/SkimoImg
+9. Create an image from the folder SkimoImg using Disk Utility
+10. xcrun altool --notarize-app    --primary-bundle-id "tv.skimo.smartmeeting.recorder" --username <Apple Username> --password <application password and not your appleid> --file ~/Desktop/SkimoImg.dmg
+
+To check the status of notarization
+===================================
+ xcrun altool --notarization-history 0 --username <Apple Username> --password <application password and not your appleid>
 
 .bashrc
 =======
