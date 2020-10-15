@@ -6377,7 +6377,7 @@ void OBSBasic::saveSkimoFile(QNetworkReply *reply, QString subPath)
 		file.close();
 		reply->deleteLater();
 		numFiles++;
-		if (numFiles == TOTAL_CALLS)
+		if (numFiles >= TOTAL_CALLS)
 			viewSkimoFinished();
 		blog(LOG_INFO, "No of files downloaded so far is %d", numFiles);
 	}
